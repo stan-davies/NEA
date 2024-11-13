@@ -1,0 +1,1 @@
+Compile with `mingw32-make.exe` in project directory. Then you can use `program` in the project directory to run!
