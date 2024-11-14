@@ -3,7 +3,6 @@
                 "*.frag": "glsl",
                 "*.vert": "glsl",
                 "*.comp": "glsl",
-                "version.h": "c",
-                "string.h": "c"
+                "*.h": "c",
         }
 }

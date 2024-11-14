@@ -1,2 +1,5 @@
+.vscode/
+include/
+lib/
 program.exe
 version.h

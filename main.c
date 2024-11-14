@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "version.h"
+#include "opengl/gl_init.h"
 
 enum CMD {
         REND,
@@ -11,6 +12,14 @@ enum CMD {
 };
 
 int main(int argc, char **argv) {
+        GLFWwindow *window;
+
+        init_gl(TRACE, window);
+
+        return 0;
+}
+
+int cli(int argc, char **argv) {
         printf("running at version %s\n", VERSION);
 
         if (argc <= 1) {
