@@ -40,10 +40,12 @@ int init_gl(enum WINDOW_TYPES type, GLFWwindow *window) {
         glfwMakeContextCurrent(window);
 
         if (SCENE == type) {
-                glfwSetFrameBufferSizeCallback(window, glfw_window_resize_callback);
+                glfwSetFramebufferSizeCallback(window, glfw_window_resize_callback);
         }
 
         glewInit();
+
+        log_gl_vars();
 }
 
 void glfw_error_callback(int error, const char *description) {
@@ -51,8 +53,18 @@ void glfw_error_callback(int error, const char *description) {
 }
 
 void glfw_window_resize_callback(GLFWwindow *window, int w, int h) {
-        // window_width  = w;
-        // window_height = h;
+        window_width  = w;
+        window_height = h;
 
         // update perspective matrices if necessary
+}
+
+void log_gl_vars() {
+        GLubyte *gl_version = glGetString(GL_VERSION);
+        GLubyte *gl_vendor = glGetString(GL_VENDOR);
+        GLubyte *glsl_version = glGetString(GL_SHADING_LANGUAGE_VERSION);
+
+        log("\topengl version : %s\n", (char *)gl_version);
+        log("\topengl implementation vendor : %s\n", (char *)gl_vendor);
+        log("\tglsl version : %s\n----------", (char *)glsl_version);
 }

@@ -7,12 +7,7 @@ int init_log() {
                 return FALSE;
         }
 
-        const GLubyte *gl_version = glGetString(GL_VERSION);
-        const GLubyte *gl_vendor = glGetString(GL_VENDOR);
-        const GLubyte *glsl_version = glGetString(GL_SHADING_LANGUAGE_VERSION);
-        // log ALL that
-
-        fprintf(file, "beginning program with:\n tracer version %s\n opengl version %s\n opengl implementation vendor %s\n glsl version %s\n----------", VERSION, gl_version, gl_vendor, glsl_version);
+        fprintf(file, "beginning program with:\n\ttracer version %s\n", VERSION);
         
         fclose(file);
         return TRUE;
@@ -27,7 +22,7 @@ int log(char *format, ...) {
 
         va_list argptr;
         va_start(argptr, format);
-        fprintf(file, format, argptr);
+        vfprintf(file, format, argptr);
         va_end(argptr);
 
         fclose(file);
@@ -43,9 +38,10 @@ int log_err(char *format, ...) {
 
         va_list argptr;
         va_start(argptr, format);
-        fprintf(file, "ERROR: %s", format, argptr);
+        // TODO: add on 'ERROR: '
+        vfprintf(file, format, argptr);
 
-        printf("ERROR: %s", format, argptr);
+        printf(format, argptr);
 
         va_end(argptr);
 
