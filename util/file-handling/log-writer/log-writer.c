@@ -22,7 +22,10 @@ int log(char *format, ...) {
 
         va_list argptr;
         va_start(argptr, format);
+
         vfprintf(file, format, argptr);
+        fprintf(file, "\n");
+
         va_end(argptr);
 
         fclose(file);
@@ -38,10 +41,14 @@ int log_err(char *format, ...) {
 
         va_list argptr;
         va_start(argptr, format);
-        // TODO: add on 'ERROR: '
-        vfprintf(file, format, argptr);
 
-        printf(format, argptr);
+        fprintf(file, "ERROR: ");
+        vfprintf(file, format, argptr);
+        fprintf(file, "\n");
+
+        fprintf(stderr, "ERROR: ");
+        fprintf(stderr, format, argptr);
+        fprintf(stderr, "\n");
 
         va_end(argptr);
 

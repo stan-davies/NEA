@@ -64,7 +64,7 @@ void log_gl_vars() {
         GLubyte *gl_vendor = glGetString(GL_VENDOR);
         GLubyte *glsl_version = glGetString(GL_SHADING_LANGUAGE_VERSION);
 
-        log("\topengl version : %s\n", (char *)gl_version);
-        log("\topengl implementation vendor : %s\n", (char *)gl_vendor);
+        log("\topengl version : %s", (char *)gl_version);
+        log("\topengl implementation vendor : %s", (char *)gl_vendor);
         log("\tglsl version : %s\n----------", (char *)glsl_version);
 }

@@ -25,6 +25,7 @@ int init_log();
  *   OUTPUT : success in logging message
  *
  *   DESC   : writes the given message to the log file
+ *            `\n` will be automatically appended to the end of string
  */
 int log(char *format, ...);
 
@@ -33,7 +34,8 @@ int log(char *format, ...);
  *   OUTPUT : success in logging error
  *
  *   DESC   : writes the given error to the log file and outputs it to the console
- *            'ERROR:' is also added to the front of the error
+ *            'ERROR:' is prepended to the front of the error
+ *            `\n` will be automatically appended to the end of string
  */
 int log_err(char *format, ...);
 
