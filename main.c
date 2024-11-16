@@ -2,53 +2,38 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "version.h"
-#include "opengl/gl_init.h"
-
-enum CMD {
-        REND,
-        EDIT,
-        NONE
-};
+#include "glob.h"
+#include "opengl/gl-init.h"
+#include "cli/cli.h"
 
 int main(int argc, char **argv) {
+        init_log();
+
+        enum PROGS cmd = take_input(argc, argv);
+        if (NONE == cmd) {
+                log_err("could not start program");
+                return 0;
+        }
+
+        log_vars(cmd);
+
         GLFWwindow *window;
+        init_gl(cmd, window);
 
-        init_gl(TRACE, window);
-
-        return 0;
-}
-
-int cli(int argc, char **argv) {
-        printf("running at version %s\n", VERSION);
-
-        if (argc <= 1) {
-                printf("ERROR: no command given\n");
-                return 0;
-        }
-
-        char *cmd_str = argv[1];
-        enum CMD cmd = NONE;
-
-        if (0 == strcmp(cmd_str, "render")) {
-                cmd = REND;
-        } else if (0 == strcmp(cmd_str, "edit")) {
-                cmd = EDIT;
-        } else {
-                printf("ERROR: invalid command given at symbol '%s'", cmd_str);
-                return 0;
-        }
+        log("----------\n");
 
         switch(cmd) {
         case REND:
-                printf("you have chosen to render something\n");
+                // do render
                 break;
         case EDIT:
-                printf("you have chosen to edit something\n");
+                // do edit
                 break;
         default:
                 break;
         }
+
+        term_gl();
 
         return 0;
 }

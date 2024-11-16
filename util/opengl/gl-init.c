@@ -1,11 +1,9 @@
-#include "gl_init.h"
+#include "gl-init.h"
 
 int window_width  = 1;
 int window_height = 1; 
 
-int init_gl(enum WINDOW_TYPES type, GLFWwindow *window) {
-        init_log();
-
+int init_gl(enum PROGS type, GLFWwindow *window) {
         glfwSetErrorCallback(glfw_error_callback);
 
         if (!glfwInit()) {
@@ -19,7 +17,7 @@ int init_gl(enum WINDOW_TYPES type, GLFWwindow *window) {
         glfwWindowHint( GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE );
         glfwWindowHint( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
 
-        if (SCENE == type) {
+        if (EDIT == type) {
                 glfwWindowHint(GLFW_SAMPLES, 4);
         }
 
@@ -39,13 +37,17 @@ int init_gl(enum WINDOW_TYPES type, GLFWwindow *window) {
         // set window to the current context, required for initialisation
         glfwMakeContextCurrent(window);
 
-        if (SCENE == type) {
+        if (EDIT == type) {
                 glfwSetFramebufferSizeCallback(window, glfw_window_resize_callback);
         }
 
         glewInit();
 
         log_gl_vars();
+}
+
+void term_gl() {
+        glfwTerminate();
 }
 
 void glfw_error_callback(int error, const char *description) {
@@ -66,5 +68,5 @@ void log_gl_vars() {
 
         log("\topengl version : %s", (char *)gl_version);
         log("\topengl implementation vendor : %s", (char *)gl_vendor);
-        log("\tglsl version : %s\n----------", (char *)glsl_version);
+        log("\tglsl version : %s", (char *)glsl_version);
 }

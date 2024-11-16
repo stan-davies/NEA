@@ -2,27 +2,29 @@
 #define GL_INIT_H
 
 #include "OpenGL.h"
-#include "util.h"
+#include "glob.h"
 
 #include "file-handling/log-writer/log-writer.h"
-
-// how the window is set up differs depending on which side of the program is being run
-enum WINDOW_TYPES {
-        TRACE,
-        SCENE
-};
 
 // default window dimensions for WINDOW_TYPE TRACE, these should be changed for SCENE
 extern int window_width;
 extern int window_height;
 
 /*
- *   INPUT  : which type of window should be created, pointer to where the window should be created
+ *   INPUT  : which type of pprogram is being run, pointer to where the window should be created
  *   OUTPUT : whether or not initialisation of OpenGL was successful
  *   
  *   DESC   : initialises OpenGL with a hidden window
  */
-int init_gl(enum WINDOW_TYPES type, GLFWwindow *window);
+int init_gl(enum PROGS type, GLFWwindow *window);
+
+/*
+ *   INPUT  : -
+ *   OUTPUT : -
+ * 
+ *   DESC   : terminates OpenGL
+ */
+void term_gl();
 
 /*
  *   INPUT  : GLFW error code, GLFW description of error

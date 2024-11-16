@@ -1,8 +1,0 @@
-{
-        "files.associations": {
-                "*.frag": "glsl",
-                "*.vert": "glsl",
-                "*.comp": "glsl",
-                "*.h": "c",
-        }
-}

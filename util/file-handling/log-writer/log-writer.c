@@ -7,8 +7,27 @@ int init_log() {
                 return FALSE;
         }
 
-        fprintf(file, "beginning program with:\n\ttracer version %s\n", VERSION);
+        fprintf(file, "");
         
+        fclose(file);
+        return TRUE;
+}
+
+int log_vars(enum PROGS cmd) {
+        FILE *file = fopen(LOG_FILE_PATH, "w");
+        if (!file) {
+                printf("ERROR: could not begin log file\n");
+                return FALSE;
+        }
+
+        char *cmd_str;
+        if (!cmd_to_str(cmd, &cmd_str)) {
+                printf("ERROR: invalid command given");
+                return FALSE;
+        }
+
+        fprintf(file, "beginning program in mode %s at %s with:\n", cmd_str, VERSION);
+
         fclose(file);
         return TRUE;
 }

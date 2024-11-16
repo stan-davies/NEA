@@ -6,19 +6,31 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-#include "util.h"
-#include "version.h"
+#include "glob.h"
+#include "cli/cli.h"
 
 
-#define LOG_FILE_PATH "log"
+#define LOG_FILE_PATH ".log"
 
 /*
  *   INPUT  : -
  *   OUTPUT : success in creating file
  *
- *   DESC   : creates a fresh log file and writes the current version to it
+ *   DESC   : resets the log file
  */
 int init_log();
+
+/*
+ *   INPUT  : command code that program is starting with
+ *   OUTPUT : sucess in logging key data
+ * 
+ *   DESC   : creates first line in log file, which indicates that the
+ *            program is starting, what it is going to do (render or 
+ *            edit scenefile) and which version of the program is being
+ *            used
+ */
+// creates a fresh log file and writes the current version and command to it
+int log_vars(enum PROGS cmd);
 
 /*
  *   INPUT  : format for message to log, arguments to place into format

@@ -1,4 +1,4 @@
-FILES = main.c util/opengl/gl_init.c util/file-handling/log-writer/log-writer.c
+FILES = main.c util/opengl/gl-init.c util/file-handling/log-writer/log-writer.c util/cli/cli.c
 
 CC = gcc
 
