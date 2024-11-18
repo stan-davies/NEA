@@ -2,7 +2,7 @@
 #define GL_INIT_H
 
 #include "OpenGL.h"
-#include "glob.h"
+#include "global.h"
 
 #include "file-handling/log-writer/log-writer.h"
 

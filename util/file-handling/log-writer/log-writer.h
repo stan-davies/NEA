@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-#include "glob.h"
+#include "global.h"
 #include "cli/cli.h"
 
 

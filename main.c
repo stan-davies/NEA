@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "glob.h"
+#include "global.h"
 #include "opengl/gl-init.h"
 #include "cli/cli.h"
 
