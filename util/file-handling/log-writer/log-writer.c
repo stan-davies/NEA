@@ -59,18 +59,26 @@ int log_err(char *format, ...) {
         }
 
         va_list argptr;
-        va_start(argptr, format);
 
+        va_start(argptr, format);
         fprintf(file, "ERROR: ");
         vfprintf(file, format, argptr);
         fprintf(file, "\n");
+        va_end(argptr);
 
+        va_start(argptr, format);
         fprintf(stderr, "ERROR: ");
-        fprintf(stderr, format, argptr);
+        vfprintf(stderr, format, argptr);
         fprintf(stderr, "\n");
-
         va_end(argptr);
 
         fclose(file);
         return TRUE;
+}
+
+int log_shader_logs(int shader_id) {
+        int actual_len = 0;
+        char *shader_log = calloc(MAX_SHADER_LOGS_LEN, sizeof(char));
+        glGetShaderInfoLog(shader_id, MAX_SHADER_LOGS_LEN, &actual_len, shader_log);
+        return log("shader logs for '%d': %s", shader_id, shader_log);
 }

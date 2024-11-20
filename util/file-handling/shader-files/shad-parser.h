@@ -4,48 +4,54 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "OpenGL.h"
-#include "parse.h"
+#include "opengl/OpenGL.h"
+#include "file-handling/parse.h"
 
 #define MAX_FILENAME_LEN 15
+#define MAX_PATH_LEN     50
 
 #define HASH_CHR 35
 #define QUT_CHR  34
+#define LF_CHR   10
+#define I_CHR    105
 
 /*
- *   INPUT  : path to directory containing glsl files, pointer to a string to fill with glsl 
- *            code from files
- *   OUTPUT : success in preprocessing
+ *   INPUT  : Path to directory containing glsl files. Pointer to a string to
+ *            fill with glsl code from files.
+ *   OUTPUT : Success in preprocessing.
  *
- *   DESC   : deals with '#include' statements in a group of glsl files
+ *   DESC   : Deals with `#include` statements in a group of glsl files.
  */
 int preprocess(char *dir_path, char **shader_string);
 
 /*
- *   INPUT  : path to directory containing glsl files, name of file, pointer to string for 
- *            content of file, pointer to int for length of file
- *   OUTPUT : success in parsing
+ *   INPUT  : Path to directory containing glsl files. Name of file. Pointer
+ *            to string for content of file. Pointer to int for length of file.
+ *   OUTPUT : Success in parsing.
  *
- *   DESC   : finds {name}.glsl file and parses it
+ *   DESC   : Finds `{name}.glsl` file and parses it.
  */
 int get_file_cnt(char *dir_path, char *name, char **cnt, int *cnt_len);
 
 /*
- *   INPUT  : path to directory containing glsl files, pointer to string for content of file, 
- *            pointer to int for length of file
- *   OUTPUT : success in fulfilling directives
+ *   INPUT  : Path to directory containing glsl files. Pointer to string for 
+ *            content of file. Length of file.
+ *   OUTPUT : Success in fulfilling directives.
  *
- *   DESC   : searches shader file for '#include' directives and inserts specified code
- *   TODO   : ensure the same block of code is not inserted twice (read files array?)
+ *   DESC   : Searches shader file for '#include' directives and inserts 
+ *            specified code.
+ *   TODO   : Ensure the same block of code is not inserted twice (read files
+ *            array?).
  */
-int direct(char *dir_path, char **content, int *content_len);
+int direct(char *dir_path, char **content, int content_len);
 
 /*
- *   INPUT  : GL id of shader, path to directory containing shader files, GL type of shader
- *   OUTPUT : success in parsing, preprocessing, and creating shader
+ *   INPUT  : Pointer to GL id of shader. Path to directory containing shader
+ *            files. GL type of shader.
+ *   OUTPUT : Success in parsing, preprocessing, and creating shader.
  *
- *   DESC   : parses and preprocesses shader code, creates GL shader, compiles code, and validate 
- *            the shader
+ *   DESC   : Parses and preprocesses shader code, creates GL shader, compiles
+ *            code, and validate the shader.
  */
 int create_shader(int *shader_id, char *dir_path, GLenum type);
 

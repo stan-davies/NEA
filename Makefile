@@ -1,4 +1,4 @@
-FILES = main.c util/opengl/gl-init.c util/file-handling/log-writer/log-writer.c util/cli/cli.c
+FILES = main.c util/opengl/gl-init.c util/file-handling/log-writer/log-writer.c util/cli/cli.c util/file-handling/shader-files/shad-parser.c tracer/core.c util/file-handling/parse.c
 
 CC = gcc
 
@@ -8,7 +8,8 @@ LIBRARY_PATHS = -L .
 
 # -w : suppress all warning
 # -v : output all commands run
-COMPILER_FLAGS = -w
+# -g : include debug information in .exe
+COMPILER_FLAGS = -w -g
 
 LINKER_FLAGS = -l mingw32 -l opengl32 -l glew32 -l glfw3
 

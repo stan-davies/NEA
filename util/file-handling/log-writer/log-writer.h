@@ -12,43 +12,53 @@
 
 #define LOG_FILE_PATH ".log"
 
+/* 
+ * Maximum length of shader logs. This is a string returned (via a pointer) by
+ * `glGetShaderInfoLog`. It includes information about any errors and whatnot.
+ * So far has solved at least: 1 error
+ */
+#define MAX_SHADER_LOGS_LEN 2048
+
 /*
  *   INPUT  : -
- *   OUTPUT : success in creating file
+ *   OUTPUT : Success in creating file.
  *
- *   DESC   : resets the log file
+ *   DESC   : Resets the log file.
  */
 int init_log();
 
 /*
- *   INPUT  : command code that program is starting with
- *   OUTPUT : sucess in logging key data
+ *   INPUT  : Command code that program is starting with.
+ *   OUTPUT : Success in logging key data.
  * 
- *   DESC   : creates first line in log file, which indicates that the
- *            program is starting, what it is going to do (render or 
- *            edit scenefile) and which version of the program is being
- *            used
+ *   DESC   : Creates first line in log file, which indicates that the program
+ *            is starting, what it is going to do (render or edit scenefile) 
+ *            and which version of the program is being used.
  */
-// creates a fresh log file and writes the current version and command to it
 int log_vars(enum PROGS cmd);
 
 /*
- *   INPUT  : format for message to log, arguments to place into format
- *   OUTPUT : success in logging message
+ *   INPUT  : Format for message to log. Arguments to place into format.
+ *   OUTPUT : Success in logging message.
  *
- *   DESC   : writes the given message to the log file
- *            `\n` will be automatically appended to the end of string
+ *   DESC   : Writes the given message to the log file. `\n` will be 
+ *            automatically appended to the end of string.
  */
 int log(char *format, ...);
 
 /*
- *   INPUT  : format for error to log, arguments to place into format
- *   OUTPUT : success in logging error
+ *   INPUT  : Format for error to log. Arguments to place into format.
+ *   OUTPUT : Success in logging error.
  *
- *   DESC   : writes the given error to the log file and outputs it to the console
- *            'ERROR:' is prepended to the front of the error
- *            `\n` will be automatically appended to the end of string
+ *   DESC   : Writes the given error to the log file and outputs it to the
+ *            console 'ERROR:' is prepended to the front of the error `\n` will
+ *            be automatically appended to the end of string.
  */
 int log_err(char *format, ...);
+
+/*
+ *   INPUT  : 
+ */
+int log_shader_logs(int shader_id);
 
 #endif

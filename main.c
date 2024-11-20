@@ -5,6 +5,7 @@
 #include "global.h"
 #include "opengl/gl-init.h"
 #include "cli/cli.h"
+#include "tracer/core.h"
 
 int main(int argc, char **argv) {
         init_log();
@@ -22,15 +23,22 @@ int main(int argc, char **argv) {
 
         log("----------\n");
 
+        int success;
+
         switch(cmd) {
         case REND:
-                // do render
+                success = render();
                 break;
         case EDIT:
                 // do edit
                 break;
         default:
+                success = FALSE;
                 break;
+        }
+
+        if (!success) {
+                log_err("problem in program");
         }
 
         term_gl();

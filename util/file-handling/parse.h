@@ -8,10 +8,11 @@
 #define MAX_SHADER_LENGTH 262144
 
 /*
- *   INPUT  : path to file, pointer to string for file content
- *   OUTPUT : success in parsing shader file
+ *   INPUT  : Path to file. Pointer to string for file content. Length of file
+ *            content.
+ *   OUTPUT : Success in parsing shader file.
  * 
- *   DESC   : parses content of file and adds `\0` to it
+ *   DESC   : Parses content of file and adds `\0` to it.
  */
 int parse(char *path, char **content, int *content_length);
 
