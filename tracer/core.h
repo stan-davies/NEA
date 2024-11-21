@@ -1,7 +1,8 @@
 #ifndef RENDER_CORE_H
 #define RENDER_CORE_H
 
-#include "file-handling/shader-files/shad-parser.h"
+#include "tracer/shader-handling/comp-prog.h"
+#include "tracer/shader-handling/vid-mem.h"
 
 int render();
 

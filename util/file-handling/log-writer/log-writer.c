@@ -78,7 +78,14 @@ int log_err(char *format, ...) {
 
 int log_shader_logs(int shader_id) {
         int actual_len = 0;
-        char *shader_log = calloc(MAX_SHADER_LOGS_LEN, sizeof(char));
-        glGetShaderInfoLog(shader_id, MAX_SHADER_LOGS_LEN, &actual_len, shader_log);
+        char *shader_log = calloc(MAX_GL_LOGS_LEN, sizeof(char));
+        glGetShaderInfoLog(shader_id, MAX_GL_LOGS_LEN, &actual_len, shader_log);
         return log("shader logs for '%d': %s", shader_id, shader_log);
+}
+
+int log_program_logs(int program_id) {
+        int actual_len = 0;
+        char *prog_log = calloc(MAX_GL_LOGS_LEN, sizeof(char));
+        glGetProgramInfoLog(program_id, MAX_GL_LOGS_LEN, &actual_len, prog_log);
+        return log("program info log for '%d': %s", program_id, prog_log);
 }

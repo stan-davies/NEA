@@ -13,11 +13,10 @@
 #define LOG_FILE_PATH ".log"
 
 /* 
- * Maximum length of shader logs. This is a string returned (via a pointer) by
- * `glGetShaderInfoLog`. It includes information about any errors and whatnot.
- * So far has solved at least: 1 error
+ * Maximum length of shader / program logs, as used in `log_shader_logs` and
+ * `log_program_logs`.
  */
-#define MAX_SHADER_LOGS_LEN 2048
+#define MAX_GL_LOGS_LEN 2048
 
 /*
  *   INPUT  : -
@@ -57,8 +56,23 @@ int log(char *format, ...);
 int log_err(char *format, ...);
 
 /*
- *   INPUT  : 
+ *   INPUT  : GL ID of shader to log info for.
+ *   OUTPUT : Success in logging logs.
+ * 
+ *   DESC   : Logs data taken from OpenGL about the given shader. This includes
+ *            information about errors and other, less significant, stuff. 
+ *   NOTES  : So far has solved at least: 1 error
  */
 int log_shader_logs(int shader_id);
+
+/*
+ *   INPUT  : GL ID of program to log info for.
+ *   OUTPUT : Success in logging logs.
+ *
+ *   DESC   : Logs data taken from OpenGL about the given program. This
+ *            includes information about errors and other, less significant,
+ *            stuff.
+ */
+int log_program_logs(int program_id);
 
 #endif
