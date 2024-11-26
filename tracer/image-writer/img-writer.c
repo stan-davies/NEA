@@ -13,13 +13,17 @@ void write_texture(char *output_path, int texture_width, int texture_height, flo
         int pixel_i = 0;
         for (int y = 0; y < texture_height; ++y) {
                 for (int x = 0; x < texture_width; ++x) {
-                        fprintf(out_f, "%.3f %.3f %.3f\n", 
-                        pixels[pixel_i], 
-                        pixels[pixel_i + 1], 
-                        pixels[pixel_i + 2]);
+                        fprintf(out_f, "%d %d %d\n", 
+                        channel_rep_convert(pixels[pixel_i]), 
+                        channel_rep_convert(pixels[pixel_i + 1]), 
+                        channel_rep_convert(pixels[pixel_i + 2]));
 
                         // ignore alpha channel
                         pixel_i += 4;
                 }
         }
+}
+
+int channel_rep_convert(float n) {
+        return (int)(n * 255);
 }
