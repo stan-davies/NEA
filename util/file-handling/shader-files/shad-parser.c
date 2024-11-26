@@ -131,8 +131,6 @@ int create_shader(int *shader_id, char *dir_path, GLenum type) {
                 return FALSE;
         }
 
-        log("shader string --\n%s\n-- end of shader string", shd_str);
-
         GLuint tmp_shd_id = glCreateShader(type);
         glShaderSource(tmp_shd_id, 1, &shd_str, NULL);
         glCompileShader(tmp_shd_id);
@@ -148,6 +146,6 @@ int create_shader(int *shader_id, char *dir_path, GLenum type) {
                 return FALSE;
         }
 
-        shader_id = &tmp_shd_id;
+        *shader_id = tmp_shd_id;
         return TRUE;
 }

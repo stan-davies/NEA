@@ -10,6 +10,6 @@
  * 
  *   DESC   : Writes pixel data to image file in PPM `P3` format.
  */
-void write_texture(char *output_path, int texture_width, int texture_height, unsigned char *pixels);
+void write_texture(char *output_path, int texture_width, int texture_height, float *pixels);
 
 #endif

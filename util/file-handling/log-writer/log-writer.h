@@ -75,4 +75,15 @@ int log_shader_logs(int shader_id);
  */
 int log_program_logs(int program_id);
 
+/*   
+ *   INPUT  : -
+ *   OUTPUT : Success in logging errors.
+ * 
+ *   DESC   : Logs codes of any errors on the OpenGL error queue. To find what
+ *            a given code means, go google the OpenGL documentation. To find
+ *            what caused the error, run this function before and after what you
+ *            reckon caused it and then just keep having a look.
+ */
+int log_gl_errs();
+
 #endif

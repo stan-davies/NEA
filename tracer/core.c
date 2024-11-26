@@ -10,8 +10,8 @@ int render() {
 
         // the config stuff probably wants to go here?
 
-        int img_width;  // = from config file or default...
-        int img_height;
+        int img_width = 4;  // = from config file or default...
+        int img_height = 4;
 
         int texture_id;
 
@@ -19,10 +19,13 @@ int render() {
 
         run_comp_program(program_id, img_width, img_height);
 
-        render_texture(texture_id);
+        float *pixels;
+        retrieve_texture(img_width, img_height, &pixels);
 
-        char *output_path; // = from args
-        retrieve_texture(output_path, img_width, img_height);
+        char *output_path = "image.ppm"; // = from args
+        write_texture(output_path, img_width, img_height, pixels);
+
+        free(pixels);
 
         return TRUE;
 }

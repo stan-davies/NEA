@@ -4,6 +4,7 @@ lib/
 program.exe
 version.h
 .log
+image.ppm
 glew32.lib
 glfw3.dll
 libglfw3.a

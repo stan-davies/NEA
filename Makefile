@@ -1,4 +1,4 @@
-FILES = main.c util/opengl/gl-init.c util/file-handling/log-writer/log-writer.c util/cli/cli.c util/file-handling/shader-files/shad-parser.c tracer/core.c util/file-handling/parse.c
+FILES = main.c util/opengl/gl-init.c util/file-handling/log-writer/log-writer.c util/cli/cli.c util/file-handling/shader-files/shad-parser.c tracer/core.c util/file-handling/parse.c tracer/image-writer/img-writer.c tracer/shader-handling/comp-prog.c tracer/shader-handling/vid-mem.c
 
 CC = gcc
 

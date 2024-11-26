@@ -80,12 +80,21 @@ int log_shader_logs(int shader_id) {
         int actual_len = 0;
         char *shader_log = calloc(MAX_GL_LOGS_LEN, sizeof(char));
         glGetShaderInfoLog(shader_id, MAX_GL_LOGS_LEN, &actual_len, shader_log);
-        return log("shader logs for '%d': %s", shader_id, shader_log);
+        return log("shader logs for '%d':\n%s", shader_id, shader_log);
 }
 
 int log_program_logs(int program_id) {
         int actual_len = 0;
         char *prog_log = calloc(MAX_GL_LOGS_LEN, sizeof(char));
         glGetProgramInfoLog(program_id, MAX_GL_LOGS_LEN, &actual_len, prog_log);
-        return log("program info log for '%d': %s", program_id, prog_log);
+        return log("program info log for '%d':\n%s", program_id, prog_log);
+}
+
+int log_gl_errs() {
+        register int err;
+        int success;
+        while ((err = glGetError()) != GL_NO_ERROR) {
+                success = log_err("GL error code: 0x%.4x\n\"But what is...\" -> https://www.khronos.org/opengl/wiki/OpenGL_Error#Meaning_of_errors", err);
+        }
+        return success;
 }
