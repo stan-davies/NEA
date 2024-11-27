@@ -6,8 +6,14 @@ layout(binding = 0, rgba32f) writeonly uniform image2D img_output;
 
 void main() {
         ivec2 pixel_coords = ivec2(gl_GlobalInvocationID.xy);
+        ivec2 work_groups = ivec2(gl_NumWorkGroups.xy);
 
-        vec4 pixel = vec4(0.3, 0.6, 0.2, 0.0);
+        vec4 pixel = vec4(
+                float(pixel_coords.x) / float(work_groups.x), 
+                float(pixel_coords.y) / float(work_groups.y), 
+                0.2, 
+                0.0
+        );
 
         imageStore(img_output, pixel_coords, pixel);
 }

@@ -25,5 +25,5 @@ void write_texture(char *output_path, int texture_width, int texture_height, flo
 }
 
 int channel_rep_convert(float n) {
-        return (int)(n * 255);
+        return (int)(n * 255.f);
 }

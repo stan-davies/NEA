@@ -10,8 +10,8 @@ int render() {
 
         // the config stuff probably wants to go here?
 
-        int img_width = 4;  // = from config file or default...
-        int img_height = 4;
+        int img_width = 128;  // = from config file or default...
+        int img_height = 128;
 
         int texture_id;
 
