@@ -4,12 +4,18 @@ int render() {
         enum STAGE current = BEGIN;
 
         // to config
-        advance(&current);
+        if (!advance(&current)) {
+                log_err("could not advance");
+        }
         // to scene
-        advance(&current);
+        if (!advance(&current)) {
+                log_err("could not advance");
+        }
 
         // to init
-        advance(&current);
+        if (!advance(&current)) {
+                log_err("could not advance");
+        }
 
         int program_id;
 
@@ -26,12 +32,16 @@ int render() {
         create_texture(&texture_id, img_width, img_height);
 
         // to compute
-        advance(&current);
+        if (!advance(&current)) {
+                log_err("could not advance");
+        }
 
         run_comp_program(program_id, img_width, img_height);
 
         // to store
-        advance(&current);
+        if (!advance(&current)) {
+                log_err("could not advance");
+        }
 
         float *pixels;
         retrieve_texture(img_width, img_height, &pixels);
@@ -42,7 +52,9 @@ int render() {
         free(pixels);
 
         // to complete
-        advance(&current);
+        if (!advance(&current)) {
+                log_err("could not advance");
+        }
 
         return TRUE;
 }

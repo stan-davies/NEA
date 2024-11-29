@@ -2,7 +2,7 @@
 
 int weights[5] = { 2, 2, 1, 4, 3 };
 
-int prog(enum STAGE current) {
+void prog(enum STAGE current) {
         printf("\rprogress  : ");
 
         for (int i = 1; i < current; ++i) {
@@ -25,15 +25,22 @@ void print_prog(enum STATUS stat, int width) {
 }
 
 int advance(int *current) {
+        if ((*current) + 1 > COMPLETE) {
+                log_err("cannot advance stage any further");
+                return FALSE;
+        }
+
         (*current)++;
         char *msg = calloc(MAX_MSG_LEN, sizeof(char));
         if (!get_msg(*current, &msg)) {
+                log_err("invalid stage requested");
                 return FALSE;
         }
 
         prog(*current);
         log("currently: %s", msg);
-        printf("currently : %s\t\t\t", msg);
+        printf("currently : %s\t\t", msg);
+
         return TRUE;
 }
 

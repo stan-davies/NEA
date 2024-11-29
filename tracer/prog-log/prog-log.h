@@ -23,7 +23,7 @@ enum STATUS {
 
 extern int weights[5];
 
-int prog(enum STAGE current);
+void prog(enum STAGE current);
 
 void print_prog(enum STATUS stat, int width);
 
