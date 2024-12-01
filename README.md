@@ -1,4 +1,4 @@
-Compile with `mingw32-make.exe` in project directory. Then you can use `program` in the project directory to run!
+Compile with `mingw32-make.exe` in project directory. Then you can use `sdpt` in the project directory to run! It has to be run with a command, currently only `render` does anything though.
 
 All functions have a little description on them. This comes in the form:
 ``` C
@@ -13,6 +13,7 @@ All functions have a little description on them. This comes in the form:
  * 
  *   DESC   : A basic description of what the function does. This will be a 
  *            high-level and abstract explanation.
+ *   NOTE   : Any further notes. Not all prototypes have this section.
  */
 int function(int *arg1, char arg2); 
 ```
