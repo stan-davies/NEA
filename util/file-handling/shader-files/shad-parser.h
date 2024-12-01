@@ -7,14 +7,6 @@
 #include "opengl/OpenGL.h"
 #include "file-handling/parse.h"
 
-#define MAX_FILENAME_LEN 15
-#define MAX_PATH_LEN     50
-
-#define HASH_CHR 35
-#define QUT_CHR  34
-#define LF_CHR   10
-#define I_CHR    105
-
 /*
  *   INPUT  : Path to directory containing glsl files. Pointer to a string to
  *            fill with glsl code from files.

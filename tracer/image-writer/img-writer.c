@@ -9,7 +9,7 @@ void write_texture(char *output_path, int texture_width, int texture_height, flo
                 return;
         }
         fprintf(out_f, "P3\n%d %d\n255\n", texture_width, texture_height);
-
+        
         int pixel_i = 0;
         for (int y = 0; y < texture_height; ++y) {
                 for (int x = 0; x < texture_width; ++x) {

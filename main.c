@@ -7,6 +7,8 @@
 #include "cli/cli.h"
 #include "tracer/core.h"
 
+#include "file-handling/scene-files/scen-parser.h"
+
 int main(int argc, char **argv) {
         init_log();
 
@@ -22,6 +24,12 @@ int main(int argc, char **argv) {
         init_gl(cmd, window);
 
         log("----------\n");
+
+        return test_world();
+
+
+
+
 
         int success;
 
@@ -44,4 +52,24 @@ int main(int argc, char **argv) {
         term_gl();
 
         return 0;
+}
+
+int test_world() {
+        struct scene_obj *world;
+        int obj_c;
+        if (!create_world(".world", &world, &obj_c)) {
+                return FALSE;
+        }
+
+        struct scene_obj obj;
+        for (int i = 0; i < obj_c; ++i) {
+                obj = world[i];
+                log("object %d:", i);
+                log(" > type: %d", obj.type);
+                log(" > coords: (%.2f, %.2f, %.2f)", obj.coords[0], obj.coords[1], obj.coords[2]);
+                log(" > dims: [%.2f, %.2f, %.2f]", obj.dims[0], obj.dims[1], obj.dims[2]);
+                log(" > mat: %d", obj.mat);
+        }
+
+        return TRUE;
 }

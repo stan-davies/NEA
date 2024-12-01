@@ -20,13 +20,13 @@ int preprocess(char *dir_path, char **shader_string) {
 }
 
 int get_file_cnt(char *dir_path, char *name, char **cnt, int *cnt_len) {
-        char *path = calloc(MAX_PATH_LEN, sizeof(char));
+        char *path = calloc(MAX_PATH_LENGTH, sizeof(char));
         sprintf(path, "%s%s.glsl", dir_path, name);
         return parse(path, cnt, cnt_len);
 }
 
 int direct(char *dir_path, char **content, int content_len) {
-        char *parsed = calloc(MAX_SHADER_LENGTH, sizeof(char));
+        char *parsed = calloc(MAX_FILE_LENGTH, sizeof(char));
         int parsed_len = 0;
 
         char current_chr;
@@ -35,19 +35,19 @@ int direct(char *dir_path, char **content, int content_len) {
         int directive = FALSE;
         int filename = FALSE;
 
-        char* filename_str = calloc(MAX_FILENAME_LEN, sizeof(char));
+        char* filename_str = calloc(MAX_FILENAME_LENGTH, sizeof(char));
         int filename_cc = 0;
 
         for (int i = 0; i < content_len; ++i) {
                 current_chr = (*content)[i];
 
-                if (0 == line_count && HASH_CHR == current_chr) {
+                if (0 == line_count && HSH_C == current_chr) {
                         if (i == content_len - 1) {
                                 goto incomplete_directive;
                         }
 
-                        directive = (I_CHR == (*content)[i + 1]);
-                } else if (QUT_CHR == current_chr) {
+                        directive = (I_C == (*content)[i + 1]);
+                } else if (QUT_C == current_chr) {
                         if (directive) {
                                 directive = FALSE;
                                 filename = TRUE;
@@ -89,7 +89,7 @@ int direct(char *dir_path, char **content, int content_len) {
                         line_count++;
                 }
 
-                if (LF_CHR == current_chr) {
+                if (LF_C == current_chr) {
                         if (directive || filename) {
                                 goto incomplete_directive;
                         }
@@ -116,7 +116,7 @@ int direct(char *dir_path, char **content, int content_len) {
         error:
         if (*content != parsed) {
                 free(*content);
-        }     
+        }
         free(parsed);
         free(filename_str);
 
@@ -124,7 +124,7 @@ int direct(char *dir_path, char **content, int content_len) {
 }
 
 int create_shader(int *shader_id, char *dir_path, GLenum type) {
-        char *shd_str = (char *)malloc(MAX_SHADER_LENGTH * sizeof(char));
+        char *shd_str = (char *)malloc(MAX_FILE_LENGTH * sizeof(char));
         if (!preprocess(dir_path, &shd_str)) {
                 free(shd_str);
                 log_err("could not preprocess shaders at '%s'", dir_path);
