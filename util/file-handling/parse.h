@@ -42,8 +42,8 @@ int parse(char *path, char **content, int *content_length);
 
 /*
  *   INPUT  : Pointer to string to be split. Pointer to split element. Pointer
- *            to length of split element. Delimiter to split on. Max length of
- *            split element.
+ *            to length of split element. Delimiter to split on (anything other
+ *            than a space or null character). Max length of split element.
  *   OUTPUT : Whether or not more splits remain in `*content`.
  * 
  *   DESC   : Splits `*content` on `delimiter`, putting the first split into

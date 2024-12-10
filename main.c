@@ -58,6 +58,7 @@ int test_world() {
         struct scene_obj *world;
         int obj_c;
         if (!create_world(".world", &world, &obj_c)) {
+                log_err("could not create world");
                 return FALSE;
         }
 

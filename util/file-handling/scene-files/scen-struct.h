@@ -1,8 +1,6 @@
 #ifndef SCEN_STRUCT_H
 #define SCEN_STRUCT_H
 
-#define ARGS 7
-
 enum OBJS {
         SPHERE = 83, // 'S'
         CUBOID = 67, // 'C'

@@ -10,9 +10,11 @@ int create_world(char *path, struct scene_obj **world, int *object_count) {
 
         char *cnt_ptr = cnt;
         char *line = calloc(MAX_LINE_LENGTH, sizeof(char));
+        char *line_ptr = line;
         int line_len;
         struct scene_obj curr_obj;
 
+        // delegate?
         if (yield_split(&cnt_ptr, &line, &line_len, LF_C, MAX_LINE_LENGTH)) {
                 int objc = atoi(line);
                 if (objc < 1 || objc > MAX_OBJ_COUNT) {
@@ -27,13 +29,19 @@ int create_world(char *path, struct scene_obj **world, int *object_count) {
                 goto clear1;
         }
 
-        char *line_ptr = line;
+        // this isn't a list of parameters, it is a single parameter, so this sizing makes no sense
         char *chunk = calloc(MAX_OBJ_PARAMS, sizeof(char));
         int chunk_len;
 
         int obj_c = 0;
 
-        while (yield_split(&cnt_ptr, &line_ptr, &line_len, LF_C, MAX_LINE_LENGTH)) {
+        float curr_arg;
+
+        int arg_c = 0;
+
+        while (yield_split(&cnt_ptr, &line, &line_len, LF_C, MAX_LINE_LENGTH)) {
+                log("remaining content: %s", cnt_ptr);
+                log("extracted: %s\n---\n", line);
                 switch (line[0]) {
                 case SL_C:
                         goto cont;
@@ -53,26 +61,50 @@ int create_world(char *path, struct scene_obj **world, int *object_count) {
                 curr_obj.type = line[0];
                 line[0] = SP_C;
 
-                for (int i = 0; i < ARGS; ++i) {
+                arg_c = 0;
+
+                for (int i = 0; i < MAX_OBJ_PARAMS; ++i) {
                         if (!yield_split(&line_ptr, &chunk, &chunk_len, CM_C, MAX_OBJ_PARAMS)) {
                                 break;
                         }
 
-                        if (chunk[0] > CHR_9) {
-                                curr_obj.mat = chunk[0]; // what if it is wrong
+                        if (chunk[0] > CHR_9) {  // need a stronger check here, combine with 'check valid num?'
+                                log("potential material: %d", chunk[0]);
+                                curr_obj.mat = chunk[0];
+                                // break?
                         } else {
-                                float arg = atof(chunk); // returns 0 for invalid, could also be 0 properly...
-                                *(&(curr_obj.type) + (i * sizeof(float))) = arg;
+                                log("potential something: %s", chunk);
+                                // introduce 'check valid num' function, maybe even a custom atof
+                                curr_arg = atof(chunk);
+                                log("it was: %.2f", curr_arg);
+
+                                // changed that, does it work? no definitely not
+                                // *(&(curr_obj.type) + sizeof(int) + (i * sizeof(float))) = curr_arg;
+
+                                // this stuff causes a segmentation fault in yield_parse (why??)
+                                *(&curr_obj.coords[0] + (arg_c * sizeof(float))) = curr_arg;
+                                arg_c++;
                         }
 
-                        strcpy(chunk, "");
+                        // delegate to clear string with 'cont:'
+                        for (int j = 0; j < MAX_OBJ_PARAMS; ++j) {
+                                chunk[j] = 0;
+                        }
                 }
 
                 (*world)[obj_c] = curr_obj;
                 obj_c++;
 
+                if (obj_c > *object_count) {
+                        log_err("too many objects given");
+                        goto clear2;
+                }
+
                 cont:
-                strcpy(line, "");
+                // delegate to 'clear_line'
+                for (int i = 0; i < MAX_LINE_LENGTH; ++i) {
+                        line[i] = 0;
+                }
         }
 
         free(cnt);

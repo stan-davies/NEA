@@ -5,7 +5,7 @@
 #include "scen-struct.h"
 
 #define MAX_OBJ_COUNT  128
-#define MAX_OBJ_PARAMS 5
+#define MAX_OBJ_PARAMS 7
 
 /*
  *   INPUT  : Path to scene description file. Pointer to array of objects in
