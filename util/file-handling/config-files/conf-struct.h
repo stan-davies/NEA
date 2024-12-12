@@ -3,6 +3,9 @@
 
 #include "global.h"
 
+// ensure index in this order:
+
+// focal length? (float)
 enum CONF {
 	IMAGE_DIMS,   // int2
 	MAX_SAMPLES,  // int

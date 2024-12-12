@@ -1,6 +1,13 @@
 #ifndef SCEN_STRUCT_H
 #define SCEN_STRUCT_H
 
+// camera
+/*
+ - add a camera obj
+ - repurpose dims as the view direction
+ - ignore material and put focal length (float) in config
+*/
+
 enum OBJS {
         SPHERE = 83, // 'S'
         CUBOID = 67, // 'C'

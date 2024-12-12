@@ -78,11 +78,7 @@ int create_world(char *path, struct scene_obj **world, int *object_count) {
                                 curr_arg = atof(chunk);
                                 log("it was: %.2f", curr_arg);
 
-                                // changed that, does it work? no definitely not
-                                // *(&(curr_obj.type) + sizeof(int) + (i * sizeof(float))) = curr_arg;
-
-                                // this stuff causes a segmentation fault in yield_parse (why??)
-                                *(&curr_obj.coords[0] + (arg_c * sizeof(float))) = curr_arg;
+                                *(&curr_obj.coords[0] + arg_c) = curr_arg;
                                 arg_c++;
                         }
 
@@ -92,6 +88,7 @@ int create_world(char *path, struct scene_obj **world, int *object_count) {
                         }
                 }
 
+                // the curr_obj is not being updated on second pass
                 (*world)[obj_c] = curr_obj;
                 obj_c++;
 
