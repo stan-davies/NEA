@@ -10,9 +10,7 @@ int create_world(char *path, struct scene_obj **world, int *object_count) {
 
         char *cnt_ptr = cnt;
         char *line = calloc(MAX_LINE_LENGTH, sizeof(char));
-        char *line_ptr = line;
         int line_len;
-        struct scene_obj curr_obj;
 
         // delegate?
         if (yield_split(&cnt_ptr, &line, &line_len, LF_C, MAX_LINE_LENGTH)) {
@@ -29,10 +27,12 @@ int create_world(char *path, struct scene_obj **world, int *object_count) {
                 goto clear1;
         }
 
-        // this isn't a list of parameters, it is a single parameter, so this sizing makes no sense
-        char *chunk = calloc(MAX_OBJ_PARAMS, sizeof(char));
+        char *chunk = calloc(MAX_PARAM_LEN, sizeof(char));
         int chunk_len;
 
+        char *line_ptr = line;
+        
+        struct scene_obj curr_obj;
         int obj_c = 0;
 
         float curr_arg;
@@ -40,8 +40,6 @@ int create_world(char *path, struct scene_obj **world, int *object_count) {
         int arg_c = 0;
 
         while (yield_split(&cnt_ptr, &line, &line_len, LF_C, MAX_LINE_LENGTH)) {
-                log("remaining content: %s", cnt_ptr);
-                log("extracted: %s\n---\n", line);
                 switch (line[0]) {
                 case SL_C:
                         goto cont;
@@ -61,34 +59,32 @@ int create_world(char *path, struct scene_obj **world, int *object_count) {
                 curr_obj.type = line[0];
                 line[0] = SP_C;
 
+                // reset for line pass
                 arg_c = 0;
+                line_ptr = line;
 
-                for (int i = 0; i < MAX_OBJ_PARAMS; ++i) {
-                        if (!yield_split(&line_ptr, &chunk, &chunk_len, CM_C, MAX_OBJ_PARAMS)) {
+                for (;;) {
+                        if (!yield_split(&line_ptr, &chunk, &chunk_len, CM_C, MAX_PARAM_LEN)) {
                                 break;
                         }
 
                         if (chunk[0] > CHR_9) {  // need a stronger check here, combine with 'check valid num?'
-                                log("potential material: %d", chunk[0]);
                                 curr_obj.mat = chunk[0];
                                 // break?
                         } else {
-                                log("potential something: %s", chunk);
                                 // introduce 'check valid num' function, maybe even a custom atof
                                 curr_arg = atof(chunk);
-                                log("it was: %.2f", curr_arg);
 
                                 *(&curr_obj.coords[0] + arg_c) = curr_arg;
                                 arg_c++;
                         }
 
                         // delegate to clear string with 'cont:'
-                        for (int j = 0; j < MAX_OBJ_PARAMS; ++j) {
+                        for (int j = 0; j < MAX_PARAM_LEN; ++j) {
                                 chunk[j] = 0;
                         }
                 }
 
-                // the curr_obj is not being updated on second pass
                 (*world)[obj_c] = curr_obj;
                 obj_c++;
 
