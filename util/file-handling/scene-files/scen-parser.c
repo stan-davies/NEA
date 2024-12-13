@@ -5,6 +5,7 @@ int create_world(char *path, struct scene_obj **world, int *object_count) {
         int cntc;
 
         if (!parse(path, &cnt, &cntc)) {
+                log_err("could not read scene file");
                 return FALSE;
         }
 
@@ -17,14 +18,14 @@ int create_world(char *path, struct scene_obj **world, int *object_count) {
                 int objc = atoi(line);
                 if (objc < 1 || objc > MAX_OBJ_COUNT) {
                         log_err("invalid object count");
-                        goto clear1;
+                        goto clearline;
                 }
 
                 *object_count = objc;
                 *world = malloc(objc * sizeof(struct scene_obj));
         } else {
                 log_err("invalid scene file");
-                goto clear1;
+                goto clearline;
         }
 
         char *chunk = calloc(MAX_PARAM_LEN, sizeof(char));
@@ -40,26 +41,17 @@ int create_world(char *path, struct scene_obj **world, int *object_count) {
         int arg_c = 0;
 
         while (yield_split(&cnt_ptr, &line, &line_len, LF_C, MAX_LINE_LENGTH)) {
-                switch (line[0]) {
-                case SL_C:
-                        goto cont;
-                case NL_C:
-                        goto cont;
-                case SPHERE:
-                        break;
-                case CUBOID:
-                        break;
-                case PLANE:
-                        break;
-                default:
+                if (!choose_type(&curr_obj.type, line[0])) {
                         log_err("invalid object found at '%s'", line);
-                        goto clear2;
+                        goto clearall;
                 }
 
-                curr_obj.type = line[0];
+                if (0 == curr_obj.type) { // see `choose_type`/DESC for `0`
+                        goto cont;
+                }
+
                 line[0] = SP_C;
 
-                // reset for line pass
                 arg_c = 0;
                 line_ptr = line;
 
@@ -68,36 +60,35 @@ int create_world(char *path, struct scene_obj **world, int *object_count) {
                                 break;
                         }
 
-                        if (chunk[0] > CHR_9) {  // need a stronger check here, combine with 'check valid num?'
-                                curr_obj.mat = chunk[0];
-                                // break?
-                        } else {
-                                // introduce 'check valid num' function, maybe even a custom atof
-                                curr_arg = atof(chunk);
+                        enum ARG_TYPE arg = get_arg_type(chunk, chunk_len);
 
+                        switch (arg) {
+                        case ARG_MAT:
+                                curr_obj.mat = chunk[0];
+                                break;
+                        case ARG_FLT:
+                                curr_arg = atof(chunk);
                                 *(&curr_obj.coords[0] + arg_c) = curr_arg;
                                 arg_c++;
+                                break;
+                        default:
+                                log_err("invalid argument at symbol '%s'", chunk);
+                                goto clearall;
                         }
 
-                        // delegate to clear string with 'cont:'
-                        for (int j = 0; j < MAX_PARAM_LEN; ++j) {
-                                chunk[j] = 0;
-                        }
+                        clear_str(&chunk, MAX_PARAM_LEN);
+                }
+
+                if (obj_c >= *object_count) {
+                        log_err("too many objects given");
+                        goto clearall;
                 }
 
                 (*world)[obj_c] = curr_obj;
                 obj_c++;
 
-                if (obj_c > *object_count) {
-                        log_err("too many objects given");
-                        goto clear2;
-                }
-
                 cont:
-                // delegate to 'clear_line'
-                for (int i = 0; i < MAX_LINE_LENGTH; ++i) {
-                        line[i] = 0;
-                }
+                clear_str(&line, MAX_LINE_LENGTH);
         }
 
         free(cnt);
@@ -106,11 +97,77 @@ int create_world(char *path, struct scene_obj **world, int *object_count) {
         
         return TRUE;
 
-        clear2:
+        clearall:
         free(cnt);
         free(chunk);
-        clear1:
+        clearline:
         free(line);
 
         return FALSE;
+}
+
+int choose_type(int *type, char line0) {
+        *type = 0;
+        switch (line0) {
+        case SL_C:
+                break;
+        case NL_C:
+                break;
+        case SPHERE:
+                *type = SPHERE;
+                break;
+        case CUBOID:
+                *type = CUBOID;
+                break;
+        case PLANE:
+                *type = PLANE;
+                break;
+        default:
+                return FALSE;
+        }
+
+        return TRUE;
+}
+
+void clear_str(char **str, int len) {
+        for (int i = 0; i < len; ++i) {
+                (*str)[i] = NL_C;
+        }
+}
+
+enum ARG_TYPE get_arg_type(char *arg, int len) {
+        enum ARG_TYPE status = ARG_INV;
+
+        for (int i = 0; i < len; ++i) {
+                if (NL_C == arg[i]) {
+                        break;
+                }
+
+                if ((arg[i] >= CHR_0 && arg[i] <= CHR_9) || PT_C == arg[i]) {
+                        if (ARG_MAT == status) {
+                                return ARG_INV;
+                        }
+                        status = ARG_FLT;
+                        continue;
+                }
+
+                switch (arg[i]) {
+                case MATT:
+                        break;
+                case SHNY:
+                        break;
+                case REFL:
+                        break;
+                case GLSS:
+                        break;
+                case LGHT:
+                        break;
+                default:
+                        return ARG_INV;
+                }
+
+                status = ARG_MAT;
+        }
+
+        return status;
 }

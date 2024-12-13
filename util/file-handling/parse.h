@@ -9,9 +9,10 @@
 // 2^5 = 32 (still sort of an arbitrary choice)
 #define MAX_LINE_LENGTH     32
 // pretty arbitrary 
-#define MAX_FILENAME_LENGTH 15
+#define MAX_FILENAME_LENGTH 16
 // also pretty arbitrary
-#define MAX_PATH_LENGTH     50
+#define MAX_PATH_LENGTH     128
+// all powers of 2 though!
 
 /* 
  * Character codes for use in various different functions across various
@@ -26,7 +27,9 @@
 #define SP_C  32
 #define SL_C  47
 #define CM_C  44
+#define PT_C  46
 #define CHR_9 57
+#define CHR_0 48
 #define HSH_C 35
 #define QUT_C 34
 #define I_C   105

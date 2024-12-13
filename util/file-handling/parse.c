@@ -19,16 +19,15 @@ int yield_split(char **content, char **str, int *str_len, char delimiter, int ma
         *str_len = 0;
         char curr = 0;
 
-        for (;;) {
+        for (;;) { // infinite loop that doesn't make the compiler mad (as `while (true)` does)
                 curr = (*content)[0];
-                // added this
                 if (SP_C == curr) {
-                        (*content)++;
+                        (*content)++; // move the pointer through the string
                         continue;
                 }
                 if (delimiter == curr || NL_C == curr) {
-                        (*content)++;   // remove this? (no)
-                        (*str)[*str_len] = NL_C;    // added this, remove the +1? (done)
+                        (*content)++;
+                        (*str)[*str_len] = NL_C; // cap with null
                         break;
                 }
                 if (*str_len >= max) {
