@@ -38,7 +38,7 @@ int main(int argc, char **argv) {
         }
 
         if (!success) {
-                log_err("Program failed to run.");
+                log_err("Program failed to run. See `.log` for further details.");
         }
 
         term_gl();

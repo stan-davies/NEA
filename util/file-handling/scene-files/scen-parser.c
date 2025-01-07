@@ -107,7 +107,7 @@ int create_world(char *path, struct scene_obj **world, int *object_count) {
 }
 
 int choose_type(int *type, char line0) {
-        *type = 0;
+        *type = NAO;
         switch (line0) {
         case SL_C:
                 break;

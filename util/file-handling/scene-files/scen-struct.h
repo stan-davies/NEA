@@ -14,6 +14,7 @@ enum OBJS {
         SPHERE = 83, // 'S'
         CUBOID = 67, // 'C'
         PLANE  = 80, // 'P'
+        NAO    = 0,  // Not An Object
 };
 
 enum MATS {
@@ -22,7 +23,7 @@ enum MATS {
         REFL = 82,
         GLSS = 71,
         LGHT = 76,
-        CMRA = 67
+        CMRA = 67,
 };
 
 // COLOUR
