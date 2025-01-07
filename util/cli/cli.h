@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #include "global.h"
 
@@ -10,9 +11,38 @@
  *   INPUT  : `argc` and `argv` as given to `main` when program is run.
  *   OUTPUT : Command that has been chosen, or `NONE` for any errors.
  * 
- *   DESC   : Takes an input command and acts on each part of it.
+ *   DESC   : Takes an input command and determines which major command has
+ *            given.
  */
 enum PROGS take_input(int argc, char **argv);
+
+enum TYPES {
+        INT,
+        FLT
+};
+
+/*
+ *   INPUT  : `argc` and `argv` as given to `main` when program is run. Pointer
+ *            to float for a given focal length. Pointer to an integer for a
+ *            given image width. Pointer to an integer for a given image 
+ *            height.
+ *   OUTPUT : Whether or not *all* options were valid.
+ * 
+ *   DESC   : Goes through each option given in `argv` and gets any relevant
+ *            data from it. These data will be placed into the function
+ *            arguments.
+ */
+int read_args_rend(int argc, char **argv, float *focal_length, int *width, int *height);
+
+/*
+ *   INPUT  : String containing argument to check. What data type the argument
+ *            should be.
+ *   OUTPUT : If the argument is valid, and can therefore be safely converted.
+ * 
+ *   DESC   : Ensures the given argument contains only digits, and potentially
+ *            a single decimal separator if it is a floating point number.
+ */
+int valid_arg(char *arg, enum TYPES type);
 
 /*
  *   INPUT  : Choice of command as given in main args.
@@ -21,10 +51,6 @@ enum PROGS take_input(int argc, char **argv);
  *   DESC   : Converts command word to command code and validates it.
  */
 enum PROGS check_cmd(char **cmd_str);
-
-// does nothing yet but it will...
-int check_args();
-
 
 /* 
  * Maximum length of string that describes each command. Includes room for 

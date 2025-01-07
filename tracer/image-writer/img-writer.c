@@ -5,7 +5,7 @@ void write_texture(char *output_path, int texture_width, int texture_height, flo
 
         out_f = fopen(output_path, "w");
         if (!out_f)  {
-                log_err("could not open file '%s'", output_path);
+                log_err("Could not open file '%s'.", output_path);
                 return;
         }
         fprintf(out_f, "P3\n%d %d\n255\n", texture_width, texture_height);

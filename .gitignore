@@ -1,10 +1,9 @@
 .vscode/
 include/
 lib/
-sdpt.exe
+spt.exe
 version.h
 .world
-.conf
 .log
 image.ppm
 glew32.lib

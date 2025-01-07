@@ -3,10 +3,12 @@
 
 // camera
 /*
- - add a camera obj
+ - add a camera obj as an extra material
  - repurpose dims as the view direction
- - ignore material and put focal length (float) in config
+ - ignore material and put focal length (float) in config file
 */
+
+#define MAX_OBJ_COUNT  128
 
 enum OBJS {
         SPHERE = 83, // 'S'
@@ -19,9 +21,11 @@ enum MATS {
         SHNY = 83,
         REFL = 82,
         GLSS = 71,
-        LGHT = 76
+        LGHT = 76,
+        CMRA = 67
 };
 
+// COLOUR
 struct scene_obj {
         enum OBJS type;
         float coords[3];

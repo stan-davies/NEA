@@ -5,12 +5,12 @@ int preprocess(char *dir_path, char **shader_string) {
         int cnt_len;
 
         if (!get_file_cnt(dir_path, "main", &cnt, &cnt_len)) {
-                log_err("cannot find main shader file");
+                log_err("Cannot find main shader file.");
                 return FALSE;
         }
 
         if (!direct(dir_path, &cnt, cnt_len)) {
-                log_err("coult not fulfil directives");
+                log_err("Coult not fulfil directives.");
                 return FALSE;
         }
 
@@ -60,13 +60,13 @@ int direct(char *dir_path, char **content, int content_len) {
                                 int cnt_len;
 
                                 if (!get_file_cnt(dir_path, filename_str, &cnt, &cnt_len)) {
-                                        log_err("file at '%s%s.glsl' could not be found", dir_path,  filename_str);
+                                        log_err("File at '%s%s.glsl' could not be found.", dir_path,  filename_str);
 
                                         goto error;
                                 }
 
                                 if (!direct(dir_path, &cnt, cnt_len)) {
-                                        log_err("could not fulfil directives for '%s%s.glsl'", dir_path, filename_str);
+                                        log_err("Could not fulfil directives for '%s%s.glsl'.", dir_path, filename_str);
                                         
                                         goto error;
                                 }
@@ -111,7 +111,7 @@ int direct(char *dir_path, char **content, int content_len) {
         return TRUE;
 
         incomplete_directive:
-        log_err("incomplete directive in file '%s.glsl'", dir_path);
+        log_err("Incomplete directive in file '%s.glsl'.", dir_path);
 
         error:
         if (*content != parsed) {
@@ -127,7 +127,7 @@ int create_shader(int *shader_id, char *dir_path, GLenum type) {
         char *shd_str = (char *)malloc(MAX_FILE_LENGTH * sizeof(char));
         if (!preprocess(dir_path, &shd_str)) {
                 free(shd_str);
-                log_err("could not preprocess shaders at '%s'", dir_path);
+                log_err("Could not preprocess shaders at '%s'.", dir_path);
                 return FALSE;
         }
 
@@ -141,7 +141,7 @@ int create_shader(int *shader_id, char *dir_path, GLenum type) {
         int shd_cmp_stat = -1;
         glGetShaderiv(tmp_shd_id, GL_COMPILE_STATUS, &shd_cmp_stat);
         if (GL_TRUE != shd_cmp_stat) {
-                log_err("shaders at '%s' could not be compiled", dir_path);
+                log_err("Shaders at '%s' could not be compiled.", dir_path);
                 log_shader_logs(tmp_shd_id);
                 return FALSE;
         }

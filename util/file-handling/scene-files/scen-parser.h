@@ -4,7 +4,6 @@
 #include "file-handling/parse.h"
 #include "scen-struct.h"
 
-#define MAX_OBJ_COUNT  128
 #define MAX_PARAM_LEN  8
 
 enum ARG_TYPE {

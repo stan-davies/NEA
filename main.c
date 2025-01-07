@@ -5,9 +5,7 @@
 #include "global.h"
 #include "opengl/gl-init.h"
 #include "cli/cli.h"
-#include "tracer/core.h"
-
-#include "file-handling/scene-files/scen-parser.h"
+#include "dispose/dispose.h"
 
 int main(int argc, char **argv) {
         init_log();
@@ -25,17 +23,11 @@ int main(int argc, char **argv) {
 
         log("----------\n");
 
-        return test_world();
-
-
-
-
-
         int success;
 
         switch(cmd) {
         case REND:
-                success = render();
+                success = dispose_renderer(argc, argv);
                 break;
         case EDIT:
                 // do edit
@@ -46,31 +38,10 @@ int main(int argc, char **argv) {
         }
 
         if (!success) {
-                log_err("problem in program");
+                log_err("Program failed to run.");
         }
 
         term_gl();
 
         return 0;
-}
-
-int test_world() {
-        struct scene_obj *world;
-        int obj_c;
-        if (!create_world(".world", &world, &obj_c)) {
-                log_err("could not create world");
-                return FALSE;
-        }
-
-        struct scene_obj obj;
-        for (int i = 0; i < obj_c; ++i) {
-                obj = world[i];
-                log("object %d:", i);
-                log(" > type: %d", obj.type);
-                log(" > coords: (%.2f, %.2f, %.2f)", obj.coords[0], obj.coords[1], obj.coords[2]);
-                log(" > dims: [%.2f, %.2f, %.2f]", obj.dims[0], obj.dims[1], obj.dims[2]);
-                log(" > mat: %d", obj.mat);
-        }
-
-        return TRUE;
 }

@@ -14,6 +14,47 @@ void create_texture(int *texture_id, int texture_width, int texture_height) {
         glBindImageTexture(0, *texture_id, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA32F);
 }
 
+void set_world(int program_id, struct scene_obj world[MAX_OBJ_COUNT], int obj_c) {
+        char *var_prefix = calloc(MAX_SHDR_VAR_LEN, sizeof(char));
+        char *var = calloc(MAX_SHDR_VAR_LEN, sizeof(char));
+        int index = 0;
+        for (int i = 0; i < obj_c; ++i) {
+                if (CMRA == world[i].mat) {
+                        --index;
+                        continue;
+                }
+
+                sprintf(var_prefix, "world[%d].", index);
+                
+                sprintf(var, "%s%s", var_prefix, "type");
+                glUniform1i(glGetUniformLocation(program_id, var), world[i].type);
+
+                sprintf(var, "%s%s", var_prefix, "coords");
+                glUniform3fv(glGetUniformLocation(program_id, var), 1, world[i].coords);
+
+                sprintf(var, "%s%s", var_prefix, "dims");
+                glUniform3fv(glGetUniformLocation(program_id, var), 1, world[i].dims);
+
+                sprintf(var, "%s%s", var_prefix, "mat");
+                glUniform1i(glGetUniformLocation(program_id, var), world[i].mat);
+
+                ++index;
+        }
+
+        glUniform1i(glGetUniformLocation(program_id, "obj_c"), obj_c);
+}
+
+void set_camera(int program_id, struct camera cam) {
+        /*
+         * Hard coding in the variable names is less than ideal, but it is, in
+         * this case, the price that must be paid.
+         */
+        glUniform3fv(glGetUniformLocation(program_id, "cam.pos"), 1, cam.pos);
+        glUniform3fv(glGetUniformLocation(program_id, "cam.plane_00"), 1, cam.plane_00);
+        glUniform3fv(glGetUniformLocation(program_id, "cam.plane_dx"), 1, cam.plane_dx);
+        glUniform3fv(glGetUniformLocation(program_id, "cam.plane_dy"), 1, cam.plane_dy);
+}
+
 void retrieve_texture(int img_width, int img_height, float **pixels) {
         *pixels = calloc(img_width * img_height, 4 * sizeof(float));
         glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_FLOAT, *pixels);

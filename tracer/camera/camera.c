@@ -1,16 +1,18 @@
 #include "camera.h"
 
-int create_camera(struct scene_obj *world, int obj_c, struct camera *cam, struct config_var *conf) {
+float vup[3] = { 0.f, 1.f, 0.f };
+
+int create_camera(struct scene_obj *world, int obj_c, struct camera *cam, float focal_length, int img_width, int img_height) {
         int c_i;
 
         for (; c_i < obj_c; ++c_i) {
-                if (CAMERA == world[c_i].type) {
+                if (CMRA == world[c_i].type) {
                         break;
                 }
         }
 
         if (c_i >= obj_c) {
-                log_err("no camera in scene");
+                log_err("No camera in scene.");
                 return FALSE;
         }
 
@@ -22,12 +24,11 @@ int create_camera(struct scene_obj *world, int obj_c, struct camera *cam, struct
         }
 
         if (!unit(&view_dir)) {
-                log_err("invalid viewing direction");
+                log_err("Invalid viewing direction.");
                 return FALSE;
         }
 
 
-        float focal_length = conf[FOCAL_LENGTH].flt;
         float vfov = deg_to_rad(1.f / focal_length);
 
         float *plane_cnt;
@@ -35,22 +36,32 @@ int create_camera(struct scene_obj *world, int obj_c, struct camera *cam, struct
         plane_cnt = add(cam->pos, scale(view_dir, focal_length));
 
         float plane_h = 2.f * focal_length * tan(vfov);
-        // this should be given?
-        float *plane_j;
-        set(&(cam->plane_dy), unit(plane_j / (float)conf[IMAGE_DIMS].i2[1]));
+        float plane_w = plane_h * ((float)img_width / (float)img_height);
 
-        float plane_w = plane_h * ((float)conf[IMAGE_DIMS].i2[0] / (float)conf[IMAGE_DIMS].i2[1]);
-        float *plane_i;
-        set(&(cam->plane_dx), unit(plane_i / (float)conf[IMAGE_DIMS].i2[0]));
+        float *plane_i = malloc(3 * sizeof(float));
+        vecset(plane_i, cross(view_dir, vup));
+        if (!unit(plane_i)) {
+                log_err("Invalid vector given.");
+                return FALSE;
+        }
+        vecset(&(cam->plane_dx), scale(scale(plane_i, plane_w), 1.f / img_width));
+
+        float *plane_j = malloc(3 * sizeof(float));
+        vecset(plane_j, cross(view_dir, plane_i));
+        if (!unit(plane_j)) {
+                log_err("Invalid vector given.");
+                return FALSE;
+        }
+        vecset(&(cam->plane_dy), scale(scale(plane_j, plane_h), 1.f / img_height));
 
         // currently does to the very top left of the viewing plane, not to the pixel centre
-        set(&(cam->plane_00), add(plane_cnt, add(scale(plane_i, -0.5f), scale(plane_j, -0.5f))));
+        vecset(&(cam->plane_00), add(plane_cnt, add(scale(plane_i, -0.5f), scale(plane_j, -0.5f))));
 
         return TRUE;
 }
 
-inline float deg_to_rad(int angle) {
-        return angle * PI / 180.f;
+float deg_to_rad(int angle) {
+        return (float)angle * PI / 180.f;
 }
 
 int unit(float **vec) {
@@ -71,7 +82,7 @@ int unit(float **vec) {
         return TRUE;
 }
 
-inline float *scale(float *vec, float scl) {
+float *scale(float *vec, float scl) {
         for (int i = 0; i < 3; ++i) {
                 vec[i] *= scl;
         }
@@ -79,7 +90,7 @@ inline float *scale(float *vec, float scl) {
         return vec;
 }
 
-inline float *add(float *vec1, float *vec2) {
+float *add(float *vec1, float *vec2) {
         for (int i = 0; i < 3; ++i) {
                 vec1[i] += vec2[i];
         }
@@ -87,7 +98,17 @@ inline float *add(float *vec1, float *vec2) {
         return vec1;
 }
 
-inline void set(float **vec1, float *vec2) {
+float *cross(float *vec1, float *vec2) {
+        float *res = malloc(3 * sizeof(float));
+
+        res[0] = (vec1[1] * vec2[2]) - (vec1[2] * vec2[1]);
+        res[1] = (vec1[2] * vec2[0]) - (vec1[0] * vec2[2]);
+        res[2] = (vec1[0] * vec2[1]) - (vec1[1] * vec2[0]);
+
+        return res;
+}
+
+void vecset(float **vec1, float *vec2) {
         for (int i = 0; i < 3; ++i) {
                 (*vec1)[i] = vec2[i];
         }

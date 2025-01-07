@@ -3,7 +3,7 @@
 int create_comp_program(int *program_id) {
         int shd_id;
         if (!create_shader(&shd_id, SHADER_DIR, GL_COMPUTE_SHADER)) {
-                log_err("could not create shader");
+                log_err("Could not create shader.");
                 return FALSE;
         }
 
@@ -14,7 +14,7 @@ int create_comp_program(int *program_id) {
         int link_stat = -1;
         glGetProgramiv(prog_id, GL_LINK_STATUS, &link_stat);
         if (GL_TRUE != link_stat) {
-                log_err("could not link shader program '%d'", prog_id);
+                log_err("Could not link shader program '%d'.", prog_id);
                 log_program_logs(prog_id);
                 log_shader_logs(shd_id);
                 return FALSE;
@@ -25,7 +25,7 @@ int create_comp_program(int *program_id) {
         int valid = -1;
         glGetProgramiv(prog_id, GL_VALIDATE_STATUS, &valid);
         if (GL_TRUE != valid) {
-                log_err("could not validate shader program '%d'", prog_id);
+                log_err("Could not validate shader program '%d'.", prog_id);
                 log_program_logs(prog_id);
                 log_shader_logs(shd_id);
                 return FALSE;

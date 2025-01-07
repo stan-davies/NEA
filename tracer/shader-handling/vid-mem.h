@@ -5,6 +5,10 @@
 
 #include "opengl/OpenGL.h"
 #include "file-handling/log-writer/log-writer.h"
+#include "file-handling/scene-files/scen-struct.h"
+#include "tracer/camera/camera.h"
+
+#define MAX_SHDR_VAR_LEN 32
 
 /*
  *   INPUT  : Pointer to GL ID for texture. Width of texture to be created.
@@ -14,6 +18,27 @@
  *   DESC   : Creates a GL texture.
  */
 void create_texture(int *texture_id, int texture_width, int texture_height);
+
+/*
+ *   INPUT  : ID of compute shader program. Array of objects making the world.
+ *            Number of objects in the world.
+ *   OUTPUT : -
+ *
+ *   DESC   : Sets the data in `world` to the corresponding `world` array in
+ *            the compute shader. Due to the data types being abstract, this
+ *            involves a separate set for each property of each struct in the
+ *            array.
+ */
+void set_world(int program_id, struct scene_obj world[MAX_OBJ_COUNT], int obj_c);
+
+/*
+ *   INPUT  : ID of compute shader program. Camera object to set for shader.
+ *   OUTPUT : -
+ * 
+ *   DESC   : Sets the camera as described by `cam` to the corresponding `cam`
+ *            object in the shader program.
+ */
+void set_camera(int program_id, struct camera cam);
 
 /*
  *   INPUT  : Width of image. Height of image. Pointer to array of bytes for 

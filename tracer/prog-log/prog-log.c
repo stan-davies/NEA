@@ -1,6 +1,6 @@
 #include "prog-log.h"
 
-int weights[5] = { 2, 2, 1, 4, 3 };
+int weights[COMPLETE] = { 1, 2, 1, 4, 3 };
 
 void prog(enum STAGE current) {
         printf("\rprogress  : ");
@@ -26,14 +26,14 @@ void print_prog(enum STATUS stat, int width) {
 
 int advance(int *current) {
         if ((*current) + 1 > COMPLETE) {
-                log_err("cannot advance stage any further");
+                log_err("Cannot advance stage any further.");
                 return FALSE;
         }
 
         (*current)++;
         char *msg = calloc(MAX_MSG_LEN, sizeof(char));
         if (!get_msg(*current, &msg)) {
-                log_err("invalid stage requested");
+                log_err("Invalid stage requested.");
                 return FALSE;
         }
 
@@ -46,9 +46,6 @@ int advance(int *current) {
 
 int get_msg(enum STAGE current, char **msg) {
         switch (current) {
-        case CONFIG:
-                strcpy(*msg, "fetching configuration variables");
-                break;
         case SCENE:
                 strcpy(*msg, "fetching scene data");
                 break;

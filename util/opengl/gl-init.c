@@ -7,7 +7,7 @@ int init_gl(enum PROGS type, GLFWwindow *window) {
         glfwSetErrorCallback(glfw_error_callback);
 
         if (!glfwInit()) {
-                log_err("failed to initialise glfw");
+                log_err("Failed to initialise glfw.");
                 return FALSE;
         }
 
@@ -29,7 +29,7 @@ int init_gl(enum PROGS type, GLFWwindow *window) {
         window = glfwCreateWindow(1, 1, "tracer", NULL, NULL);
         
         if (NULL == window) {
-                log_err("failed to create window with type %d", type);
+                log_err("Failed to create window with type %d.", type);
                 glfwTerminate();
                 return FALSE;
         }
@@ -66,7 +66,7 @@ void log_gl_vars() {
         GLubyte *gl_vendor = glGetString(GL_VENDOR);
         GLubyte *glsl_version = glGetString(GL_SHADING_LANGUAGE_VERSION);
 
-        log("\topengl version : %s", (char *)gl_version);
-        log("\topengl implementation vendor : %s", (char *)gl_vendor);
-        log("\tglsl version : %s", (char *)glsl_version);
+        log("\tOpenGL version : %s", (char *)gl_version);
+        log("\tOpenGL implementation vendor : %s", (char *)gl_vendor);
+        log("\tGLSL version : %s", (char *)glsl_version);
 }

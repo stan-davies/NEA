@@ -3,7 +3,7 @@
 int parse(char *path, char **content, int *content_length) {
         FILE *file = fopen(path, "r");
         if (!file) {
-                log_err("could not open shader file at '%s'", path);
+                log_err("Could not open shader file at '%s'.", path);
                 return FALSE;
         }
 
@@ -17,7 +17,7 @@ int parse(char *path, char **content, int *content_length) {
 
 int yield_split(char **content, char **str, int *str_len, char delimiter, int max) {
         *str_len = 0;
-        char curr = 0;
+        char curr = NL_C;
 
         for (;;) { // infinite loop that doesn't make the compiler mad (as `while (true)` does)
                 curr = (*content)[0];

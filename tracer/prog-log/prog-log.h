@@ -7,7 +7,6 @@
 
 enum STAGE {
         BEGIN,
-        CONFIG,
         SCENE,
         INIT,
         COMPUTE,
@@ -21,12 +20,33 @@ enum STATUS {
         TODO  = 45   // -
 };
 
-extern int weights[5];
+extern int weights[COMPLETE];
 
+/*
+ *   INPUT  : Current stage of rendering.
+ *   OUTPUT : -
+ * 
+ *   DESC   : Outputs the current progress of the render. This is the
+ *            combination of a loading bar and an informative messgae.
+ */
 void prog(enum STAGE current);
 
+/*
+ *   INPUT  : The status of the current stage. The stages weight.
+ *   OUTPUT : -
+ * 
+ *   DESC   : Outputs the character `stat` `width` number of times. This will
+ *            make up each chunk of the progress bar.
+*/
 void print_prog(enum STATUS stat, int width);
 
+/*
+ *   INPUT  : A pointer to the current stage of rendering.
+ *   OUTPUT : Success in advancing the stage.
+ * 
+ *   DESC   : Advances the current rendering stage to the next and updates the
+ *            progress messages.
+ */
 int advance(int *current);
 
 /*

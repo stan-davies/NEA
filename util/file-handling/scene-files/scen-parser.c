@@ -5,7 +5,7 @@ int create_world(char *path, struct scene_obj **world, int *object_count) {
         int cntc;
 
         if (!parse(path, &cnt, &cntc)) {
-                log_err("could not read scene file");
+                log_err("Could not read scene file.");
                 return FALSE;
         }
 
@@ -17,14 +17,14 @@ int create_world(char *path, struct scene_obj **world, int *object_count) {
         if (yield_split(&cnt_ptr, &line, &line_len, LF_C, MAX_LINE_LENGTH)) {
                 int objc = atoi(line);
                 if (objc < 1 || objc > MAX_OBJ_COUNT) {
-                        log_err("invalid object count");
+                        log_err("Invalid object count.");
                         goto clearline;
                 }
 
                 *object_count = objc;
                 *world = malloc(objc * sizeof(struct scene_obj));
         } else {
-                log_err("invalid scene file");
+                log_err("Invalid scene file.");
                 goto clearline;
         }
 
@@ -42,7 +42,7 @@ int create_world(char *path, struct scene_obj **world, int *object_count) {
 
         while (yield_split(&cnt_ptr, &line, &line_len, LF_C, MAX_LINE_LENGTH)) {
                 if (!choose_type(&curr_obj.type, line[0])) {
-                        log_err("invalid object found at '%s'", line);
+                        log_err("Invalid object found at '%s'.", line);
                         goto clearall;
                 }
 
@@ -72,7 +72,7 @@ int create_world(char *path, struct scene_obj **world, int *object_count) {
                                 arg_c++;
                                 break;
                         default:
-                                log_err("invalid argument at symbol '%s'", chunk);
+                                log_err("Invalid argument at symbol '%s'.", chunk);
                                 goto clearall;
                         }
 
@@ -80,7 +80,7 @@ int create_world(char *path, struct scene_obj **world, int *object_count) {
                 }
 
                 if (obj_c >= *object_count) {
-                        log_err("too many objects given");
+                        log_err("Too many objects given.");
                         goto clearall;
                 }
 

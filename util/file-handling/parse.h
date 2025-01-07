@@ -14,26 +14,6 @@
 #define MAX_PATH_LENGTH     128
 // all powers of 2 though!
 
-/* 
- * Character codes for use in various different functions across various
- * different functions and files. It may seem an odd choice to put them all 
- * here if their use is distributed. My reasoning was that this file should
- * be treated like a central base for all things file related. Hence the
- * above definitions of `MAX_FILE_LENGTH` and so on. Therefore, centralising
- * these definitions felt like the most logical course of action.
- */
-#define LF_C  10
-#define NL_C  0
-#define SP_C  32
-#define SL_C  47
-#define CM_C  44
-#define PT_C  46
-#define CHR_9 57
-#define CHR_0 48
-#define HSH_C 35
-#define QUT_C 34
-#define I_C   105
-
 /*
  *   INPUT  : Path to file. Pointer to string for file content. Length of file
  *            content.
