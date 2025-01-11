@@ -32,8 +32,6 @@ int get_file_cnt(char *dir_path, char *name, char **cnt, int *cnt_len);
  *
  *   DESC   : Searches shader file for '#include' directives and inserts 
  *            specified code.
- *   TODO   : Ensure the same block of code is not inserted twice (read files
- *            array?).
  */
 int direct(char *dir_path, char **content, int content_len);
 

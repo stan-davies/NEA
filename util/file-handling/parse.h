@@ -4,15 +4,14 @@
 #include <stdio.h>
 #include "file-handling/log-writer/log-writer.h"
 
-// 2^18 = 262144 (still sort of an arbitrary choice)
+// 2^18 = 262144
 #define MAX_FILE_LENGTH     262144
-// 2^5 = 32 (still sort of an arbitrary choice)
+// 2^5 = 32
 #define MAX_LINE_LENGTH     32
-// pretty arbitrary 
+// 2^4 = 16 
 #define MAX_FILENAME_LENGTH 16
-// also pretty arbitrary
+// 2^7
 #define MAX_PATH_LENGTH     128
-// all powers of 2 though!
 
 /*
  *   INPUT  : Path to file. Pointer to string for file content. Length of file
@@ -41,5 +40,14 @@ int parse(char *path, char **content, int *content_length);
  *            management.
  */
 int yield_split(char **content, char **str, int *str_len, char delimiter, int max);
+
+/*
+ *   INPUT  : Pointer to string to clear. Length of string to clear.
+ *   OUTPUT : -
+ * 
+ *   DESC   : Clears the given string by putting a null character in every
+ *            place.
+ */
+void clear_str(char **str, int len);
 
 #endif

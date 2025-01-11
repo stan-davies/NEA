@@ -46,7 +46,7 @@ int create_world(char *path, struct scene_obj **world, int *object_count) {
                         goto clearall;
                 }
 
-                if (0 == curr_obj.type) { // see `choose_type`/DESC for `0`
+                if (NAO == curr_obj.type) {
                         goto cont;
                 }
 
@@ -127,12 +127,6 @@ int choose_type(int *type, char line0) {
         }
 
         return TRUE;
-}
-
-void clear_str(char **str, int len) {
-        for (int i = 0; i < len; ++i) {
-                (*str)[i] = NL_C;
-        }
 }
 
 enum ARG_TYPE get_arg_type(char *arg, int len) {

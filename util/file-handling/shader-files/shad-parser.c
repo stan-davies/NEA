@@ -31,7 +31,7 @@ int direct(char *dir_path, char **content, int content_len) {
 
         char current_chr;
 
-        int line_count = 0;
+        int line_start = TRUE;
         int directive = FALSE;
         int filename = FALSE;
 
@@ -41,12 +41,12 @@ int direct(char *dir_path, char **content, int content_len) {
         for (int i = 0; i < content_len; ++i) {
                 current_chr = (*content)[i];
 
-                if (0 == line_count && HSH_C == current_chr) {
+                if (line_start && HSH_C == current_chr) {
                         if (i == content_len - 1) {
                                 goto incomplete_directive;
                         }
 
-                        directive = (I_C == (*content)[i + 1]);
+                        directive = (LI_C == (*content)[i + 1]);
                 } else if (QUT_C == current_chr) {
                         if (directive) {
                                 directive = FALSE;
@@ -65,19 +65,18 @@ int direct(char *dir_path, char **content, int content_len) {
                                         goto error;
                                 }
 
-                                if (!direct(dir_path, &cnt, cnt_len)) {
-                                        log_err("Could not fulfil directives for '%s%s.glsl'.", dir_path, filename_str);
-                                        
-                                        goto error;
-                                }
-
                                 sprintf(parsed, "%s%s", parsed, cnt);
                                 parsed_len += cnt_len;
 
-                                continue;
+                                free(cnt);
+                                cnt = NULL;
 
+                                clear_str(&filename_str, MAX_FILENAME_LENGTH);
+                                filename_cc = 0;
+
+                                continue;
                         }
-                } 
+                }
                 
                 if (filename) {
                         filename_str[filename_cc] = current_chr;
@@ -86,7 +85,7 @@ int direct(char *dir_path, char **content, int content_len) {
                         parsed[parsed_len] = current_chr;
                         parsed_len++;
 
-                        line_count++;
+                        line_start = FALSE;
                 }
 
                 if (LF_C == current_chr) {
@@ -94,8 +93,8 @@ int direct(char *dir_path, char **content, int content_len) {
                                 goto incomplete_directive;
                         }
 
-                        line_count = 0;
-                } 
+                        line_start = TRUE;
+                }
         }
 
         free(*content);

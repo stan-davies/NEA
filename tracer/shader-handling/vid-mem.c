@@ -38,6 +38,9 @@ void set_world(int program_id, struct scene_obj world[MAX_OBJ_COUNT], int obj_c)
                 sprintf(var, "%s%s", var_prefix, "mat");
                 glUniform1i(glGetUniformLocation(program_id, var), world[i].mat);
 
+                sprintf(var, "%s%s", var_prefix, "albedo");
+                glUniform3fv(glGetUniformLocation(program_id, var), 1, world[i].albedo);
+
                 ++index;
         }
 

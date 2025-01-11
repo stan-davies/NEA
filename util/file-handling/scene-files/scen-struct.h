@@ -1,13 +1,6 @@
 #ifndef SCEN_STRUCT_H
 #define SCEN_STRUCT_H
 
-// camera
-/*
- - add a camera obj as an extra material
- - repurpose dims as the view direction
- - ignore material and put focal length (float) in config file
-*/
-
 #define MAX_OBJ_COUNT  128
 
 enum OBJS {
@@ -32,6 +25,7 @@ struct scene_obj {
         float coords[3];
         float dims[3]; // sphere uses only 0 (radius), plane uses 0 & 1 (width, height), cuboid uses all 3 (width, height depth)
         enum MATS mat;
+        float albedo[3];
 };
 
 #endif

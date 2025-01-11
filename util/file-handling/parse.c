@@ -45,3 +45,9 @@ int yield_split(char **content, char **str, int *str_len, char delimiter, int ma
 
         return TRUE;
 }
+
+void clear_str(char **str, int len) {
+        for (int i = 0; i < len; ++i) {
+                (*str)[i] = NL_C;
+        }
+}

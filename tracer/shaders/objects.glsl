@@ -1,15 +1,16 @@
-const int SPHERE 83;
-const int CUBOID 67;
-const int PLANE  80;
+const int SPHERE = 83;
+const int CUBOID = 67;
+const int PLANE  = 80;
+const int MAX_OBJ_COUNT = 128;
 
-struct hit_record collision(object world[MAX_OBJ_COUNT], int obj_c, ray r) {
+void collision(in ray r, out hit_record rec) {
         bool collided = false;
-        struct hit_record nearest;
+        hit_record nearest;
         nearest.collided = false;
-        struct hit_record current;
+        hit_record current;
 
         for (int i = 0; i < obj_c; ++i) {
-                current = hit(world[i], r);
+                hit(world[i], r, current);
 
                 if (false == current.collided) {
                         continue;
@@ -20,19 +21,19 @@ struct hit_record collision(object world[MAX_OBJ_COUNT], int obj_c, ray r) {
                 }
         }
 
-        return nearest;
+        rec = nearest;
 }
 
-bool hit(struct object obj, struct ray r) {
+void hit(in object obj, in ray r, out hit_record rec) {
         switch (obj.type) {
         case SPHERE:
-                return sphere_hit(obj, r);
+                sphere_hit(obj, r, rec);
         // case CUBOID:
         //         return cuboid_hit(obj, r, rec);
         // case PLANE:
         //         return plane_hit(obj, r, rec);
         default:
-                return rec;
+                return;
         }
 }
 
@@ -43,13 +44,11 @@ bool hit(struct object obj, struct ray r) {
  *
  * 4 floats total
  */
-struct hit_record sphere_hit(struct object obj, struct ray r) {
-        struct hit_record rec;
-
-        vec2 oc = r.origin - obj.coords;
+void sphere_hit(in object obj, in ray r, out hit_record rec) {
+        vec3 oc = r.origin - obj.coords;
 
         // a = 1
-        float b = 2.0 * dot(oc, unit(r.dir));
+        float b = 2.0 * dot(oc, normalize(r.dir));
         float c = dot(oc, oc) - (obj.dims.x * obj.dims.x);
 
         float desc = (b * b) - (4.0 * c);
@@ -57,19 +56,19 @@ struct hit_record sphere_hit(struct object obj, struct ray r) {
         rec.collided = (desc < 0.0);
 
         if (!rec.collided) {
-                return rec;
+                return;
         }
 
         float sr_d = sqrt(desc);
-        float t_m = (-b + sr_d) / (2.0 * a);
-        float t_p = (-b - sr_d) / (2.0 * a);
+        float t_m = (-b + sr_d) / (2.0);
+        float t_p = (-b - sr_d) / (2.0);
         float t = min(t_m, t_p);
 
         rec.point = r.origin + (t * r.dir);
         rec.normal = (rec.point - obj.coords) / obj.dims.x;
         rec.obj = obj;
 
-        return rec;
+        return;
 }
 
 // commented:

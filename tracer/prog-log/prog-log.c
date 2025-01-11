@@ -6,13 +6,13 @@ void prog(enum STAGE current) {
         printf("\rprogress  : ");
 
         for (int i = 1; i < current; ++i) {
-                print_prog(DONE, weights[i]);
+                print_prog(DONE, weights[i - 1]);
         }
 
-        print_prog(DOING, weights[current]);
+        print_prog(DOING, weights[current - 1]);
 
         for (int i = current + 1; i < COMPLETE; ++i) {
-                print_prog(TODO, weights[i]);
+                print_prog(TODO, weights[i - 1]);
         }
 
         printf("\t");

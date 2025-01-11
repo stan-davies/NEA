@@ -33,15 +33,6 @@ int create_world(char *path, struct scene_obj **world, int *object_count);
 int choose_type(int *type, char line0);
 
 /*
- *   INPUT  : Pointer to string to clear. Length of string to clear.
- *   OUTPUT : -
- * 
- *   DESC   : Clears the given string by putting a null character in every
- *            place.
- */
-void clear_str(char **str, int len);
-
-/*
  *   INPUT  : String containing current argument. Length of string.
  *   OUTPUT : Type of argument given.
  * 

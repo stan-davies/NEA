@@ -54,6 +54,6 @@ enum PROGS {
 #define CHR_0 48
 #define HSH_C 35
 #define QUT_C 34
-#define I_C   105
+#define LI_C  105
 
 #endif
