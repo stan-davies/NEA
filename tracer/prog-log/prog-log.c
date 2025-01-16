@@ -3,7 +3,7 @@
 int weights[COMPLETE] = { 1, 2, 1, 4, 3 };
 
 void prog(enum STAGE current) {
-        printf("\rprogress  : ");
+        printf("\rprogress: ");
 
         for (int i = 1; i < current; ++i) {
                 print_prog(DONE, weights[i - 1]);
@@ -38,8 +38,8 @@ int advance(int *current) {
         }
 
         prog(*current);
-        log("currently: %s", msg);
-        printf("currently : %s\t\t", msg);
+        log("%s...", msg);
+        printf("currently: %s", msg);
 
         return TRUE;
 }
@@ -47,19 +47,19 @@ int advance(int *current) {
 int get_msg(enum STAGE current, char **msg) {
         switch (current) {
         case SCENE:
-                strcpy(*msg, "fetching scene data");
+                strcpy(*msg, "Fetching scene data");
                 break;
         case INIT:
-                strcpy(*msg, "initialising renderer");
+                strcpy(*msg, "Initialising renderer");
                 break;
         case COMPUTE:
-                strcpy(*msg, "computing render");
+                strcpy(*msg, "Computing render");
                 break;
         case STORE:
-                strcpy(*msg, "storing render");
+                strcpy(*msg, "Storing render");
                 break;
         case COMPLETE:
-                strcpy(*msg, "rendering completed");
+                strcpy(*msg, "Rendering completed");
                 break;
         default:
                 return FALSE;

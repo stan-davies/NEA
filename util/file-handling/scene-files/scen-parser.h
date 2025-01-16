@@ -4,7 +4,8 @@
 #include "file-handling/parse.h"
 #include "scen-struct.h"
 
-#define MAX_PARAM_LEN  8
+#define MAX_PARAM_LEN   8
+#define MAX_PARAM_COUNT 9
 
 enum ARG_TYPE {
         ARG_FLT,

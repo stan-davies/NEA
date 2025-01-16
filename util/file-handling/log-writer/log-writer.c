@@ -66,13 +66,6 @@ int log_err(char *format, ...) {
         fprintf(file, "\n");
         va_end(argptr);
 
-        // a linefeed is inserted prior to 'ERROR:' due to the progress bar, and this ensures that the two are on different lines
-        va_start(argptr, format);
-        fprintf(stderr, "\nERROR: ");
-        vfprintf(stderr, format, argptr);
-        fprintf(stderr, "\n");
-        va_end(argptr);
-
         fclose(file);
         return TRUE;
 }
@@ -97,5 +90,81 @@ int log_gl_errs() {
         while ((err = glGetError()) != GL_NO_ERROR) {
                 success = log_err("GL error code: 0x%.4x\n\"But what is...\" -> https://www.khronos.org/opengl/wiki/OpenGL_Error#Meaning_of_errors", err);
         }
-        return success;
+        return success && (err == GL_NO_ERROR);
+}
+
+void log_world(struct scene_obj *world, int obj_c) {
+        struct scene_obj curr;
+        char *out_str = calloc(16, sizeof(char));
+        int dims;
+
+        for (int i = 0; i < obj_c; ++i) {
+                curr = world[i];
+
+                switch (curr.type) {
+                case SPHERE:
+                        dims = 1;
+                        strcpy(out_str, "SPHERE");
+                        break;
+                case CUBOID:
+                        dims = 3;
+                        strcpy(out_str, "CUBOID");
+                        break;
+                case PLANE:
+                        dims = 2;
+                        strcpy(out_str, "PLANE");
+                        break;
+                default:
+                        dims = 0;
+                        break;
+                }
+
+                log("\tobject %d:", i);
+                log("\t - type             : %s", out_str);
+                log("\t - coords (x, y, z) : %.2f, %.2f, %.2f", curr.coords[0], curr.coords[1], curr.coords[2]);
+                log("\t - albedo (r, g, b) : %.2f, %.2f, %.2f", curr.albedo[0], curr.albedo[1], curr.albedo[2]);
+
+                for (int j = 0; j < 16; ++j) {
+                        out_str[j] = NL_C;
+
+                        if (j < dims) {
+                                sprintf(out_str, "%s%.2f", out_str, curr.dims[j]);
+
+                                if (j < dims - 1) {
+                                        sprintf(out_str, "%s, ", out_str);
+                                }
+                        }
+                }
+                log("\t - dimensions       : %s", out_str);
+
+                for (int j = 0; j < 16; ++j) {
+                        out_str[j] = NL_C;
+                }
+                switch (curr.mat) {
+                case MATT:
+                        strcpy(out_str, "MATTE");
+                        break;
+                case SHNY:
+                        strcpy(out_str, "SHINY");
+                        break;
+                case REFL:
+                        strcpy(out_str, "REFLECTIVE");
+                        break;
+                case GLSS:
+                        strcpy(out_str, "GLASS");
+                        break;
+                case LGHT:
+                        strcpy(out_str, "LIGHT");
+                        break;
+                case CMRA:
+                        strcpy(out_str, "CAMERA");
+                        break;
+                default:
+                        break;
+                }
+                log("\t - material         : %s", out_str);
+        }
+
+        free(out_str);
+        out_str = NULL;
 }

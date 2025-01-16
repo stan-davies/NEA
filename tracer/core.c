@@ -9,13 +9,14 @@ int render(float focal_length, int img_width, int img_height) {
                 return FALSE;
         }
 
-        struct scene_obj world[MAX_OBJ_COUNT];
+        struct scene_obj *world = calloc(MAX_OBJ_COUNT, sizeof(struct scene_obj));
         int obj_c;
         // make the file location customisable
         if (!create_world(".world", &world, &obj_c)) {
                 log_err("Could not create world from scene file.");
                 return FALSE;
         }
+        log_world(world, obj_c);
 
         // to init
         if (!advance(&current)) {
@@ -29,22 +30,30 @@ int render(float focal_length, int img_width, int img_height) {
                 log_err("Could not create compute program.");
                 return FALSE;
         }
+        log("\tCreated compute program.");
 
         int texture_id;
 
         create_texture(&texture_id, img_width, img_height);
+        log("\tCreated texture.");
 
         struct camera cam;
         if (!create_camera(world, obj_c, &cam, focal_length, img_width, img_height)) {
                 log_err("Could not create camera.");
                 return FALSE;
         }
+        log("\tCreated camera.");
 
         // also check that these functions actually work
         // check it doesn't mess everything up by removing the camera from world
         set_world(program_id, world, obj_c);
         set_camera(program_id, cam);
-        
+
+        if (!log_gl_errs()) {
+                log_err("OpenGL error detected.");
+                return FALSE;
+        }
+
         // to compute
         if (!advance(&current)) {
                 log_err("Could not advance.");

@@ -3,10 +3,10 @@
 float vup[3] = { 0.f, 1.f, 0.f };
 
 int create_camera(struct scene_obj *world, int obj_c, struct camera *cam, float focal_length, int img_width, int img_height) {
-        int c_i;
+        int c_i = 0;
 
         for (; c_i < obj_c; ++c_i) {
-                if (CMRA == world[c_i].type) {
+                if (CMRA == world[c_i].mat) {
                         break;
                 }
         }

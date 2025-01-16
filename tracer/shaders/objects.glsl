@@ -1,7 +1,6 @@
 const int SPHERE = 83;
 const int CUBOID = 67;
 const int PLANE  = 80;
-const int MAX_OBJ_COUNT = 128;
 
 void collision(in ray r, out hit_record rec) {
         bool collided = false;

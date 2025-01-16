@@ -38,7 +38,8 @@ int main(int argc, char **argv) {
         }
 
         if (!success) {
-                log_err("Program failed to run. See `.log` for further details.");
+                printf("\n\nERROR: Program failed to run. See `.log` for further details.\n");
+                log_err("Program failed to run.");
         }
 
         term_gl();

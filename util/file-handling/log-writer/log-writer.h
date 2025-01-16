@@ -8,6 +8,7 @@
 
 #include "global.h"
 #include "cli/cli.h"
+#include "file-handling/scene-files/scen-struct.h"
 
 
 #define LOG_FILE_PATH ".log"
@@ -85,5 +86,13 @@ int log_program_logs(int program_id);
  *            reckon caused it and then just keep having a look.
  */
 int log_gl_errs();
+
+/*
+ *   INPUT  : World (array of objects). Number of objects in world.
+ *   OUTPUT : -
+ * 
+ *   DESC   : Logs all of the data for every object in the world.
+ */
+void log_world(struct scene_obj *world, int obj_c);
 
 #endif

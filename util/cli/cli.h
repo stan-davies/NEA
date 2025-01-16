@@ -6,6 +6,7 @@
 #include <unistd.h>
 
 #include "global.h"
+#include "file-handling/log-writer/log-writer.h"
 
 /*
  *   INPUT  : `argc` and `argv` as given to `main` when program is run.

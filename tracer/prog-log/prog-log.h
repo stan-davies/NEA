@@ -2,6 +2,7 @@
 #define PROG_LOG_H
 
 #include "file-handling/log-writer/log-writer.h"
+#include "file-handling/scene-files/scen-struct.h"
 
 #define MAX_MSG_LEN 40
 

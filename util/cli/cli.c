@@ -24,6 +24,7 @@ int read_args_rend(int argc, char **argv, float *focal_length, int *width, int *
                                 return FALSE;
                         }
                         *focal_length = atof(optarg);
+                        log("Focal length given as %.2f.", *focal_length);
                         break;
                 case 'w':
                         if (!valid_arg(optarg, INT)) {
@@ -31,6 +32,7 @@ int read_args_rend(int argc, char **argv, float *focal_length, int *width, int *
                                 return FALSE;
                         }
                         *width = atoi(optarg);
+                        log("Renderframe width given as %.2f.", *width);
                         break;
                 case 'h':
                         if (!valid_arg(optarg, INT)) {
@@ -38,9 +40,10 @@ int read_args_rend(int argc, char **argv, float *focal_length, int *width, int *
                                 return FALSE;
                         }
                         *height = atoi(optarg);
+                        log("Renderframe height given as %.2f.", *height);
                         break;
                 default:
-                        log_err("invalid option given at symbol '%s'", opt);
+                        log_err("Invalid option given at symbol '%s'.", opt);
                         break;
                 }
         }

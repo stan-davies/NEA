@@ -19,7 +19,7 @@ int yield_split(char **content, char **str, int *str_len, char delimiter, int ma
         *str_len = 0;
         char curr = NL_C;
 
-        for (;;) { // infinite loop that doesn't make the compiler mad (as `while (true)` does)
+        for (;;) { // slightly funny syntax for an infinite loop
                 curr = (*content)[0];
                 if (SP_C == curr) {
                         (*content)++; // move the pointer through the string

@@ -66,7 +66,11 @@ void log_gl_vars() {
         GLubyte *gl_vendor = glGetString(GL_VENDOR);
         GLubyte *glsl_version = glGetString(GL_SHADING_LANGUAGE_VERSION);
 
+        GLint max_uniforms;
+        glGetIntegerv(GL_MAX_COMPUTE_UNIFORM_BLOCKS, &max_uniforms);
+
         log("\tOpenGL version : %s", (char *)gl_version);
         log("\tOpenGL implementation vendor : %s", (char *)gl_vendor);
         log("\tGLSL version : %s", (char *)glsl_version);
+        log("\tMax uniforms for compute shader : %d", max_uniforms);
 }

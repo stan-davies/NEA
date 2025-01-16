@@ -4,13 +4,11 @@
 
 layout(local_size_x = 1, local_size_y = 1) in;
 layout(binding = 0, rgba32f) writeonly uniform image2D img_output;
-// 128 is max object count
-layout(location = 0) uniform object world[128];
-// world takes up 512 uniform locations due to it being 128 instances of a 4 variable struct
-layout(location = 512) uniform int obj_c;
-layout(location = 513) uniform camera cam;
-layout(location = 514) uniform int max_bounces;
-layout(location = 515) uniform int max_samples;
+uniform object world[MAX_OBJ_COUNT];
+uniform int obj_c;
+uniform camera cam;
+uniform int max_bounces;
+uniform int max_samples;
 
 #include "prototype"
 #include "objects"

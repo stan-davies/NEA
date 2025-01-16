@@ -6,10 +6,13 @@ struct ray {
 struct object {
         int  type;
         vec3 coords;
+        vec3 albedo;
         vec3 dims;
         int  mat;
-        vec3 albedo;
 };
+
+// program will not link if this is any higher than 100
+#define MAX_OBJ_COUNT 8
 
 struct hit_record {
         bool   collided;
