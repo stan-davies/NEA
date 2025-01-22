@@ -18,6 +18,7 @@
  * `log_program_logs`.
  */
 #define MAX_GL_LOGS_LEN 2048
+#define MAX_PARAM_NAME  16
 
 /*
  *   INPUT  : -

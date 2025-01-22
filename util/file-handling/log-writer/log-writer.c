@@ -95,7 +95,7 @@ int log_gl_errs() {
 
 void log_world(struct scene_obj *world, int obj_c) {
         struct scene_obj curr;
-        char *out_str = calloc(16, sizeof(char));
+        char *out_str = calloc(MAX_PARAM_NAME, sizeof(char));
         int dims;
 
         for (int i = 0; i < obj_c; ++i) {
@@ -103,19 +103,19 @@ void log_world(struct scene_obj *world, int obj_c) {
 
                 switch (curr.type) {
                 case SPHERE:
-                        dims = 1;
+                        dims = 1; // 1 dimensions - just radius
                         strcpy(out_str, "SPHERE");
                         break;
                 case CUBOID:
-                        dims = 3;
+                        dims = 3; // 3 dimensions - width, height, depth
                         strcpy(out_str, "CUBOID");
                         break;
                 case PLANE:
-                        dims = 2;
+                        dims = 2; // 2 dimensions - width, height
                         strcpy(out_str, "PLANE");
                         break;
                 default:
-                        dims = 0;
+                        dims = 0; // something has gone awry, leave it
                         break;
                 }
 
@@ -124,7 +124,7 @@ void log_world(struct scene_obj *world, int obj_c) {
                 log("\t - coords (x, y, z) : %.2f, %.2f, %.2f", curr.coords[0], curr.coords[1], curr.coords[2]);
                 log("\t - albedo (r, g, b) : %.2f, %.2f, %.2f", curr.albedo[0], curr.albedo[1], curr.albedo[2]);
 
-                for (int j = 0; j < 16; ++j) {
+                for (int j = 0; j < MAX_PARAM_NAME; ++j) {
                         out_str[j] = NL_C;
 
                         if (j < dims) {
@@ -137,7 +137,7 @@ void log_world(struct scene_obj *world, int obj_c) {
                 }
                 log("\t - dimensions       : %s", out_str);
 
-                for (int j = 0; j < 16; ++j) {
+                for (int j = 0; j < MAX_PARAM_NAME; ++j) {
                         out_str[j] = NL_C;
                 }
                 switch (curr.mat) {

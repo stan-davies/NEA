@@ -27,9 +27,10 @@ struct camera {
 *please ohh please ohh pleaase! work!
  *   INPUT  : The array of scene objects making up the world. The count of
  *            scene objects in the world. A pointer to the camera object that
- *            is to be populated with data. The focal length of the camera. The
- *            width of the image, in pixels, that is going to be rendered. The
- *            height of the image, in piixels, that is going to be rendered.
+ *            is to be populated with data. The vertical field of the camera.
+ *            The width of the image, in pixels, that is going to be rendered.
+ *            The height of the image, in piixels, that is going to be 
+ *            rendered.
  *   OUTPUT : Success in creating camera.
  * 
  *   DESC   : Finds the camera in the scene and constructs the components of it
@@ -37,7 +38,7 @@ struct camera {
  *            struct `camera`, this function is effecitvely populating that
  *            struct with data that it must first calculate.
  */
-int create_camera(struct scene_obj *world, int obj_c, struct camera *cam, float focal_length, int img_width, int img_height);
+int create_camera(struct scene_obj *world, int obj_c, struct camera *cam, float vfov, int img_width, int img_height);
 
 /*
  *   INPUT  : An angle, measured in degrees.
@@ -45,7 +46,15 @@ int create_camera(struct scene_obj *world, int obj_c, struct camera *cam, float 
  * 
  *   DESC   : Converts an angle from degrees to radians.
  */
-inline float deg_to_rad(int angle);
+inline float deg_to_rad(float angle);
+
+/*
+ *   INPUT  : 3D vector to find magnitude of.
+ *   OUTPUT : Magnitude of given vector.
+ * 
+ *   DESC   : Finds magnitude of given vector.
+ */
+float magnitude(float *vec);
 
 /*
  *   INPUT  : A pointer to a 3D vector.
@@ -54,7 +63,7 @@ inline float deg_to_rad(int angle);
  *   DESC   : Takes the given 3D vector, divides it by its magnitude, and
  *            places the altered components back into the original vector.
  */
-int unit(float **vec);
+int normalise(float **vec);
 
 /*
  *   INPUT  : A 3D vector. A scalar.
