@@ -22,7 +22,8 @@ int create_camera(struct scene_obj *world, int obj_c, struct camera *cam, float 
          * This syntax is ridiculously janky but I spent ages getting this to
          * to work and it seems that it very much has to be exactly like this.
          * The issue is in the disparity between `(float (*)[3])` and
-         * `(float **)`.
+         * `(float **)`. This syntax is used when each attribute of the camera
+         * is set, so get used to it.
          */
         float *campos_ptr = &cam->pos[0];
         vecset(&campos_ptr, world[c_i].coords);
@@ -51,7 +52,8 @@ int create_camera(struct scene_obj *world, int obj_c, struct camera *cam, float 
                 log_err("Invalid vector given.");
                 return FALSE;
         }
-        vecset(&(cam->plane_dx), scale(scale(plane_i, plane_w), 1.f / img_width));
+        float *camdx_ptr = &cam->plane_dx[0];
+        vecset(&camdx_ptr, scale(scale(plane_i, plane_w), 1.f / img_width));
 
         float *plane_j = malloc(3 * sizeof(float));
         vecset(&plane_j, cross(view_dir, plane_i));
@@ -59,12 +61,13 @@ int create_camera(struct scene_obj *world, int obj_c, struct camera *cam, float 
                 log_err("Invalid vector given.");
                 return FALSE;
         }
-        vecset(&(cam->plane_dy), scale(scale(plane_j, plane_h), 1.f / img_height));
+        float *camdy_ptr = &cam->plane_dy[0];
+        vecset(&camdy_ptr, scale(scale(plane_j, plane_h), 1.f / img_height));
 
-        // is this actually allocating for plane_cnt??
         float *plane_cnt = add(cam->pos, scale(view_dir, focus_dist));
-        // currently does to the very top left of the viewing plane, not to the pixel centre
-        vecset(&(cam->plane_00), add(plane_cnt, add(scale(plane_i, -0.5f), scale(plane_j, -0.5f))));
+        
+        float *cam00_ptr = &cam->plane_00[0];
+        vecset(&cam00_ptr, add(plane_cnt, add(scale(plane_i, -0.5f), scale(plane_j, -0.5f))));
 
         free(plane_cnt);
         plane_cnt = NULL;
