@@ -18,7 +18,8 @@ void main() {
         ivec2 work_groups = ivec2(gl_NumWorkGroups.xy);
         vec4 pixel = vec4(0.0, 0.0, 0.0, 0.0);
 
-        imageStore(img_output, pixel_coords, vec4(cam.pos, 0.0));
+        // this does exactly what one would hope
+        imageStore(img_output, pixel_coords, vec4(world[0].dims, 0.0));
 
         for (int s = 0; s < max_samples; ++s) {
                 ray r;

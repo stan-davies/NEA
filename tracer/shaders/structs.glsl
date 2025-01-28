@@ -11,7 +11,11 @@ struct object {
         int  mat;
 };
 
-// program will not link if this is any higher than 100
+/* 
+ * Program will not link if this is any higher than 100. I do not really know
+ * why but figuring that out was a pain so lets just take that as the Lords
+ * will and not set it to anything higher than 100.
+ */
 #define MAX_OBJ_COUNT 8
 
 struct hit_record {
