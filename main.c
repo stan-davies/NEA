@@ -40,6 +40,9 @@ int main(int argc, char **argv) {
         if (!success) {
                 printf("\n\nERROR: Program failed to run. See `.log` for further details.\n");
                 log_err("Program failed to run.");
+        } else {
+                printf("\n\nThe program executed successfully. Find your render at `image.ppm` and further details of execution at `.log`.");
+                log("Program executed successfully.");
         }
 
         term_gl();

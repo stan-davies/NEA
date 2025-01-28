@@ -18,6 +18,8 @@ void main() {
         ivec2 work_groups = ivec2(gl_NumWorkGroups.xy);
         vec4 pixel = vec4(0.0, 0.0, 0.0, 0.0);
 
+        imageStore(img_output, pixel_coords, vec4(cam.pos, 0.0));
+
         for (int s = 0; s < max_samples; ++s) {
                 ray r;
                 r.origin = cam.pos;
@@ -35,7 +37,7 @@ void main() {
                 }
         }
 
-        imageStore(img_output, pixel_coords, pixel / max_samples);
+        // imageStore(img_output, pixel_coords, pixel / max_samples);
 }
 
 void bounce(inout ray r, out vec3 attenuation) {

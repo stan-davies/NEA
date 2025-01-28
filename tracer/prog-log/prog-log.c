@@ -5,14 +5,16 @@ int weights[COMPLETE] = { 1, 2, 1, 4, 3 };
 void prog(enum STAGE current) {
         printf("\rprogress: ");
 
-        for (int i = 1; i < current; ++i) {
-                print_prog(DONE, weights[i - 1]);
+        for (int i = 0; i < current; ++i) {
+                print_prog(DONE, weights[i]);
         }
 
-        print_prog(DOING, weights[current - 1]);
+        if (current < COMPLETE) {
+                print_prog(DOING, weights[current - 1]);
+        }
 
-        for (int i = current + 1; i < COMPLETE; ++i) {
-                print_prog(TODO, weights[i - 1]);
+        for (int i = current; i < COMPLETE; ++i) {
+                print_prog(TODO, weights[i]);
         }
 
         printf("\t");
@@ -39,7 +41,7 @@ int advance(int *current) {
 
         prog(*current);
         log("%s...", msg);
-        printf("currently: %s", msg);
+        printf("currently: %s     ", msg);
 
         return TRUE;
 }

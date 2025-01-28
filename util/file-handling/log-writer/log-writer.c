@@ -86,11 +86,12 @@ int log_program_logs(int program_id) {
 
 int log_gl_errs() {
         register int err;
-        int success;
+        int error_found = FALSE;
         while ((err = glGetError()) != GL_NO_ERROR) {
-                success = log_err("GL error code: 0x%.4x\n\"But what is...\" -> https://www.khronos.org/opengl/wiki/OpenGL_Error#Meaning_of_errors", err);
+                error_found = TRUE;
+                log_err("GL error code: 0x%.4x\n\"But what is...\" -> https://www.khronos.org/opengl/wiki/OpenGL_Error#Meaning_of_errors", err);
         }
-        return success && (err == GL_NO_ERROR);
+        return !error_found;
 }
 
 void log_world(struct scene_obj *world, int obj_c) {

@@ -18,9 +18,10 @@ void set_world(int program_id, struct scene_obj world[MAX_OBJ_COUNT], int obj_c)
         char *var_prefix = calloc(MAX_SHDR_VAR_LEN, sizeof(char));
         char *var = calloc(MAX_SHDR_VAR_LEN, sizeof(char));
         int index = 0;
+
+        glUseProgram(program_id);
         for (int i = 0; i < obj_c; ++i) {
                 if (CMRA == world[i].mat) {
-                        --index;
                         continue;
                 }
 
@@ -48,6 +49,7 @@ void set_world(int program_id, struct scene_obj world[MAX_OBJ_COUNT], int obj_c)
 }
 
 void set_camera(int program_id, struct camera cam) {
+        glUseProgram(program_id);
         /*
          * Hard coding in the variable names is less than ideal, but it is, in
          * this case, the price that must be paid.

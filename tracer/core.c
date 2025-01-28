@@ -47,6 +47,11 @@ int render(float focal_length, int img_width, int img_height) {
         // also check that these functions actually work
         // check it doesn't mess everything up by removing the camera from world
         set_world(program_id, world, obj_c);
+        if (!log_gl_errs()) {
+                log_err("OpenGL error detected.");
+                return FALSE;
+        }
+        log("\tSet world.");
         set_camera(program_id, cam);
 
         if (!log_gl_errs()) {
