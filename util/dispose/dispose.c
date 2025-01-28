@@ -1,18 +1,20 @@
 #include "dispose.h"
 
 int dispose_renderer(int argc, char **argv) {
-        float focal_length = 0;
+        float vfov = 0;
         int image_width = 0;
         int image_height = 0;
+        char *output_file = calloc(MAX_FILENAME_LENGTH, sizeof(char));
+        char *scene_file = calloc(MAX_FILENAME_LENGTH, sizeof(char));
 
-        if (!read_args_rend(argc, argv, &focal_length, &image_width, &image_height)) {
+        if (!read_args_rend(argc, argv, &vfov, &image_width, &image_height, &output_file, &scene_file)) {
                 log_err("Unable to read arguments for rendering mode.");
                 return FALSE;
         }
 
-        if (0 == focal_length) {
-                focal_length = DEF_FOCAL_LENGTH;
-                log("No focal length given, default value of %.2f will be used.", focal_length);
+        if (0 == vfov) {
+                vfov = DEF_VFOV;
+                log("No vfov given, default value of %.2f will be used.", vfov);
         }
 
         if (0 == image_width) {
@@ -25,5 +27,15 @@ int dispose_renderer(int argc, char **argv) {
                 log("No image height given, default value of %d will be used.", image_height);
         }
 
-        return render(focal_length, image_width, image_height);
+        if (NL_C == output_file[0]) {
+                sprintf(output_file, DEF_OF);
+                log("No output file path given, default value of \"%s\" will be used.", DEF_OF);
+        }
+
+        if (NL_C == scene_file[0]) {
+                sprintf(scene_file, DEF_SF);
+                log("No scene_file path given, default value of \"%s\" will be used.", DEF_SF);
+        }
+
+        return render(vfov, image_width, image_height, output_file, scene_file);
 }

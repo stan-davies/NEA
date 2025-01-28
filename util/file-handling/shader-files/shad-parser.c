@@ -46,7 +46,7 @@ int direct(char *dir_path, char **content, int content_len) {
                                 goto incomplete_directive;
                         }
 
-                        directive = (LI_C == (*content)[i + 1]);
+                        directive = (CHR_i == (*content)[i + 1]);
                 } else if (QUT_C == current_chr) {
                         if (directive) {
                                 directive = FALSE;

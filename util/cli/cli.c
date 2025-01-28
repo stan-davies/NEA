@@ -14,17 +14,17 @@ enum PROGS take_input(int argc, char **argv) {
         return cmd;
 }
 
-int read_args_rend(int argc, char **argv, float *focal_length, int *width, int *height) {
+int read_args_rend(int argc, char **argv, float *vfov, int *width, int *height, char **output_f, char **scene_file) {
         int opt;
-        while (-1 != (opt = getopt(argc, argv, "f:w:h:"))) {
+        while (-1 != (opt = getopt(argc, argv, "f:w:h:o:s:"))) {
                 switch (opt) {
                 case 'f':
                         if (!valid_arg(optarg, FLT)) {
-                                log_err("Invalid argument given for option 'focal length'.");
+                                log_err("Invalid argument given for option 'vfov'.");
                                 return FALSE;
                         }
-                        *focal_length = atof(optarg);
-                        log("Focal length given as %.2f.", *focal_length);
+                        *vfov = atof(optarg);
+                        log("Vertical field of view given as %.2f.", *vfov);
                         break;
                 case 'w':
                         if (!valid_arg(optarg, INT)) {
@@ -41,6 +41,20 @@ int read_args_rend(int argc, char **argv, float *focal_length, int *width, int *
                         }
                         *height = atoi(optarg);
                         log("Renderframe height given as %.2f.", *height);
+                        break;
+                case 'o':
+                        if (!valid_fp(optarg) || strlen(optarg) >= MAX_FILENAME_LENGTH) {
+                                log_err("Invalid argument given for option 'output path'.");
+                                return FALSE;
+                        }
+                        sprintf(*output_f, "%s", optarg);
+                        break;
+                case 's':
+                        if (!valid_fp(optarg) || strlen(optarg) >= MAX_FILENAME_LENGTH) {
+                                log_err("Invalid argument given for option 'scene file'.");
+                                return FALSE;
+                        }
+                        sprintf(*scene_file, "%s", optarg);
                         break;
                 default:
                         log_err("Invalid option given at symbol '%s'.", opt);
@@ -76,13 +90,31 @@ int valid_arg(char *arg, enum TYPES type) {
         return TRUE;
 }
 
+int valid_fp(char *fp) {
+        char c = NL_C;
+        int valid;
+        for (int i = 0; i < strlen(fp); ++i) {
+                c = fp[i];
+
+                // is an uppercase letter OR a lowercase letter or a '.', '_' OR '-'
+                valid = (c >= CHR_A && c <= CHR_Z) || (c >= CHR_a && c <= CHR_z) || PT_C == c || UND_C == c || DSH_C == c;
+
+                if (!valid) {
+                        log_err("Invalid path given, filename must not contain symbol '%c'", c);
+                        return FALSE;
+                }
+        }
+
+        return TRUE;
+}
+
 enum PROGS check_cmd(char **cmd_str) {
         enum PROGS cmd = NONE;
 
         if (0 == strcmp(cmd_str, "render")) {
                 cmd = REND;
-        } else if (0 == strcmp(cmd_str, "edit")) {
-                cmd = EDIT;
+        } else if (0 == strcmp(cmd_str, "help")) {
+                cmd = HELP;
         } else {
                 log_err("Invalid command given at symbol '%s'.", cmd_str);
         }
@@ -97,8 +129,8 @@ int cmd_to_str(enum PROGS cmd, char **str) {
         case REND:
                 strcpy(*str, "RENDER");
                 break;
-        case EDIT:
-                strcpy(*str, "EDIT");
+        case HELP:
+                strcpy(*str, "HELP");
                 break;
         case NONE:
                 strcpy(*str, "NONE");

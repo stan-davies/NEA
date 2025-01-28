@@ -7,6 +7,7 @@
 
 #include "global.h"
 #include "file-handling/log-writer/log-writer.h"
+#include "file-handling/parse.h"
 
 /*
  *   INPUT  : `argc` and `argv` as given to `main` when program is run.
@@ -24,16 +25,17 @@ enum TYPES {
 
 /*
  *   INPUT  : `argc` and `argv` as given to `main` when program is run. Pointer
- *            to float for a given focal length. Pointer to an integer for a
+ *            to float for a given vertical fov. Pointer to an integer for a
  *            given image width. Pointer to an integer for a given image 
- *            height.
+ *            height. Pointer to string for output file path. Pointer to string
+ *            for scene file path.
  *   OUTPUT : Whether or not *all* options were valid.
  * 
  *   DESC   : Goes through each option given in `argv` and gets any relevant
  *            data from it. These data will be placed into the function
  *            arguments.
  */
-int read_args_rend(int argc, char **argv, float *focal_length, int *width, int *height);
+int read_args_rend(int argc, char **argv, float *vfov, int *width, int *height, char **output_f, char **scene_file);
 
 /*
  *   INPUT  : String containing argument to check. What data type the argument
@@ -44,6 +46,15 @@ int read_args_rend(int argc, char **argv, float *focal_length, int *width, int *
  *            a single decimal separator if it is a floating point number.
  */
 int valid_arg(char *arg, enum TYPES type);
+
+/*
+ *   INPUT  : String containing file path to check.
+ *   OUTPUT : If the filepath is valid.
+ * 
+ *   DESC   : Checks the validity of the given file path. A valid path may
+ *            contain letters, '.', '-' and '_'.
+ */
+int valid_fp(char *fp);
 
 /*
  *   INPUT  : Choice of command as given in main args.

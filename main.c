@@ -29,8 +29,8 @@ int main(int argc, char **argv) {
         case REND:
                 success = dispose_renderer(argc, argv);
                 break;
-        case EDIT:
-                // do edit
+        case HELP:
+                // do help
                 break;
         default:
                 success = FALSE;
@@ -41,7 +41,7 @@ int main(int argc, char **argv) {
                 printf("\n\nERROR: Program failed to run. See `.log` for further details.\n");
                 log_err("Program failed to run.");
         } else {
-                printf("\n\nThe program executed successfully. Find your render at `image.ppm` and further details of execution at `.log`.");
+                printf("\n\nThe program executed successfully. Find further details of execution at `.log`.");
                 log("Program executed successfully.");
         }
 

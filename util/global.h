@@ -35,7 +35,7 @@
  */
 enum PROGS {
         REND,
-        EDIT,
+        HELP,
         NONE
 };
 
@@ -44,16 +44,22 @@ enum PROGS {
  * different files. These are used a lot in many of the `file-handling/`
  * functions, but also appear in `cli.c`.
  */
-#define LF_C  10
-#define NL_C  0
-#define SP_C  32
-#define SL_C  47
-#define CM_C  44
-#define PT_C  46
-#define CHR_9 57
-#define CHR_0 48
-#define HSH_C 35
-#define QUT_C 34
-#define LI_C  105
+#define LF_C  10   // '\n'
+#define NL_C  0    // '\0'
+#define SP_C  32   // ' '
+#define SL_C  47   // '/'
+#define CM_C  44   // ','
+#define PT_C  46   // '.'
+#define HSH_C 35   // '#'
+#define QUT_C 34   // '"'
+#define UND_C 95   // '_'
+#define DSH_C 45   // '-'
+#define CHR_9 57   // '9'
+#define CHR_0 48   // '0'
+#define CHR_A 65   // 'A'
+#define CHR_Z 90   // 'Z'
+#define CHR_a 97   // 'a'
+#define CHR_i 105  // 'i'
+#define CHR_z 122  // 'z'
 
 #endif

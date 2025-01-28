@@ -17,10 +17,6 @@ int init_gl(enum PROGS type, GLFWwindow *window) {
         glfwWindowHint( GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE );
         glfwWindowHint( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
 
-        if (EDIT == type) {
-                glfwWindowHint(GLFW_SAMPLES, 4);
-        }
-
         // hides the created window, this is because a rendering context is required for OpenGL,
         // but no rendering will be done and we don't even really want a window, we are just using
         // OpenGL to interface with the GPU
@@ -36,10 +32,6 @@ int init_gl(enum PROGS type, GLFWwindow *window) {
 
         // set window to the current context, required for initialisation
         glfwMakeContextCurrent(window);
-
-        if (EDIT == type) {
-                glfwSetFramebufferSizeCallback(window, glfw_window_resize_callback);
-        }
 
         glewInit();
 

@@ -1,6 +1,6 @@
 #include "core.h"
 
-int render(float focal_length, int img_width, int img_height) {
+int render(float vfov, int img_width, int img_height, char *output_file, char *scene_file) {
         enum STAGE current = BEGIN;
 
         // to scene
@@ -11,8 +11,7 @@ int render(float focal_length, int img_width, int img_height) {
 
         struct scene_obj *world = calloc(MAX_OBJ_COUNT, sizeof(struct scene_obj));
         int obj_c;
-        // make the file location customisable
-        if (!create_world(".world", &world, &obj_c)) {
+        if (!create_world(scene_file, &world, &obj_c)) {
                 log_err("Could not create world from scene file.");
                 return FALSE;
         }
@@ -38,14 +37,12 @@ int render(float focal_length, int img_width, int img_height) {
         log("\tCreated texture.");
 
         struct camera cam;
-        if (!create_camera(world, obj_c, &cam, focal_length, img_width, img_height)) {
+        if (!create_camera(world, obj_c, &cam, vfov, img_width, img_height)) {
                 log_err("Could not create camera.");
                 return FALSE;
         }
         log("\tCreated camera.");
 
-        // also check that these functions actually work
-        // check it doesn't mess everything up by removing the camera from world
         set_world(program_id, world, obj_c);
         if (!log_gl_errs()) {
                 log_err("OpenGL error detected.");
@@ -75,10 +72,7 @@ int render(float focal_length, int img_width, int img_height) {
 
         float *pixels;
         retrieve_texture(img_width, img_height, &pixels);
-
-        char *output_path = "image.ppm"; // = from args
-        write_texture(output_path, img_width, img_height, pixels);
-
+        write_texture(output_file, img_width, img_height, pixels);
         free(pixels);
 
         // to complete
