@@ -20,6 +20,7 @@ struct object {
 
 struct hit_record {
         bool   collided;
+        bool   interior;
         vec3   point;
         vec3   normal;
         object obj;

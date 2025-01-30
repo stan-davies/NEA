@@ -49,11 +49,14 @@ void bounce(inout ray r, out vec3 attenuation) {
                 attenuation = vec3(0.0, 0.0, 0.0);
                 return;
         }
+	
+	// albedo is used for attenuation and it is the amount of light reflected / the colour
+	attenuation = rec.obj.albedo; 
+
+	if (rec.obj.mat == LGHT) {
+		return;
+	}
 
         r.origin = rec.point;
-        r.dir = vec3(0.0, 0.0, 0.0);// the reflected path, which is calculated using the material and the surface normal and some probability magic
-
-        // albedo is used for attenuation and it is the amount of light reflected / the colour
-        // do something fancy here with getting the right colour or something
-        attenuation = rec.obj.albedo; 
+        transmit(rec, r);
 }

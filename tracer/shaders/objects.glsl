@@ -21,28 +21,20 @@ void collision(in ray r, out hit_record rec) {
         }
 
         rec = nearest;
+        rec.interior = dot(r.dir, rec.normal) >= 0;
 }
 
 void hit(in object obj, in ray r, out hit_record rec) {
         switch (obj.type) {
         case SPHERE:
                 sphere_hit(obj, r, rec);
-        // case CUBOID:
-        //         return cuboid_hit(obj, r, rec);
-        // case PLANE:
-        //         return plane_hit(obj, r, rec);
+        case PLANE:
+                return plane_hit(obj, r, rec);
         default:
                 return;
         }
 }
 
-// sphere requires a vec3 centre and a float radius
-/*
- * vec3  :  coords
- * float :  radius
- *
- * 4 floats total
- */
 void sphere_hit(in object obj, in ray r, out hit_record rec) {
         vec3 oc = r.origin - obj.coords;
 
@@ -70,61 +62,33 @@ void sphere_hit(in object obj, in ray r, out hit_record rec) {
         return;
 }
 
-// commented:
+void plane_hit(in object obj, in ray r, out hit_record rec) {
+	// add second data for the u and v?
+	vec3 n = normalise(cross(obj.dim1, obj.dim2));
 
-// // a cube requires a vec3 for the corner, three vec3's for u, v, and w, and three floats for alpha, beta and gamma
-// /*
-//  * vec3  :  coords
-//  * vec3  :  u
-//  * vec3  :  v
-//  * vec3  :  w
-//  * vec3  :  α β γ
-//  *
-//  * 15 floats total
-//  */
-// struct hit_record cube_hit(struct object obj, struct ray r, struct hit_record rec) {
-//         // given a point
+        float denominator = dot(obj.dims, n);
 
-        
-// }
+	rec.collided = (abs(denominator) > 0.001);
 
-// // plane should have two perpendicular vectors, then the normal would be taken as the unit vector of the cross product of these two
-// // then we would also need two floats, a & b, which scale these two vectors to see how big the plane can be
+        if (!rec.collided) {
+                return;
+        }
 
-// // a plane requires a vec3 for the corner, two vec3's for u and v, and two floats for alpha and beta
-// /*
-//  * vec3  :  coords
-//  * vec3  :  u
-//  * vec3  :  v
-//  * vec2  :  α β
-//  *
-//  * 11 floats total
-//  */
-// struct hit_record plane_hit(struct object obj, struct ray r, struct hit_record rec) {
-//         // in this case, the dimensions will be taken as the normal to the plane
-//         float denominator = dot(obj.dims, r.dir);
+        float lambda = (D - dot(n, r.origin)) / denominator;
 
-//         if (0 == denominator) {   // could replace with (abs(denominator) < SOME_SMALL_VALUE)
-//                 return false;
-//         }
+        vec3 POI = r.origin + (lambda * r.dir);
 
-//         float lambda = (D - dot(obj.dims, r.origin)) / denominator;
+        vec3 otp = POI - obj.coords;
 
-//         vec3 POI = r.origin + (lambda * r.dir);
+	float A = dot(POI, obj.dim1);
+	float B = dot(POI, obj.dim2);
 
-//         vec3 otp = POI - obj.coords;
+	if (A > normalise(obj.dim1) || B > normalise(obj.dim2) || A < 0 || B < 0) {
+		rec.collided = false;
+		return;
+	}
 
-//         // separate otp into components parallel to u and v and then if the magnitudes are less than a & b
-
-//         rec.point = POI;
-//         rec.normal = obj.dims;
-//         rec.obj = obj;
-// }
-
-// struct hit_record OBJECT_hit(struct object obj, struct ray r, struct hit_record rec) {
-//         // if not hit
-//                 // return false
-
-//         // update record
-//         // return that
-// }
+        rec.point = POI;
+        rec.normal = n;
+        rec.obj = obj;
+}
