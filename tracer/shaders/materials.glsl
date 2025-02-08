@@ -1,4 +1,4 @@
-#define MATT 77  // 183
+#define MATT 77
 #define SHNY 83
 #define REFL 82
 #define GLSS 71
@@ -6,7 +6,7 @@
 
 #define PI 3.1415926535897932384626433832795
 
-void transmit(in hit_record rec, inout ray r) {   //191
+void transmit(in hit_record rec, inout ray r) {
 	switch (rec.obj.mat) {
 	case MATT:
 		transmit_matt(rec, r);
@@ -31,8 +31,9 @@ void transmit(in hit_record rec, inout ray r) {   //191
 }
 
 void transmit_matt(in hit_record rec, inout ray r) {
-        float theta = dot(rec.normal, r.dir) / (length(rec.normal) * length(r.dir));
-	mc_reflect(rec.normal, cos(theta) / PI, r);
+        reflect(r.dir, rec.normal);
+        // float theta = dot(rec.normal, r.dir) / (length(rec.normal) * length(r.dir));
+	// mc_reflect(rec.normal, cos(theta) / PI, r);
 }
 
 void transmit_refl(in hit_record rec, inout ray r) {

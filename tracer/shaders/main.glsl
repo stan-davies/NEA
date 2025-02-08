@@ -20,50 +20,61 @@ void main() {
         vec4 pixel = vec4(0.0, 0.0, 0.0, 0.0);
 
         vec3 curr_px = cam.plane_00 + (pixel_coords.x * cam.plane_dx) + (pixel_coords.y * cam.plane_dy);
+
         ray r;
+        vec3 current_sample;
+        float offs_x;
+        float offs_y;
 
         for (int s = 0; s < max_samples; ++s) {
                 r.origin = cam.pos;
                 r.dir = curr_px - cam.pos;
 
-                vec3 current_sample;
+                current_sample = vec3(0.0, 0.0, 0.0);
 
                 for (int b = 0; b < max_bounces; ++b) {
+                        random_float(vec2(s, b), offs_x);
+                        offs_x -= 0.5;
+                        random_float(vec2(b, s), offs_y);
+                        offs_y -= 0.5;
+
+                        r.dir = cam.plane_00 + ((pixel_coords.x + offs_x) * cam.plane_dx) + ((pixel_coords.y + offs_y) * cam.plane_dy) - cam.pos;
+
                         bounce(r, current_sample);
 
                         if (current_sample == vec3(0.0, 0.0, 0.0)) {
                                 break;
                         }
                 }
-
-                pixel += vec4(
-                        clamp(current_sample.x / float(max_bounces), 0.0, 1.0), 
-                        clamp(current_sample.y / float(max_bounces), 0.0, 1.0), 
-                        clamp(current_sample.z / float(max_bounces), 0.0, 1.0), 
-                        0.0
-                );
+                pixel += vec4(current_sample, 0.0);
         }
 
-        imageStore(img_output, pixel_coords, pixel / float(max_samples));
+        imageStore(img_output, pixel_coords, pixel / float(max_samples * max_bounces));
 }
 
 void bounce(inout ray r, inout vec3 attenuation) {
         hit_record rec;
-        // collision(r, rec);
-        sphere_hit(world[0], r, rec);
+        collision(r, rec);
 
         if (!rec.collided) {
                 attenuation = vec3(0.0, 0.0, 0.0);
                 return;
         }
 	
-	attenuation = rec.obj.albedo;
+        attenuation = 0.5 * (normalize(rec.normal) + vec3(1.0, 1.0, 1.0));
+
+        // if (attenuation == vec3(0.0, 0.0, 0.0)) {
+        //         attenuation = rec.obj.albedo;
+        // } else {
+        //         attenuation += rec.obj.albedo;
+        // }
 
         // how is this "stop bouncing now" going to filter through??
+        // something about if the last collision isnt a light then get mad??
 	// if (rec.obj.mat == LGHT) {
 	// 	return;
 	// }
 
-        // r.origin = rec.point;
-        // transmit(rec, r);
+        r.origin = rec.point;
+        transmit(rec, r);
 }
