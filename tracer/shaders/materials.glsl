@@ -11,27 +11,36 @@ void transmit(in hit_record rec, inout ray r) {
 	case MATT:
 		transmit_matt(rec, r);
 		break;
-
 	case SHNY:
 		transmit_shny(rec, r);
 		break;
-
 	case REFL:
 		transmit_refl(rec, r);
 		break;
-
 	case GLSS:
 		transmit_shny(rec, r);
 		break;
-
 	default:
 		break;
 	}
 			
 }
 
+// is this??
 void transmit_matt(in hit_record rec, inout ray r) {
-        reflect(r.dir, rec.normal);
+        float x, y, z;
+        random_float(rec.point.xy, x);
+        random_float(rec.point.yz, y);
+        random_float(rec.point.zx, z);
+
+        vec3 rnd_unit = normalize(vec3(x, y, z));
+
+        if (dot(rnd_unit, rec.normal) <= 0.0) {
+                rnd_unit *= -1;
+        }
+
+        r.dir = rnd_unit;
+
         // float theta = dot(rec.normal, r.dir) / (length(rec.normal) * length(r.dir));
 	// mc_reflect(rec.normal, cos(theta) / PI, r);
 }

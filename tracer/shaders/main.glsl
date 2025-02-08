@@ -26,20 +26,20 @@ void main() {
         float offs_x;
         float offs_y;
 
+        // WHY SO DARK???
         for (int s = 0; s < max_samples; ++s) {
+                // is this in the right place and making sense?
+                random_float(vec2(s, work_groups.y), offs_x);
+                offs_x -= 0.5;
+                random_float(vec2(work_groups.x, s), offs_y);
+                offs_y -= 0.5;
+
                 r.origin = cam.pos;
-                r.dir = curr_px - cam.pos;
+                r.dir = cam.plane_00 + ((pixel_coords.x + offs_x) * cam.plane_dx) + ((pixel_coords.y + offs_y) * cam.plane_dy) - cam.pos;
 
                 current_sample = vec3(0.0, 0.0, 0.0);
 
                 for (int b = 0; b < max_bounces; ++b) {
-                        random_float(vec2(s, b), offs_x);
-                        offs_x -= 0.5;
-                        random_float(vec2(b, s), offs_y);
-                        offs_y -= 0.5;
-
-                        r.dir = cam.plane_00 + ((pixel_coords.x + offs_x) * cam.plane_dx) + ((pixel_coords.y + offs_y) * cam.plane_dy) - cam.pos;
-
                         bounce(r, current_sample);
 
                         if (current_sample == vec3(0.0, 0.0, 0.0)) {
@@ -60,14 +60,12 @@ void bounce(inout ray r, inout vec3 attenuation) {
                 attenuation = vec3(0.0, 0.0, 0.0);
                 return;
         }
-	
-        attenuation = 0.5 * (normalize(rec.normal) + vec3(1.0, 1.0, 1.0));
 
-        // if (attenuation == vec3(0.0, 0.0, 0.0)) {
-        //         attenuation = rec.obj.albedo;
-        // } else {
-        //         attenuation += rec.obj.albedo;
-        // }
+        if (attenuation == vec3(0.0, 0.0, 0.0)) {
+                attenuation = rec.obj.albedo;
+        } else {
+                attenuation += rec.obj.albedo;
+        }
 
         // how is this "stop bouncing now" going to filter through??
         // something about if the last collision isnt a light then get mad??
