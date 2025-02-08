@@ -9,11 +9,13 @@
 #include "file-handling/scene-files/scen-parser.h"
 
 // default configuration
-#define DEF_VFOV       20.f
-#define DEF_IMG_WIDTH  100
-#define DEF_IMG_HEIGHT 100
-#define DEF_OF         "image.ppm"
-#define DEF_SF         ".world"
+#define DEF_VFOV        20.f
+#define DEF_IMG_WIDTH   100
+#define DEF_IMG_HEIGHT  100
+#define DEF_MAX_BOUNCES 3
+#define DEF_MAX_SAMPLES 3
+#define DEF_OF          "image.ppm"
+#define DEF_SF          ".world"
 
 /*
  *   INPUT  : Vertical field of view of camera. Width of rendering frame.

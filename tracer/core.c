@@ -49,7 +49,9 @@ int render(float vfov, int img_width, int img_height, char *output_file, char *s
                 return FALSE;
         }
         log("\tSet world.");
+
         set_camera(program_id, cam);
+        set_maxes(program_id, 3, 3);
 
         if (!log_gl_errs()) {
                 log_err("OpenGL error detected.");

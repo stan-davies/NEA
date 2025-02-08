@@ -14,9 +14,9 @@ enum PROGS take_input(int argc, char **argv) {
         return cmd;
 }
 
-int read_args_rend(int argc, char **argv, float *vfov, int *width, int *height, char **output_f, char **scene_file) {
+int read_args_rend(int argc, char **argv, float *vfov, int *width, int *height, int *max_bounces, int *max_samples, char **output_f, char **scene_file) {
         int opt;
-        while (-1 != (opt = getopt(argc, argv, "f:w:h:o:s:"))) {
+        while (-1 != (opt = getopt(argc, argv, "f:w:h:m:b:o:s:"))) {
                 switch (opt) {
                 case 'f':
                         if (!valid_arg(optarg, FLT)) {
@@ -41,6 +41,22 @@ int read_args_rend(int argc, char **argv, float *vfov, int *width, int *height, 
                         }
                         *height = atoi(optarg);
                         log("Renderframe height given as %.2f.", *height);
+                        break;
+                case 'm':
+                        if (!valid_arg(optarg, INT)) {
+                                log_err("Invalid argument given for option 'max samples'.");
+                                return FALSE;
+                        }
+                        *max_samples = atoi(optarg);
+                        log("Max samples given as %d.", *max_samples);
+                        break;
+                case 'b':
+                        if (!valid_arg(optarg, INT)) {
+                                log_err("Invalid argument given for option 'max bounces'.");
+                                return FALSE;
+                        }
+                        *max_bounces = atoi(optarg);
+                        log("Max bounces given as %d.", *max_bounces);
                         break;
                 case 'o':
                         if (!valid_fp(optarg) || strlen(optarg) >= MAX_FILENAME_LENGTH) {

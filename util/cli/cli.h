@@ -35,7 +35,7 @@ enum TYPES {
  *            data from it. These data will be placed into the function
  *            arguments.
  */
-int read_args_rend(int argc, char **argv, float *vfov, int *width, int *height, char **output_f, char **scene_file);
+int read_args_rend(int argc, char **argv, float *vfov, int *width, int *height, int *max_bounces, int *max_samples, char **output_f, char **scene_file);
 
 /*
  *   INPUT  : String containing argument to check. What data type the argument
@@ -83,12 +83,14 @@ ing paragraphs will allow you to familiarise yourself with the program.\n"
 #define PARAM_HELP "Paramters\n\nThe program allows several parameters, each \
 of which controls some aspect of the rendering. These are:\n - 'f' vertical \
 field of view of the camera (in degrees)\n - 'w' width of the output image (in \
-pixels)\n - 'h' height of the output image (in pixels)\n - 'o' destination for\
- the output image (as a path)\n - 's' source of the scene file (as a path)\nTo \
+pixels)\n - 'h' height of the output image (in pixels)\n - 'm' max samples\n - \
+'b' max bounces\n - 'o' destination for the output image (as a path)\n - 's' \
+source of the scene file (as a path)\nTo \
 set one of the paramters, write its letter with a single hyphen beforehand. For\
  example:\n\n > spt render -f \"out.ppm\" -w 200.\n\nIf you choose not to set \
 any of the parameters, default values will be used. These are:\n - 'f' : 20.0\n\
- - 'w' and 'h' : 100\n - 'o' : \"image.ppm\"\n - 's' : \".world\"\n"
+ - 'w' and 'h' : 100\n - 'm' and 'b' 3\n - 'o' : \"image.ppm\"\n - 's' : \".wor\
+ld\"\n"
 #define SCENE_HELP "Scene Parameters:\n\nYou are able to create a custom scene \
 file which describes the scene that you want to rendered. This requires a \
 specific format in order to be understood by the program correctly. Every scene\
@@ -133,6 +135,8 @@ taking colour accumulated from every bounce it made. If not, then the pixel \
 will be dark. The paths of each ray is governed by the objects with which it \
 collides, and more information on how this works can be found in the design \
 section.\n"
+
+// add the note to scene help about bounces and samples
 
 /*
  *   INPUT  : -

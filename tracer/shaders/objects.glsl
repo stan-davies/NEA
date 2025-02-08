@@ -3,21 +3,28 @@
 #define PLANE  80
 
 void collision(in ray r, out hit_record rec) {
-        bool collided = false;
         hit_record nearest;
         nearest.collided = false;
         hit_record current;
 
+        int misses;
+
         for (int i = 0; i < obj_c; ++i) {
                 hit(world[i], r, current);
 
-                if (false == current.collided) {
+                if (!current.collided) {
+                        misses++;
                         continue;
                 }
 
                 if (distance(r.origin, current.point) < distance(r.origin, nearest.point)) {
                         nearest = current;
                 }
+        }
+
+        if (misses == obj_c) {
+                rec.collided = false;
+                return;
         }
 
         rec = nearest;

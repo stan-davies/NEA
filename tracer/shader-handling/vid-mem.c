@@ -60,6 +60,13 @@ void set_camera(int program_id, struct camera cam) {
         glUniform3fv(glGetUniformLocation(program_id, "cam.plane_dy"), 1, cam.plane_dy);
 }
 
+void set_maxes(int program_id, int max_bounces, int max_samples) {
+        glUseProgram(program_id);
+
+        glUniform1i(glGetUniformLocation(program_id, "max_bounces"), max_bounces);
+        glUniform1i(glGetUniformLocation(program_id, "max_samples"), max_samples);
+}
+
 void retrieve_texture(int img_width, int img_height, float **pixels) {
         *pixels = calloc(img_width * img_height, 4 * sizeof(float));
         glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_FLOAT, *pixels);

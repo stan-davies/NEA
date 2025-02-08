@@ -41,6 +41,16 @@ void set_world(int program_id, struct scene_obj world[MAX_OBJ_COUNT], int obj_c)
 void set_camera(int program_id, struct camera cam);
 
 /*
+ *   INPUT  :  ID of compute shader program. Maximum number of bounces. Maximum
+ *             number of samples.
+ *   OUTPUT : -
+ * 
+ *   DESC   : Sets the two parameters max bounces and max samples in the shader
+ *            program.
+ */
+void set_maxes(int program_id, int max_bounces, int max_samples);
+
+/*
  *   INPUT  : Width of image. Height of image. Pointer to array of bytes for 
  *            pixel data.
  *   OUTPUT : -
