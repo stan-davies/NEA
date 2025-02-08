@@ -26,7 +26,7 @@ void bounce(inout ray r, out vec3 attenuation);
  *   DESC   : Transmits the given ray with respect to the material with which
  *            it has collided.
  */
-void transmit(in hit_record rec, inout vec3 r);
+void transmit(in hit_record rec, inout ray r);
 
 /*
  *   PARAMS : Record of collision over which to transmit ray. Ray on which to
@@ -34,7 +34,7 @@ void transmit(in hit_record rec, inout vec3 r);
  *
  *   DESC   : Transmission calculation for matte material.
  */
-void transmit_matt(in hit_record rec, inout vec3 r);
+void transmit_matt(in hit_record rec, inout ray r);
 
 /*
  *   PARAMS : Record of collision over which to transmit ray. Ray on which to
@@ -42,7 +42,7 @@ void transmit_matt(in hit_record rec, inout vec3 r);
  *
  *   DESC   : Transmission calculation for reflective material.
  */
-void transmit_refl(in hit_record rec, inout vec3 r);
+void transmit_refl(in hit_record rec, inout ray r);
 
 /*
  *   PARAMS : Record of collision over which to transmit ray. Ray on which to
@@ -50,7 +50,7 @@ void transmit_refl(in hit_record rec, inout vec3 r);
  *
  *   DESC   : Transmission calculation for shiny material.
  */
-void transmit_shny(in hit_record rec, inout vec3 r);
+void transmit_shny(in hit_record rec, inout ray r);
 
 /*
  *   PARAMS : Record of collision over which to transmit ray. Ray on which to
@@ -58,7 +58,7 @@ void transmit_shny(in hit_record rec, inout vec3 r);
  *
  *   DESC   : Transmission calculation for glass material.
  */
-void transmit_glss(in hit_record rec, inout vec3 r);
+void transmit_glss(in hit_record rec, inout ray r);
 
 /*
  *   PARAMS : Surface normal at collision. Level by which to "fuzz" reflection.
@@ -66,7 +66,7 @@ void transmit_glss(in hit_record rec, inout vec3 r);
  *
  *   DESC   : Reflects given ray, offsetting it to give fuzz.
  */
-void mc_reflect(in vec3 normal, in float fuzz_factor, inout vec3 r);
+void mc_reflect(in vec3 normal, in float fuzz_factor, inout ray r);
 
 /*
  *   PARAMS : Sample vector. Generated random number.
@@ -86,7 +86,7 @@ void random_float(in vec2 s, out float r);
  *            but is offset by some random amount. The extent of this will be
  *            governed by the fuzz factor.
  */
-void fuzz_offset(in vec3 reference, in float fuzz_factor, out vec3 offset);
+void fuzz_offset(in vec3 reference, in float fuzz_factor, out vec3 offs);
 
 /*
  *   PARAMS : Cosine of incident angle. Ratio of refraction indices. Specular
@@ -134,4 +134,4 @@ void sphere_hit(in object obj, in ray r, out hit_record rec);
  *
  *   DESC   : Collision detection algorithm for planes.
  */
-void plane_hit(in object obj, in ray r, out hit_record rec)
+void plane_hit(in object obj, in ray r, out hit_record rec);

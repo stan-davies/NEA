@@ -1,6 +1,6 @@
-const int SPHERE = 83;
-const int CUBOID = 67;
-const int PLANE  = 80;
+#define SPHERE 83
+#define CUBOID 67
+#define PLANE  80
 
 void collision(in ray r, out hit_record rec) {
         bool collided = false;
@@ -28,10 +28,12 @@ void hit(in object obj, in ray r, out hit_record rec) {
         switch (obj.type) {
         case SPHERE:
                 sphere_hit(obj, r, rec);
+                break;
         case PLANE:
-                return plane_hit(obj, r, rec);
+                break;
+                // plane_hit(obj, r, rec);
         default:
-                return;
+                break;
         }
 }
 
@@ -44,7 +46,7 @@ void sphere_hit(in object obj, in ray r, out hit_record rec) {
 
         float desc = (b * b) - (4.0 * c);
 
-        rec.collided = (desc < 0.0);
+        rec.collided = (desc >= 0.0);
 
         if (!rec.collided) {
                 return;
@@ -62,33 +64,33 @@ void sphere_hit(in object obj, in ray r, out hit_record rec) {
         return;
 }
 
-void plane_hit(in object obj, in ray r, out hit_record rec) {
-	// add second data for the u and v?
-	vec3 n = normalise(cross(obj.dim1, obj.dim2));
+// void plane_hit(in object obj, in ray r, out hit_record rec) {
+// 	// add second data for the u and v?
+// 	vec3 n = normalize(cross(obj.dim1, obj.dim2));
 
-        float denominator = dot(obj.dims, n);
+//         float denominator = dot(obj.dims, n);
 
-	rec.collided = (abs(denominator) > 0.001);
+// 	rec.collided = (abs(denominator) > 0.001);
 
-        if (!rec.collided) {
-                return;
-        }
+//         if (!rec.collided) {
+//                 return;
+//         }
 
-        float lambda = (D - dot(n, r.origin)) / denominator;
+//         float lambda = (D - dot(n, r.origin)) / denominator;
 
-        vec3 POI = r.origin + (lambda * r.dir);
+//         vec3 POI = r.origin + (lambda * r.dir);
 
-        vec3 otp = POI - obj.coords;
+//         vec3 otp = POI - obj.coords;
 
-	float A = dot(POI, obj.dim1);
-	float B = dot(POI, obj.dim2);
+// 	float A = dot(POI, obj.dim1);
+// 	float B = dot(POI, obj.dim2);
 
-	if (A > normalise(obj.dim1) || B > normalise(obj.dim2) || A < 0 || B < 0) {
-		rec.collided = false;
-		return;
-	}
+// 	if (A > normalize(obj.dim1) || B > normalize(obj.dim2) || A < 0 || B < 0) {
+// 		rec.collided = false;
+// 		return;
+// 	}
 
-        rec.point = POI;
-        rec.normal = n;
-        rec.obj = obj;
-}
+//         rec.point = POI;
+//         rec.normal = n;
+//         rec.obj = obj;
+// }

@@ -40,7 +40,6 @@ int create_camera(struct scene_obj *world, int obj_c, struct camera *cam, float 
                 return FALSE;
         }
 
-        // is this changing world[0].coords??
         float focus_dist = magnitude(add(world[0].coords, scale(cam->pos, -1)));
 
         float plane_h = 2.f * focus_dist * tan(deg_to_rad(vfov) / 2.f);
@@ -67,7 +66,7 @@ int create_camera(struct scene_obj *world, int obj_c, struct camera *cam, float 
         float *plane_cnt = add(cam->pos, scale(view_dir, focus_dist));
         
         float *cam00_ptr = &cam->plane_00[0];
-        vecset(&cam00_ptr, add(plane_cnt, add(scale(plane_i, -0.5f), scale(plane_j, -0.5f))));
+        vecset(&cam00_ptr, add(plane_cnt, add(scale(plane_i, -0.5f * plane_w), scale(plane_j, -0.5f * plane_h))));
 
         free(plane_cnt);
         plane_cnt = NULL;
