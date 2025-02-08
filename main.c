@@ -30,7 +30,8 @@ int main(int argc, char **argv) {
                 success = dispose_renderer(argc, argv);
                 break;
         case HELP:
-                // do help
+                success = TRUE;
+                help();
                 break;
         default:
                 success = FALSE;

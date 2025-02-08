@@ -96,7 +96,7 @@ int valid_fp(char *fp) {
         for (int i = 0; i < strlen(fp); ++i) {
                 c = fp[i];
 
-                // is an uppercase letter OR a lowercase letter or a '.', '_' OR '-'
+                // is uppercase, lowercase, '.', '_' or '-'
                 valid = (c >= CHR_A && c <= CHR_Z) || (c >= CHR_a && c <= CHR_z) || PT_C == c || UND_C == c || DSH_C == c;
 
                 if (!valid) {
@@ -142,4 +142,9 @@ int cmd_to_str(enum PROGS cmd, char **str) {
         }
 
         return TRUE;
+}
+
+void help() {
+        log("%s\n%s\n%s\n%s\n%s", WLCME_INFO, PARAM_HELP, SCENE_HELP, OUTPT_HELP, OPRTN_HELP);
+        printf("%s\n%s\n%s\n%s\n%s", WLCME_INFO, PARAM_HELP, SCENE_HELP, OUTPT_HELP, OPRTN_HELP);
 }

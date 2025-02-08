@@ -51,9 +51,8 @@ int log(char *format, ...);
  *   INPUT  : Format for error to log. Arguments to place into format.
  *   OUTPUT : Success in logging error.
  *
- *   DESC   : Writes the given error to the log file and outputs it to the
- *            console 'ERROR:' is prepended to the front of the error `\n` will
- *            be automatically appended to the end of string.
+ *   DESC   : Writes the given error to the log file. 'ERROR:' is prepended to
+ *            the error and `\n` will be automatically appended to the string.
  */
 int log_err(char *format, ...);
 
@@ -62,8 +61,7 @@ int log_err(char *format, ...);
  *   OUTPUT : Success in logging logs.
  * 
  *   DESC   : Logs data taken from OpenGL about the given shader. This includes
- *            information about errors and other, less significant, stuff. 
- *   NOTES  : So far has solved at least: 1 error
+ *            information about errors and other, less significant, stuff.
  */
 int log_shader_logs(int shader_id);
 

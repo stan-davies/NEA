@@ -19,12 +19,12 @@ enum OBJS {
 };
 
 enum MATS {
-        MATT = 77,
-        SHNY = 83,
-        REFL = 82,
-        GLSS = 71,
-        LGHT = 76,
-        CMRA = 67,
+        MATT = 77, // 'M'
+        SHNY = 83, // 'S'
+        REFL = 82, // 'R'
+        GLSS = 71, // 'G'
+        LGHT = 76, // 'L'
+        CMRA = 67, // 'C'
 };
 
 // COLOUR

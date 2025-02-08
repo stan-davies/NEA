@@ -107,10 +107,6 @@ void log_world(struct scene_obj *world, int obj_c) {
                         dims = 1; // 1 dimensions - just radius
                         strcpy(out_str, "SPHERE");
                         break;
-                case CUBOID:
-                        dims = 3; // 3 dimensions - width, height, depth
-                        strcpy(out_str, "CUBOID");
-                        break;
                 case PLANE:
                         dims = 2; // 2 dimensions - width, height
                         strcpy(out_str, "PLANE");

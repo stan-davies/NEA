@@ -13,7 +13,6 @@ int create_world(char *path, struct scene_obj **world, int *object_count) {
         char *line = calloc(MAX_LINE_LENGTH, sizeof(char));
         int line_len;
 
-        // delegate?
         if (yield_split(&cnt_ptr, &line, &line_len, LF_C, MAX_LINE_LENGTH)) {
                 int num_objs = atoi(line);
                 if (num_objs < 1 || num_objs > MAX_OBJ_COUNT) {
@@ -55,7 +54,6 @@ int create_world(char *path, struct scene_obj **world, int *object_count) {
                 arg_c = 0;
                 line_ptr = line;
 
-                // problem in following loop?
                 for (;;) {
                         if (!yield_split(&line_ptr, &chunk, &chunk_len, CM_C, MAX_PARAM_LEN)) {
                                 break;
@@ -89,7 +87,6 @@ int create_world(char *path, struct scene_obj **world, int *object_count) {
                         goto clearall;
                 }
 
-                // problem here?
                 (*world)[obj_c] = curr_obj;
                 obj_c++;
 
