@@ -11,7 +11,7 @@
  *            put on the correct path according to the transmittence of the
  *            object met. The attenuation of this collision is also calculated.
  */
-void bounce(inout ray r, out vec3 attenuation);
+void bounce(inout ray r, inout vec3 attenuation);
 
 /******************************************************************************
  *

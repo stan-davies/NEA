@@ -49,5 +49,5 @@ int dispose_renderer(int argc, char **argv) {
                 log("No scene_file path given, default value of \"%s\" will be used.", DEF_SF);
         }
 
-        return render(vfov, image_width, image_height, output_file, scene_file);
+        return render(vfov, image_width, image_height, max_samples, max_bounces, output_file, scene_file);
 }

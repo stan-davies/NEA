@@ -34,17 +34,23 @@ void main() {
                         if (current_sample == vec3(0.0, 0.0, 0.0)) {
                                 break;
                         }
-
-                        pixel = pixel + vec4(current_sample, 0.0);
                 }
+
+                pixel += vec4(
+                        clamp(current_sample.x / float(max_bounces), 0.0, 1.0), 
+                        clamp(current_sample.y / float(max_bounces), 0.0, 1.0), 
+                        clamp(current_sample.z / float(max_bounces), 0.0, 1.0), 
+                        0.0
+                );
         }
 
-        imageStore(img_output, pixel_coords, pixel / max_samples);
+        imageStore(img_output, pixel_coords, pixel / float(max_samples));
 }
 
-void bounce(inout ray r, out vec3 attenuation) {
+void bounce(inout ray r, inout vec3 attenuation) {
         hit_record rec;
-        collision(r, rec);
+        // collision(r, rec);
+        sphere_hit(world[0], r, rec);
 
         if (!rec.collided) {
                 attenuation = vec3(0.0, 0.0, 0.0);
@@ -53,6 +59,7 @@ void bounce(inout ray r, out vec3 attenuation) {
 	
 	attenuation = rec.obj.albedo;
 
+        // how is this "stop bouncing now" going to filter through??
 	// if (rec.obj.mat == LGHT) {
 	// 	return;
 	// }

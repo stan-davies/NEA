@@ -7,7 +7,7 @@ void collision(in ray r, out hit_record rec) {
         nearest.collided = false;
         hit_record current;
 
-        int misses;
+        int misses = 0;
 
         for (int i = 0; i < obj_c; ++i) {
                 hit(world[i], r, current);
@@ -17,7 +17,8 @@ void collision(in ray r, out hit_record rec) {
                         continue;
                 }
 
-                if (distance(r.origin, current.point) < distance(r.origin, nearest.point)) {
+                // (!nearest.collided) indicates that this is the first collision
+                if (!nearest.collided || distance(r.origin, current.point) < distance(r.origin, nearest.point)) {
                         nearest = current;
                 }
         }

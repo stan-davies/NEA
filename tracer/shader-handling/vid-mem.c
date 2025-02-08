@@ -45,7 +45,8 @@ void set_world(int program_id, struct scene_obj world[MAX_OBJ_COUNT], int obj_c)
                 ++index;
         }
 
-        glUniform1i(glGetUniformLocation(program_id, "obj_c"), obj_c);
+        // 1 is subtracted to account for the removed camera
+        glUniform1i(glGetUniformLocation(program_id, "obj_c"), obj_c - 1);
 }
 
 void set_camera(int program_id, struct camera cam) {

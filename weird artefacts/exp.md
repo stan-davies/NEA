@@ -1,0 +1,1 @@
+Here I have collected some of the unusual renders that this program has created. To clarify, it was not supposed to do any of these things and have all been treated as errors to be solved. They still look cool though.

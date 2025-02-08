@@ -19,7 +19,8 @@
 
 /*
  *   INPUT  : Vertical field of view of camera. Width of rendering frame.
- *            Height of rendering frame. Destination of output file.
+ *            Height of rendering frame. Maximum number of samples per pixel. 
+ *            Maximum number of bounces per ray. Destination of output file.
  *            Destination of scene file.
  *   OUTPUT : Success in rendering.
  * 
@@ -27,6 +28,6 @@
  *            stages, so this function is really just a neat and sequential
  *            series of function calls.
  */
-int render(float vfov, int img_width, int img_height, char *output_file, char *scene_file);
+int render(float vfov, int img_width, int img_height, int max_samples, int max_bounces, char *output_file, char *scene_file);
 
 #endif
