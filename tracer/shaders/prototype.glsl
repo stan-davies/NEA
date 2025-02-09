@@ -5,13 +5,15 @@
  *****************************************************************************/
 
 /*
- *   PARAMS : Ray that is bouncing. Colour attentuation from bounce.
+ *   PARAMS : Ray that is bouncing. Colour attentuation from bounce. Boolean
+ *            indicating whether or not to break the loop. Boolean indicating
+ *            whether or not a light source has been reached.
  *
  *   DESC   : Tests if the ray has made any collisions. If so, the ray is
  *            put on the correct path according to the transmittence of the
  *            object met. The attenuation of this collision is also calculated.
  */
-void bounce(inout ray r, inout vec3 attenuation, out bool brk);
+void bounce(inout ray r, inout vec3 attenuation, out bool brk, out bool lit);
 
 /******************************************************************************
  *
@@ -61,14 +63,6 @@ void transmit_shny(in hit_record rec, inout ray r);
 void transmit_glss(in hit_record rec, inout ray r);
 
 /*
- *   PARAMS : Surface normal at collision. Level by which to "fuzz" reflection.
- *            Ray on which to operate - in: incidence, out: transmitted.
- *
- *   DESC   : Reflects given ray, offsetting it to give fuzz.
- */
-void mc_reflect(in vec3 normal, in float fuzz_factor, inout ray r);
-
-/*
  *   PARAMS : Sample vector. Generated random number.
  *
  *   DESC   : Uses a simple hashing function to generate a random float in the
@@ -79,14 +73,13 @@ void mc_reflect(in vec3 normal, in float fuzz_factor, inout ray r);
 void random_float(in vec2 s, out float r);
 
 /*
- *   PARAMS : Vector with which to align (vaguely). Level by which to offset.
- *            The offset vector.
+ *   PARAMS : Sample vector. Generated random unit vector.
  *
- *   DESC   : Creates a unit vector which is fairly consistent to the reference
- *            but is offset by some random amount. The extent of this will be
- *            governed by the fuzz factor.
+ *   DESC   : Generates a unit vector that points in some random direction. The
+ *            source vector can be any old thing, just hit it with any arbitrary
+ *            data.
  */
-void fuzz_offset(in vec3 reference, in float fuzz_factor, out vec3 offs);
+void random_unit(in vec3 s, out vec3 v);
 
 /*
  *   PARAMS : Cosine of incident angle. Ratio of refraction indices. Specular
@@ -141,4 +134,4 @@ void sphere_hit(in object obj, in ray r, in float low, out hit_record rec);
  *
  *   DESC   : Collision detection algorithm for planes.
  */
-// void plane_hit(in object obj, in ray r, in float low, out hit_record rec);
+void plane_hit(in object obj, in ray r, in float low, out hit_record rec);

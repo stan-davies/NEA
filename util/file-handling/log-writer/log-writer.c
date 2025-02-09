@@ -104,15 +104,16 @@ void log_world(struct scene_obj *world, int obj_c) {
 
                 switch (curr.type) {
                 case SPHERE:
-                        dims = 1; // 1 dimensions - just radius
+                        dims = 1; // radius
                         strcpy(out_str, "SPHERE");
                         break;
                 case PLANE:
-                        dims = 2; // 2 dimensions - width, height
+                        dims = 3; // 3D normal vector
                         strcpy(out_str, "PLANE");
                         break;
                 default:
-                        dims = 0; // something has gone awry, leave it
+                        dims = 0;
+                        strcpy(out_str, "n/a");
                         break;
                 }
 
@@ -121,9 +122,9 @@ void log_world(struct scene_obj *world, int obj_c) {
                 log("\t - coords (x, y, z) : %.2f, %.2f, %.2f", curr.coords[0], curr.coords[1], curr.coords[2]);
                 log("\t - albedo (r, g, b) : %.2f, %.2f, %.2f", curr.albedo[0], curr.albedo[1], curr.albedo[2]);
 
-                for (int j = 0; j < MAX_PARAM_NAME; ++j) {
-                        out_str[j] = NL_C;
+                clear_str(&out_str, MAX_PARAM_NAME);
 
+                for (int j = 0; j < MAX_PARAM_NAME; ++j) {
                         if (j < dims) {
                                 sprintf(out_str, "%s%.2f", out_str, curr.dims[j]);
 

@@ -22,14 +22,9 @@ void write_texture(char *output_path, int texture_width, int texture_height, flo
  *            bytes, which I foolishly tried to use before. As I am here, I
  *            feel like adding that it also gets nasty if you try to ignore the
  *            alpha channel. I am ignoring it, as it isn't getting written to
- *            the file, but it must be kept in memory anyway.
- *            No validation is done to ensure that the given number is actually
- *            in the range [0.0, 1.0], and as such there is no guarentee that
- *            output is in the range [0, 255]. This is because I have done this
- *            as an inline function for efficiency, so the task of ensuring
- *            correctness is left to the user of the function. Sure, the user
- *            of the function will only ever be me, but I still think that this
- *            is the ideal way to implement this.
+ *            the file, but it must be kept in memory anyway. This function also
+ *            gamma corrects the colours. This essentially gives us a smoother
+ *            gradient from light to dark, which is awesome.
  */
 inline int channel_rep_convert(float n);
 

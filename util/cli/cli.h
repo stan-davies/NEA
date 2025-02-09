@@ -141,6 +141,8 @@ section.\n"
 // maybe add a warning about that in the log file
 // note about length renders will take
 // note about minimum bounces being 2
+// note about no light -> ambient illumination
+// say how planes work a bit more
 
 /*
  *   INPUT  : -

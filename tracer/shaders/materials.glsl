@@ -20,7 +20,7 @@ void transmit(in hit_record rec, inout ray r) {
 		transmit_refl(rec, r);
 		break;
 	case GLSS:
-		transmit_shny(rec, r);
+		transmit_glss(rec, r);
 		break;
 	default:
 		break;
@@ -29,51 +29,49 @@ void transmit(in hit_record rec, inout ray r) {
 }
 
 void transmit_matt(in hit_record rec, inout ray r) {
-        float x, y, z;
-        float len_sq;
-        while (true) {
-                random_float(rec.point.xy, x);
-                random_float(rec.point.yz, y);
-                random_float(rec.point.zx, z);
-                len_sq = x * x + y * y + z * z;
-                if (len_sq > 1e-80 && len_sq <= 1) {
-                        break;
-                }
-        }
-
-        vec3 rnd_unit = vec3(x, y, z) / sqrt(len_sq);
-
-        // if (dot(rnd_unit, rec.normal) <= 0.0) {
-        //         rnd_unit *= -1;
-        // }
-
-        // r.dir = rnd_unit;
+        vec3 rnd_unit;
+        float theta = dot(rec.normal, r.dir) / (length(rec.normal) * length(r.dir));
+        vec3 mc_smp = rec.point * cos(theta) / PI;
+        random_unit(mc_smp, rnd_unit);
 
         r.dir = rec.normal + rnd_unit;
 
-        // float theta = dot(rec.normal, r.dir) / (length(rec.normal) * length(r.dir));
-	// mc_reflect(rec.normal, cos(theta) / PI, r);
+        vec3 abs_dir = abs(r.dir);
+
+        if (abs_dir.x < 1e-4 && abs_dir.y < 1e-4 && abs_dir.z < 1e-4) {
+                r.dir = rec.normal;
+        }
 }
 
 void transmit_refl(in hit_record rec, inout ray r) {
-	mc_reflect(rec.normal, 1.0 / (4.0 * PI), r);
+        r.dir = reflect(r.dir, rec.normal);
+        // 1/4pi
 }
 
 void transmit_shny(in hit_record rec, inout ray r) {
-        mc_reflect(rec.normal, 1.0 / (2.0 * PI), r);
+        vec3 rnd_unit;
+        random_unit(rec.point, rnd_unit);
+
+        float fuzz_factor;
+        random_float(rec.normal.xy, fuzz_factor);
+
+        r.dir = reflect(r.dir, rec.normal);
+        r.dir = normalize(r.dir) + (PI * fuzz_factor) * rnd_unit;
 }
 
 void transmit_glss(in hit_record rec, inout ray r) {
-        float ri = rec.interior ? 3.0 / 2.0 : 2.0 / 3.0;
+        float ri = 1.5;
+        if (rec.interior) {
+                ri = 1.0 / ri;
+        }
 
-        vec3 unit_dir = normalize(r.dir);
-        float cos_theta = min(dot(-unit_dir, rec.normal), 1.0);
+        float cos_theta = min(dot(-r.dir, rec.normal), 1.0);
         float sin_theta = sqrt(1.0 - cos_theta * cos_theta);
 
         bool no_refr = ri * sin_theta > 1.0;
 
         float rnd;
-        random_float(r.dir.xy, rnd);
+        random_float(rec.point.xy, rnd);
 
         float R;
         reflectance(cos_theta, ri, R);
@@ -81,45 +79,30 @@ void transmit_glss(in hit_record rec, inout ray r) {
         if (no_refr || R > rnd) {
                 transmit_refl(rec, r);
         } else {
-                r.dir = refract(r.dir, rec.normal, ri);
+                vec3 r_out_perp = ri * (r.dir + cos_theta * rec.normal);
+                vec3 r_out_para = -sqrt(abs(1.0 - dot(r_out_perp, r_out_perp))) * rec.normal;
+                r.dir = r_out_perp + r_out_para;
         }
-
-        return;
-}
-
-void mc_reflect(in vec3 normal, in float fuzz_factor, inout ray r) {
-        // use random in hemi logic?
-
-
-
-        r.dir = reflect(r.dir, normal);
-	vec3 offs;
-	fuzz_offset(r.dir, fuzz_factor, offs);
-	r.dir = r.dir + offs;
 }
 
 void random_float(in vec2 s, out float r) {
 	r = abs(fract(sin(dot(s, vec2(12.9898, 78.233))) * 43758.5453));
 }
 
-void fuzz_offset(in vec3 reference, in float fuzz_factor, out vec3 offs) {
-	bool valid = false;
+void random_unit(in vec3 s, out vec3 v) {
+        float x, y, z;
+        float len_sq;
+        while (true) {
+                random_float(s.xy, x);
+                random_float(s.yz, y);
+                random_float(s.zx, z);
+                len_sq = x * x + y * y + z * z;
+                if (len_sq > 1e-80 && len_sq <= 1) {
+                        break;
+                }
+        }
 
-	float x;
-	float y;
-	float z;
-
-	while (!valid) {
-		random_float(reference.xy, x);
-		random_float(reference.yz, y);
-		random_float(reference.zx, z);
-
-		offs = normalize(vec3(x, y, z));
-
-		if (dot(offs, reference) <= fuzz_factor) {
-			break;
-		}
-	}
+        v = vec3(x, y, z) / sqrt(len_sq);
 }
 
 void reflectance(in float cosine, in float ri, out float R) {
