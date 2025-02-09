@@ -140,7 +140,7 @@ enum ARG_TYPE get_arg_type(char *arg, int len) {
                         break;
                 }
 
-                if ((arg[i] >= CHR_0 && arg[i] <= CHR_9) || PT_C == arg[i]) {
+                if ((arg[i] >= CHR_0 && arg[i] <= CHR_9) || PT_C == arg[i] || DSH_C == arg[i]) {
                         if (ARG_MAT == status) {
                                 return ARG_INV;
                         }

@@ -137,6 +137,10 @@ collides, and more information on how this works can be found in the design \
 section.\n"
 
 // add the note to scene help about bounces and samples
+// add the note about not rendering too large due to memory
+// maybe add a warning about that in the log file
+// note about length renders will take
+// note about minimum bounces being 2
 
 /*
  *   INPUT  : -

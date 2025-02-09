@@ -11,7 +11,7 @@
  *            put on the correct path according to the transmittence of the
  *            object met. The attenuation of this collision is also calculated.
  */
-void bounce(inout ray r, inout vec3 attenuation);
+void bounce(inout ray r, inout vec3 attenuation, out bool brk);
 
 /******************************************************************************
  *
@@ -104,15 +104,18 @@ void reflectance(in float cosine, in float ri, out float R);
  *****************************************************************************/
 
 /*
- *   PARAMS : Ray to check collisions for. Record of collision.
+ *   PARAMS : Ray to check collisions for. Minimum distance for the ray to
+ *            travel before a collision. Record of collision.
  *
  *   DESC   : Compares given ray with all objects in world. Finds the nearest
  *            of any collisions and records it in the hit record.
  */
-void collision(in ray r, out hit_record rec);
+void collision(in ray r, in float low, out hit_record rec);
 
 /*
- *   PARAMS : Object that has been hit. Ray that hit the object. Record of hit.
+ *   PARAMS : Object that has been hit. Ray to check collisions for. Minimum 
+ *            distance for the ray to travel before a collision. Record of 
+ *            collision.
  *   
  *   DESC   : Just a switch case, we don't need this now because function
  *            overloading is A-OKAY, although different parameters so maybe we
@@ -120,18 +123,22 @@ void collision(in ray r, out hit_record rec);
  *            Uses the shape of the object to determine which algorithm of
  *            collision detection ought to be used.
  */
-void hit(in object obj, in ray r, out hit_record rec);
+void hit(in object obj, in ray r, in float low, out hit_record rec);
 
 /*
- *   PARAMS : Object that has been hit. Ray that hit the object. Record of hit.
+ *   PARAMS : Object that has been hit. Ray to check collisions for. Minimum 
+ *            distance for the ray to travel before a collision. Record of 
+ *            collision.
  *
  *   DESC   : Collision detection algorithm for spheres.
  */
-void sphere_hit(in object obj, in ray r, out hit_record rec);
+void sphere_hit(in object obj, in ray r, in float low, out hit_record rec);
 
 /*
- *   PARAMS : Object that has been hit. Ray that hit the object. Record of hit.
+ *   PARAMS : Object that has been hit. Ray to check collisions for. Minimum 
+ *            distance for the ray to travel before a collision. Record of 
+ *            collision.
  *
  *   DESC   : Collision detection algorithm for planes.
  */
-void plane_hit(in object obj, in ray r, out hit_record rec);
+// void plane_hit(in object obj, in ray r, in float low, out hit_record rec);

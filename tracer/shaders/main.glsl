@@ -25,10 +25,9 @@ void main() {
         vec3 current_sample;
         float offs_x;
         float offs_y;
+        bool brk;
 
-        // WHY SO DARK???
         for (int s = 0; s < max_samples; ++s) {
-                // is this in the right place and making sense?
                 random_float(vec2(s, work_groups.y), offs_x);
                 offs_x -= 0.5;
                 random_float(vec2(work_groups.x, s), offs_y);
@@ -37,42 +36,44 @@ void main() {
                 r.origin = cam.pos;
                 r.dir = cam.plane_00 + ((pixel_coords.x + offs_x) * cam.plane_dx) + ((pixel_coords.y + offs_y) * cam.plane_dy) - cam.pos;
 
-                current_sample = vec3(0.0, 0.0, 0.0);
+                current_sample = vec3(1.0, 1.0, 1.0);
+
+                brk = false;
 
                 for (int b = 0; b < max_bounces; ++b) {
-                        bounce(r, current_sample);
+                        bounce(r, current_sample, brk);
 
-                        if (current_sample == vec3(0.0, 0.0, 0.0)) {
+                        if (brk) {
                                 break;
+                        } else if (b == max_bounces - 1 && max_bounces > 1) {
+                                current_sample = vec3(0.0, 0.0, 0.0);
                         }
                 }
+
                 pixel += vec4(current_sample, 0.0);
         }
 
-        imageStore(img_output, pixel_coords, pixel / float(max_samples * max_bounces));
+        imageStore(img_output, pixel_coords, pixel / float(max_samples));
 }
 
-void bounce(inout ray r, inout vec3 attenuation) {
+void bounce(inout ray r, inout vec3 attenuation, out bool brk) {
         hit_record rec;
-        collision(r, rec);
+        collision(r, 0.001, rec);
 
         if (!rec.collided) {
-                attenuation = vec3(0.0, 0.0, 0.0);
+                float a = 0.5 * (normalize(r.dir).y + 1.0);
+                attenuation *= ((1.0 - a) * vec3(1.0, 1.0, 1.0)) + (a * vec3(0.5, 0.7, 1.0));
+                brk = true;
                 return;
         }
 
-        if (attenuation == vec3(0.0, 0.0, 0.0)) {
-                attenuation = rec.obj.albedo;
-        } else {
-                attenuation += rec.obj.albedo;
-        }
+        attenuation *= rec.obj.albedo;
 
-        // how is this "stop bouncing now" going to filter through??
-        // something about if the last collision isnt a light then get mad??
 	// if (rec.obj.mat == LGHT) {
+        //      brk = true;
 	// 	return;
 	// }
 
-        r.origin = rec.point;
         transmit(rec, r);
+        brk = false;
 }

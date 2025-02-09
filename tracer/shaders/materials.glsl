@@ -7,6 +7,8 @@
 #define PI 3.1415926535897932384626433832795
 
 void transmit(in hit_record rec, inout ray r) {
+        r.origin = rec.point;
+        
 	switch (rec.obj.mat) {
 	case MATT:
 		transmit_matt(rec, r);
@@ -26,20 +28,28 @@ void transmit(in hit_record rec, inout ray r) {
 			
 }
 
-// is this??
 void transmit_matt(in hit_record rec, inout ray r) {
         float x, y, z;
-        random_float(rec.point.xy, x);
-        random_float(rec.point.yz, y);
-        random_float(rec.point.zx, z);
-
-        vec3 rnd_unit = normalize(vec3(x, y, z));
-
-        if (dot(rnd_unit, rec.normal) <= 0.0) {
-                rnd_unit *= -1;
+        float len_sq;
+        while (true) {
+                random_float(rec.point.xy, x);
+                random_float(rec.point.yz, y);
+                random_float(rec.point.zx, z);
+                len_sq = x * x + y * y + z * z;
+                if (len_sq > 1e-80 && len_sq <= 1) {
+                        break;
+                }
         }
 
-        r.dir = rnd_unit;
+        vec3 rnd_unit = vec3(x, y, z) / sqrt(len_sq);
+
+        // if (dot(rnd_unit, rec.normal) <= 0.0) {
+        //         rnd_unit *= -1;
+        // }
+
+        // r.dir = rnd_unit;
+
+        r.dir = rec.normal + rnd_unit;
 
         // float theta = dot(rec.normal, r.dir) / (length(rec.normal) * length(r.dir));
 	// mc_reflect(rec.normal, cos(theta) / PI, r);
@@ -78,6 +88,10 @@ void transmit_glss(in hit_record rec, inout ray r) {
 }
 
 void mc_reflect(in vec3 normal, in float fuzz_factor, inout ray r) {
+        // use random in hemi logic?
+
+
+
         r.dir = reflect(r.dir, normal);
 	vec3 offs;
 	fuzz_offset(r.dir, fuzz_factor, offs);

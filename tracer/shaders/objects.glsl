@@ -2,7 +2,7 @@
 #define CUBOID 67
 #define PLANE  80
 
-void collision(in ray r, out hit_record rec) {
+void collision(in ray r, in float low, out hit_record rec) {
         hit_record nearest;
         nearest.collided = false;
         hit_record current;
@@ -10,7 +10,12 @@ void collision(in ray r, out hit_record rec) {
         int misses = 0;
 
         for (int i = 0; i < obj_c; ++i) {
-                hit(world[i], r, current);
+                hit(world[i], r, low, current);
+
+                // if (rec.interior) {
+                //         nearest = current;
+                //         break;
+                // }
 
                 if (!current.collided) {
                         misses++;
@@ -29,30 +34,31 @@ void collision(in ray r, out hit_record rec) {
         }
 
         rec = nearest;
-        rec.interior = dot(r.dir, rec.normal) >= 0;
+        // rec.interior = dot(r.dir, rec.normal) >= 0;
 }
 
-void hit(in object obj, in ray r, out hit_record rec) {
+void hit(in object obj, in ray r, in float low, out hit_record rec) {
         switch (obj.type) {
         case SPHERE:
-                sphere_hit(obj, r, rec);
+                sphere_hit(obj, r, low, rec);
                 break;
         case PLANE:
                 break;
-                // plane_hit(obj, r, rec);
+                // plane_hit(obj, r, low, rec);
         default:
                 break;
         }
 }
 
-void sphere_hit(in object obj, in ray r, out hit_record rec) {
-        vec3 oc = r.origin - obj.coords;
+void sphere_hit(in object obj, in ray r, in float low, out hit_record rec) {
+        //vec3 oc = r.origin - obj.coords;
+        vec3 oc = obj.coords - r.origin;
 
-        // a = 1
-        float b = 2.0 * dot(oc, normalize(r.dir));
+        float a = dot(r.dir, r.dir);  // =1
+        float h = dot(oc, (r.dir));  // -2 *
         float c = dot(oc, oc) - (obj.dims.x * obj.dims.x);
 
-        float desc = (b * b) - (4.0 * c);
+        float desc = (h * h) - (a * c);
 
         rec.collided = (desc >= 0.0);
 
@@ -61,18 +67,27 @@ void sphere_hit(in object obj, in ray r, out hit_record rec) {
         }
 
         float sr_d = sqrt(desc);
-        float t_m = (-b + sr_d) / (2.0);
-        float t_p = (-b - sr_d) / (2.0);
+        float t_m = (h + sr_d) / a;
+        float t_p = (h - sr_d) / a;
         float t = min(t_m, t_p);
 
-        rec.point = r.origin + (t * r.dir);
-        rec.normal = (rec.point - obj.coords) / obj.dims.x;
-        rec.obj = obj;
+        if (t <= low) {
+                t = max(t_m, t_p);
+                if (t <= low) {
+                        rec.collided = false;
+                        rec.interior = true;
+                        return;
+                }
+        }
 
-        return;
+        rec.interior = false;
+
+        rec.point = r.origin + (t * r.dir);
+        rec.normal = normalize((rec.point - obj.coords) / obj.dims.x);
+        rec.obj = obj;
 }
 
-// void plane_hit(in object obj, in ray r, out hit_record rec) {
+// void plane_hit(in object obj, in ray r, in float low, out hit_record rec) {
 // 	// add second data for the u and v?
 // 	vec3 n = normalize(cross(obj.dim1, obj.dim2));
 
