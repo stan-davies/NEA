@@ -36,14 +36,9 @@ void transmit_matt(in hit_record rec, inout ray r) {
         vec3 mc_smp = rec.point * cos(theta) / PI;
         random_unit(mc_smp, rnd_unit);
 
-        // if (dot(rec.normal, rnd_unit) < 0) {
-        //         rnd_unit *= -1;
-        // }
-
         r.dir = rec.normal + rnd_unit;
 
         vec3 abs_dir = abs(r.dir);
-
         if (abs_dir.x < 1e-4 && abs_dir.y < 1e-4 && abs_dir.z < 1e-4) {
                 r.dir = rec.normal;
         }
@@ -51,18 +46,23 @@ void transmit_matt(in hit_record rec, inout ray r) {
 
 void transmit_refl(in hit_record rec, inout ray r) {
         r.dir = reflect(r.dir, rec.normal);
-        // 1/4pi
 }
 
 void transmit_shny(in hit_record rec, inout ray r) {
         vec3 rnd_unit;
+        float theta = dot(rec.normal, r.dir) / (length(rec.normal) * length(r.dir));
+        vec3 mc_smp = rec.point * cos(theta) / PI;
         random_unit(rec.point, rnd_unit);
 
         float fuzz_factor;
         random_float(rec.normal.xy, fuzz_factor);
 
         r.dir = reflect(r.dir, rec.normal);
-        r.dir = normalize(r.dir) + (PI * fuzz_factor) * rnd_unit;
+        r.dir = normalize(r.dir) + (PI * fuzz_factor * rnd_unit);
+
+        if (dot(r.dir, rec.normal) <= 0) {
+                r.dir *= -1;
+        }
 }
 
 void transmit_glss(in hit_record rec, inout ray r) {
@@ -102,10 +102,14 @@ void random_unit(in vec3 s, out vec3 v) {
         float len_sq;
         while (true) {
                 random_float(s.xy, x);
+                // Transform [0, 1] to [-1, 1]
+                x = (x * 2.0) - 1.0;
                 random_float(s.yz, y);
+                y = (y * 2.0) - 1.0;
                 random_float(s.zx, z);
-                len_sq = x * x + y * y + z * z;
-                if (len_sq > 1e-80 && len_sq <= 1) {
+                z = (z * 2.0) - 1.0;
+                len_sq = (x * x) + (y * y) + (z * z);
+                if (len_sq > 1e-80) {
                         break;
                 }
         }

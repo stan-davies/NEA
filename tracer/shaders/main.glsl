@@ -54,8 +54,6 @@ void main() {
                         }
                 }
 
-                //pixel += vec4(current_sample, 0.0);
-
                 if (lit || !do_light) {
                         pixel += vec4(current_sample, 0.0);
                 } 
@@ -83,7 +81,6 @@ void bounce(inout ray r, inout vec3 attenuation, out bool brk, out bool lit) {
                 return;
         }
 
-        //attenuation = vec3(0.0, 0.0, 1.0);
         attenuation *= rec.obj.albedo;
 
 	if (rec.obj.mat == LGHT) {
