@@ -25,6 +25,8 @@ void transmit(in hit_record rec, inout ray r) {
 	default:
 		break;
 	}
+
+        r.dir = normalize(r.dir);
 			
 }
 
@@ -33,6 +35,10 @@ void transmit_matt(in hit_record rec, inout ray r) {
         float theta = dot(rec.normal, r.dir) / (length(rec.normal) * length(r.dir));
         vec3 mc_smp = rec.point * cos(theta) / PI;
         random_unit(mc_smp, rnd_unit);
+
+        // if (dot(rec.normal, rnd_unit) < 0) {
+        //         rnd_unit *= -1;
+        // }
 
         r.dir = rec.normal + rnd_unit;
 
@@ -60,13 +66,13 @@ void transmit_shny(in hit_record rec, inout ray r) {
 }
 
 void transmit_glss(in hit_record rec, inout ray r) {
-        float ri = 1.5;
+        float ri = 3.0 / 2.0;
         if (rec.interior) {
                 ri = 1.0 / ri;
         }
 
         float cos_theta = min(dot(-r.dir, rec.normal), 1.0);
-        float sin_theta = sqrt(1.0 - cos_theta * cos_theta);
+        float sin_theta = sqrt(1.0 - (cos_theta * cos_theta));
 
         bool no_refr = ri * sin_theta > 1.0;
 
@@ -79,8 +85,10 @@ void transmit_glss(in hit_record rec, inout ray r) {
         if (no_refr || R > rnd) {
                 transmit_refl(rec, r);
         } else {
+                // r.dir = refract(r.dir, rec.normal, ri);
                 vec3 r_out_perp = ri * (r.dir + cos_theta * rec.normal);
-                vec3 r_out_para = -sqrt(abs(1.0 - dot(r_out_perp, r_out_perp))) * rec.normal;
+                float perp_len = dot(r_out_perp, r_out_perp);
+                vec3 r_out_para = -sqrt(abs(1.0 - perp_len * perp_len)) * rec.normal;
                 r.dir = r_out_perp + r_out_para;
         }
 }
@@ -108,5 +116,5 @@ void random_unit(in vec3 s, out vec3 v) {
 void reflectance(in float cosine, in float ri, out float R) {
         float r0 = (1 - ri) / (1 + ri);
         r0 *= r0;
-        R = (r0 + (1 - r0)) * pow(1 - cosine, 5);
+        R = r0 + (1 - r0) * pow(1 - cosine, 5);
 }

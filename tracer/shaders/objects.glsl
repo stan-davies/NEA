@@ -29,7 +29,7 @@ void collision(in ray r, in float low, out hit_record rec) {
         }
 
         rec = nearest;
-        // used with glass to determine the current ratio of indices of refraction
+        // Used with glass to determine the current ratio of indices of refraction.
         rec.interior = dot(r.dir, rec.normal) >= 0;
 }
 
@@ -106,6 +106,6 @@ void plane_hit(in object obj, in ray r, in float low, out hit_record rec) {
         vec3 POI = r.origin + (t * r.dir);
 
         rec.point = POI;
-        rec.normal = n;
+        rec.normal = normalize(n);
         rec.obj = obj;
 }

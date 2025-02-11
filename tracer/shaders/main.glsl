@@ -15,6 +15,7 @@ uniform bool do_light;
 #include "materials"
 #include "objects"
 
+// delegate some
 void main() {
         ivec2 pixel_coords = ivec2(gl_GlobalInvocationID.xy);
         ivec2 work_groups = ivec2(gl_NumWorkGroups.xy);
@@ -53,11 +54,14 @@ void main() {
                         }
                 }
 
+                //pixel += vec4(current_sample, 0.0);
+
                 if (lit || !do_light) {
                         pixel += vec4(current_sample, 0.0);
-                } else {
-                       pixel += vec4(current_sample * 0.01, 0.0);
-                }
+                } 
+                // else {
+                //         pixel += vec4(current_sample * 0.01, 0.0);
+                // }
         }
 
         imageStore(img_output, pixel_coords, pixel / float(max_samples));
@@ -68,16 +72,21 @@ void bounce(inout ray r, inout vec3 attenuation, out bool brk, out bool lit) {
         collision(r, 0.0001, rec);
 
         if (!rec.collided) {
-                float a = 0.5 * (normalize(r.dir).y + 1.0);
-                attenuation *= ((1.0 - a) * vec3(1.0, 1.0, 1.0)) + (a * vec3(0.5, 0.7, 1.0));
+                if (!do_light) {
+                        float a = 0.5 * (r.dir.y + 1.0);
+                        attenuation *= ((1.0 - a) * vec3(1.0, 1.0, 1.0)) + (a * vec3(0.5, 0.7, 1.0));
+                } else {
+                        attenuation = vec3(0.0, 0.0, 0.0);
+                }
                 brk = true;
                 lit = false;
                 return;
         }
 
+        //attenuation = vec3(0.0, 0.0, 1.0);
         attenuation *= rec.obj.albedo;
 
-	if (rec.obj.mat == LGHT && do_light) {
+	if (rec.obj.mat == LGHT) {
                 brk = true;
                 lit = true;
 		return;

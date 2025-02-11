@@ -143,6 +143,7 @@ section.\n"
 // note about minimum bounces being 2
 // note about no light -> ambient illumination
 // say how planes work a bit more
+// ensuring scenes are phsycially possible
 
 /*
  *   INPUT  : -
