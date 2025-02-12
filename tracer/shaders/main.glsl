@@ -37,7 +37,7 @@ void main() {
                 offs_y -= 0.5;
 
                 r.origin = cam.pos;
-                r.dir = cam.plane_00 + ((pixel_coords.x + offs_x) * cam.plane_dx) + ((pixel_coords.y + offs_y) * cam.plane_dy) - cam.pos;
+                r.dir = normalize(cam.plane_00 + ((pixel_coords.x + offs_x) * cam.plane_dx) + ((pixel_coords.y + offs_y) * cam.plane_dy) - cam.pos);
 
                 current_sample = vec3(1.0, 1.0, 1.0);
 
@@ -50,13 +50,13 @@ void main() {
                         if (brk) {
                                 break;
                         } else if (b == max_bounces - 1 && max_bounces > 1) {
-                                current_sample = vec3(0.0, 0.0, 0.0);
+                                current_sample = vec3(0.0, .0, 0.0);
                         }
                 }
 
                 if (lit || !do_light) {
                         pixel += vec4(current_sample, 0.0);
-                } 
+                }
                 // else {
                 //         pixel += vec4(current_sample * 0.01, 0.0);
                 // }
@@ -81,6 +81,15 @@ void bounce(inout ray r, inout vec3 attenuation, out bool brk, out bool lit) {
                 return;
         }
 
+        transmit(rec, r);
+
+        if (!rec.collided) {
+                attenuation = vec3(0.0, 0.0, 0.0);
+                brk = true;
+                lit = false;
+                return;
+        }
+
         attenuation *= rec.obj.albedo;
 
 	if (rec.obj.mat == LGHT) {
@@ -89,7 +98,6 @@ void bounce(inout ray r, inout vec3 attenuation, out bool brk, out bool lit) {
 		return;
 	}
 
-        transmit(rec, r);
         brk = false;
         lit = false;
 }

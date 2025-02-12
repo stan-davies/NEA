@@ -143,7 +143,8 @@ section.\n"
 // note about minimum bounces being 2
 // note about no light -> ambient illumination
 // say how planes work a bit more
-// ensuring scenes are phsycially possible
+// ensuring scenes are phsycially possible -> specifically on planes of glass not making sense
+// setting plane normals in the right direction
 
 /*
  *   INPUT  : -

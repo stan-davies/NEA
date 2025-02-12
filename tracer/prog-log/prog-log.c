@@ -1,11 +1,11 @@
 #include "prog-log.h"
 
-int weights[COMPLETE] = { 1, 2, 1, 4, 3 };
+int weights[COMPLETE - 1] = { 1, 2, 4, 3 };
 
 void prog(enum STAGE current) {
         printf("\rprogress: ");
 
-        for (int i = 0; i < current; ++i) {
+        for (int i = 0; i < current - 1; ++i) {
                 print_prog(DONE, weights[i]);
         }
 
@@ -13,7 +13,7 @@ void prog(enum STAGE current) {
                 print_prog(DOING, weights[current - 1]);
         }
 
-        for (int i = current; i < COMPLETE; ++i) {
+        for (int i = current; i < COMPLETE - 1; ++i) {
                 print_prog(TODO, weights[i]);
         }
 

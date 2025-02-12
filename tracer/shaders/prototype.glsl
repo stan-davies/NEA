@@ -28,7 +28,7 @@ void bounce(inout ray r, inout vec3 attenuation, out bool brk, out bool lit);
  *   DESC   : Transmits the given ray with respect to the material with which
  *            it has collided.
  */
-void transmit(in hit_record rec, inout ray r);
+void transmit(inout hit_record rec, inout ray r);
 
 /*
  *   PARAMS : Record of collision over which to transmit ray. Ray on which to
@@ -52,7 +52,7 @@ void transmit_refl(in hit_record rec, inout ray r);
  *
  *   DESC   : Transmission calculation for shiny material.
  */
-void transmit_shny(in hit_record rec, inout ray r);
+void transmit_shny(inout hit_record rec, inout ray r);
 
 /*
  *   PARAMS : Record of collision over which to transmit ray. Ray on which to

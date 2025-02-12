@@ -6,7 +6,7 @@
 
 #define PI 3.1415926535897932384626433832795
 
-void transmit(in hit_record rec, inout ray r) {
+void transmit(inout hit_record rec, inout ray r) {
         r.origin = rec.point;
         
 	switch (rec.obj.mat) {
@@ -48,20 +48,20 @@ void transmit_refl(in hit_record rec, inout ray r) {
         r.dir = reflect(r.dir, rec.normal);
 }
 
-void transmit_shny(in hit_record rec, inout ray r) {
+void transmit_shny(inout hit_record rec, inout ray r) {
         vec3 rnd_unit;
         float theta = dot(rec.normal, r.dir) / (length(rec.normal) * length(r.dir));
         vec3 mc_smp = rec.point * cos(theta) / PI;
-        random_unit(rec.point, rnd_unit);
+        random_unit(mc_smp, rnd_unit);
 
         float fuzz_factor;
-        random_float(rec.normal.xy, fuzz_factor);
+        random_float(rec.obj.coords.xy * mc_smp.xy, fuzz_factor);
 
         r.dir = reflect(r.dir, rec.normal);
-        r.dir = normalize(r.dir) + (PI * fuzz_factor * rnd_unit);
+        r.dir = normalize(r.dir) + (fuzz_factor * rnd_unit);
 
-        if (dot(r.dir, rec.normal) <= 0) {
-                r.dir *= -1;
+        if (dot(r.dir, rec.normal) <= 0.0) {
+                rec.collided = false;
         }
 }
 

@@ -94,6 +94,11 @@ int create_world(char *path, struct scene_obj **world, int *object_count) {
                 clear_str(&line, MAX_LINE_LENGTH);
         }
 
+        if (obj_c != *object_count) {
+                log_err("Object count does not match number of objects given.");
+                goto clearall;
+        }
+
         free(cnt);
         free(chunk);
         free(line);

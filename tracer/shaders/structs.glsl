@@ -16,7 +16,7 @@ struct object {
  * why but figuring that out was a pain so lets just take that as the Lords
  * will and not set it to anything higher than 100.
  */
-#define MAX_OBJ_COUNT 8
+#define MAX_OBJ_COUNT 16
 
 struct hit_record {
         bool   collided;

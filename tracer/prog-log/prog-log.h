@@ -21,7 +21,7 @@ enum STATUS {
         TODO  = 45   // -
 };
 
-extern int weights[COMPLETE];
+extern int weights[COMPLETE - 1];
 
 /*
  *   INPUT  : Current stage of rendering.

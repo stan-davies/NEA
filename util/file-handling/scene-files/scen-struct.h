@@ -9,7 +9,7 @@
  * high, and that leads to a super confusing and irritating error which I have
  * just spent all day fixing.
  */
-#define MAX_OBJ_COUNT 8
+#define MAX_OBJ_COUNT 16
 
 enum OBJS {
         SPHERE = 83, // 'S'

@@ -90,7 +90,7 @@ void plane_hit(in object obj, in ray r, in float low, out hit_record rec) {
         vec3 n = normalize(obj.dims);
         float denominator = dot(n, r.dir);
 
-	rec.collided = denominator != 0.0;
+	rec.collided = abs(denominator) > 1e-8;
 
         if (!rec.collided) {
                 return;
@@ -106,6 +106,6 @@ void plane_hit(in object obj, in ray r, in float low, out hit_record rec) {
         vec3 POI = r.origin + (t * r.dir);
 
         rec.point = POI;
-        rec.normal = normalize(n);
+        rec.normal = n;
         rec.obj = obj;
 }
