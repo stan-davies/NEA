@@ -55,7 +55,7 @@ void main() {
                         }
                 }
 
-                if (lit || !do_light) {
+                if (lit) {
                         pixel += vec4(current_sample, 0.0);
                 } else {
                         pixel += vec4(current_sample * ambient_coef, 0.0);
@@ -70,12 +70,14 @@ void bounce(inout ray r, inout vec3 attenuation, out bool brk, out bool lit) {
         collision(r, 0.0001, rec);
 
         if (!rec.collided) {
-                if (!do_light) {
-                        float a = 0.5 * (r.dir.y + 1.0);
-                        attenuation *= ((1.0 - a) * vec3(1.0, 1.0, 1.0)) + (a * vec3(0.5, 0.7, 1.0));
-                } else {
-                        attenuation = vec3(0.0, 0.0, 0.0);
-                }
+                float a = 0.5 * (r.dir.y + 1.0);
+                attenuation *= ((1.0 - a) * vec3(1.0, 1.0, 1.0)) + (a * vec3(0.5, 0.7, 1.0));
+                // if (!do_light) {
+                //         float a = 0.5 * (r.dir.y + 1.0);
+                //         attenuation *= ((1.0 - a) * vec3(1.0, 1.0, 1.0)) + (a * vec3(0.5, 0.7, 1.0));
+                // } else {
+                //         attenuation = vec3(0.0, 0.0, 0.0);
+                // }
                 brk = true;
                 lit = false;
                 return;

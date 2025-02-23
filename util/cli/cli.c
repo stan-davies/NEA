@@ -15,6 +15,9 @@ enum PROGS take_input(int argc, char **argv) {
 }
 
 int read_args_rend(int argc, char **argv, float *vfov, int *width, int *height, int *max_bounces, int *max_samples, float *ambient_coef, char **output_f, char **scene_f) {
+        float tmp_f;
+        int tmp_i;
+
         int opt;
         while (-1 != (opt = getopt(argc, argv, "f:w:h:m:b:a:o:s:"))) {
                 switch (opt) {
@@ -24,7 +27,13 @@ int read_args_rend(int argc, char **argv, float *vfov, int *width, int *height, 
                                 return FALSE;
                         }
 
-                        *vfov = atof(optarg);
+                        tmp_f = atof(optarg);
+                        if (tmp_f < MIN_VFOV || tmp_f > MAX_VFOV) {
+                                bad_value_err(opt);
+                                return FALSE;
+                        }
+
+                        *vfov = tmp_f;
                         log("Vertical field of view given as %.2f.", *vfov);
                         break;
                 case 'w':
@@ -33,7 +42,13 @@ int read_args_rend(int argc, char **argv, float *vfov, int *width, int *height, 
                                 return FALSE;
                         }
 
-                        *width = atoi(optarg);
+                        tmp_i = atoi(optarg);
+                        if (tmp_i < MIN_DIMENSION || tmp_i > MAX_DIMENSION) {
+                                bad_value_err(opt);
+                                return FALSE;
+                        }
+
+                        *width = tmp_i;
                         log("Renderframe width given as %d.", *width);
                         break;
                 case 'h':
@@ -41,7 +56,14 @@ int read_args_rend(int argc, char **argv, float *vfov, int *width, int *height, 
                                 bad_value_err(opt);
                                 return FALSE;
                         }
-                        *height = atoi(optarg);
+
+                        tmp_i = atoi(optarg);
+                        if (tmp_i < MIN_DIMENSION || tmp_i > MAX_DIMENSION) {
+                                bad_value_err(opt);
+                                return FALSE;
+                        }
+
+                        *height = tmp_i;
                         log("Renderframe height given as %d.", *height);
                         break;
                 case 'm':
@@ -49,7 +71,14 @@ int read_args_rend(int argc, char **argv, float *vfov, int *width, int *height, 
                                 bad_value_err(opt);
                                 return FALSE;
                         }
-                        *max_samples = atoi(optarg);
+
+                        tmp_i = atoi(optarg);
+                        if (tmp_i < MIN_SAMPLES || tmp_i > MAX_SAMPLES) {
+                                bad_value_err(opt);
+                                return FALSE;
+                        }
+
+                        *max_samples = tmp_i;
                         log("Max samples given as %d.", *max_samples);
                         break;
                 case 'b':
@@ -57,7 +86,14 @@ int read_args_rend(int argc, char **argv, float *vfov, int *width, int *height, 
                                 bad_value_err(opt);
                                 return FALSE;
                         }
-                        *max_bounces = atoi(optarg);
+
+                        tmp_i = atoi(optarg);
+                        if (tmp_i < MIN_BOUNCES || tmp_i > MAX_BOUNCES) {
+                                bad_value_err(opt);
+                                return FALSE;
+                        }
+
+                        *max_bounces = tmp_i;
                         log("Max bounces given as %d.", *max_bounces);
                         break;
                 case 'a':
@@ -66,7 +102,13 @@ int read_args_rend(int argc, char **argv, float *vfov, int *width, int *height, 
                                 return FALSE;
                         }
 
-                        *ambient_coef = atof(optarg);
+                        tmp_f = atof(optarg);
+                        if (tmp_f < MIN_AMB_COEF || tmp_f > MAX_AMB_COEF) {
+                                bad_value_err(opt);
+                                return FALSE;
+                        }
+
+                        *ambient_coef = tmp_f;
                         log("Ambient lighting coefficient given as %.2f.", *ambient_coef);
                         break;
                 case 'o':
@@ -74,6 +116,7 @@ int read_args_rend(int argc, char **argv, float *vfov, int *width, int *height, 
                                 bad_value_err(opt);
                                 return FALSE;
                         }
+
                         sprintf(*output_f, "%s", optarg);
                         break;
                 case 's':
@@ -81,6 +124,7 @@ int read_args_rend(int argc, char **argv, float *vfov, int *width, int *height, 
                                 bad_value_err(opt);
                                 return FALSE;
                         }
+                        
                         sprintf(*scene_f, "%s", optarg);
                         break;
                 default:

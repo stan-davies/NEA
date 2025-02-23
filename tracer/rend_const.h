@@ -13,7 +13,7 @@
 
 // minimmum and maximum values for input parameters
 #define MIN_VFOV       0.f
-#define MAX_VFOV       90.f
+#define MAX_VFOV       180.f
 #define MIN_DIMENSION  1.f
 #define MAX_DIMENSION  2000.f
 #define MIN_SAMPLES    1.f
