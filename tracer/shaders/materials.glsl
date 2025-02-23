@@ -55,7 +55,9 @@ void transmit_shny(inout hit_record rec, inout ray r) {
         random_unit(mc_smp, rnd_unit);
 
         float fuzz_factor;
-        random_float(rec.obj.coords.xy * mc_smp.xy, fuzz_factor);
+        // normal vs coords... make fuzz manual
+        // random_float(rec.normal.xy, fuzz_factor);
+        fuzz_factor = 0.3;
 
         r.dir = reflect(r.dir, rec.normal);
         r.dir = normalize(r.dir) + (fuzz_factor * rnd_unit);

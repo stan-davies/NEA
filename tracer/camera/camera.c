@@ -35,7 +35,7 @@ int create_camera(struct scene_obj *world, int obj_c, struct camera *cam, float 
                 return FALSE;
         }
 
-        if (vfov <= 0) {
+        if (vfov <= 0.f) {
                 log_err("Invalid field of view.");
                 return FALSE;
         }

@@ -3,14 +3,14 @@
 int parse(char *path, char **content, int *content_length) {
         FILE *file = fopen(path, "r");
         if (!file) {
-                log_err("Could not open shader file at '%s'.", path);
+                log_err("Could not open file at '%s'.", path);
                 return FALSE;
         }
 
         *content = calloc(MAX_FILE_LENGTH, sizeof(char));
         *content_length = fread(*content, sizeof(char), MAX_FILE_LENGTH - 1, file);
 
-        (*content)[(*content_length)] = 0;
+        (*content)[(*content_length)] = NL_C;
         fclose(file);
         return TRUE;
 }

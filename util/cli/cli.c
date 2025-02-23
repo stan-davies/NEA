@@ -14,63 +14,74 @@ enum PROGS take_input(int argc, char **argv) {
         return cmd;
 }
 
-int read_args_rend(int argc, char **argv, float *vfov, int *width, int *height, int *max_bounces, int *max_samples, char **output_f, char **scene_file) {
+int read_args_rend(int argc, char **argv, float *vfov, int *width, int *height, int *max_bounces, int *max_samples, float *ambient_coef, char **output_f, char **scene_f) {
         int opt;
-        while (-1 != (opt = getopt(argc, argv, "f:w:h:m:b:o:s:"))) {
+        while (-1 != (opt = getopt(argc, argv, "f:w:h:m:b:a:o:s:"))) {
                 switch (opt) {
                 case 'f':
-                        if (!valid_arg(optarg, FLT)) {
-                                log_err("Invalid argument given for option 'vfov'.");
+                        if (!valid_arg(optarg, FLT, MIN_VFOV, MAX_VFOV)) {
+                                bad_value_err(opt);
                                 return FALSE;
                         }
+
                         *vfov = atof(optarg);
                         log("Vertical field of view given as %.2f.", *vfov);
                         break;
                 case 'w':
-                        if (!valid_arg(optarg, INT)) {
-                                log_err("Invalid argument given for option 'image width'.");
+                        if (!valid_arg(optarg, INT, MIN_DIMENSION, MAX_DIMENSION)) {
+                                bad_value_err(opt);
                                 return FALSE;
                         }
+
                         *width = atoi(optarg);
-                        log("Renderframe width given as %.2f.", *width);
+                        log("Renderframe width given as %d.", *width);
                         break;
                 case 'h':
-                        if (!valid_arg(optarg, INT)) {
-                                log_err("Invalid argument given for option 'image height'.");
+                        if (!valid_arg(optarg, INT, MIN_DIMENSION, MAX_DIMENSION)) {
+                                bad_value_err(opt);
                                 return FALSE;
                         }
                         *height = atoi(optarg);
-                        log("Renderframe height given as %.2f.", *height);
+                        log("Renderframe height given as %d.", *height);
                         break;
                 case 'm':
-                        if (!valid_arg(optarg, INT)) {
-                                log_err("Invalid argument given for option 'max samples'.");
+                        if (!valid_arg(optarg, INT, MIN_SAMPLES, MAX_SAMPLES)) {
+                                bad_value_err(opt);
                                 return FALSE;
                         }
                         *max_samples = atoi(optarg);
                         log("Max samples given as %d.", *max_samples);
                         break;
                 case 'b':
-                        if (!valid_arg(optarg, INT)) {
-                                log_err("Invalid argument given for option 'max bounces'.");
+                        if (!valid_arg(optarg, INT, MIN_BOUNCES, MAX_BOUNCES)) {
+                                bad_value_err(opt);
                                 return FALSE;
                         }
                         *max_bounces = atoi(optarg);
                         log("Max bounces given as %d.", *max_bounces);
                         break;
+                case 'a':
+                        if (!valid_arg(optarg, FLT, MIN_AMB_COEF, MAX_AMB_COEF)) {
+                                bad_value_err(opt);
+                                return FALSE;
+                        }
+
+                        *ambient_coef = atof(optarg);
+                        log("Ambient lighting coefficient given as %.2f.", *ambient_coef);
+                        break;
                 case 'o':
                         if (!valid_fp(optarg) || strlen(optarg) >= MAX_FILENAME_LENGTH) {
-                                log_err("Invalid argument given for option 'output path'.");
+                                bad_value_err(opt);
                                 return FALSE;
                         }
                         sprintf(*output_f, "%s", optarg);
                         break;
                 case 's':
                         if (!valid_fp(optarg) || strlen(optarg) >= MAX_FILENAME_LENGTH) {
-                                log_err("Invalid argument given for option 'scene file'.");
+                                bad_value_err(opt);
                                 return FALSE;
                         }
-                        sprintf(*scene_file, "%s", optarg);
+                        sprintf(*scene_f, "%s", optarg);
                         break;
                 default:
                         log_err("Invalid option given at symbol '%s'.", opt);
@@ -81,7 +92,7 @@ int read_args_rend(int argc, char **argv, float *vfov, int *width, int *height, 
         return TRUE;
 }
 
-int valid_arg(char *arg, enum TYPES type) {
+int valid_arg(char *arg, enum TYPES type, float min, float max) {
         char c;
         int pt = FALSE;
 
@@ -103,6 +114,18 @@ int valid_arg(char *arg, enum TYPES type) {
                 }
         }
 
+        int n;
+
+        if (FLT == type) {
+                n = (int)(atof(arg));
+        } else {
+                n = atoi(arg);
+        }
+
+        if (n < min || n > max) {
+                return FALSE;
+        }        
+
         return TRUE;
 }
 
@@ -122,6 +145,59 @@ int valid_fp(char *fp) {
         }
 
         return TRUE;
+}
+
+void bad_value_err(char param) {
+        float min;
+        float max;
+        char *param_name = calloc(MAX_LINE_LENGTH, sizeof(char));
+        char *valid_type = calloc(MAX_LINE_LENGTH, sizeof(char));
+
+        switch (param) {
+        case 'f':
+                min = MIN_VFOV;
+                max = MAX_VFOV;
+                strcpy(param_name, "focal length");
+                strcpy(valid_type, "FLOAT");
+                break;
+        case 'w':
+                min = MIN_DIMENSION;
+                max = MAX_DIMENSION;
+                strcpy(param_name, "image width");
+                strcpy(valid_type, "INTEGER");
+                break;
+        case 'h':
+                min = MIN_DIMENSION;
+                max = MAX_DIMENSION;
+                strcpy(param_name, "image height");
+                strcpy(valid_type, "INTEGER");
+                break;
+        case 'm':
+                min = MIN_SAMPLES;
+                max = MAX_SAMPLES;
+                strcpy(param_name, "max samples");
+                strcpy(valid_type, "INTEGER");
+                break;
+        case 'b':
+                min = MIN_BOUNCES;
+                max = MAX_BOUNCES;
+                strcpy(param_name, "max bounces");
+                strcpy(valid_type, "FLOAT");
+                break;
+        case 'a':
+                min = MIN_AMB_COEF;
+                max = MAX_AMB_COEF;
+                strcpy(param_name, "ambient lighting coefficient");
+                strcpy(valid_type, "FLOAT");
+                break;
+        default:
+                break;
+        }
+
+        log_err("Invalid value given for option %s. Expecting %s in interval [%1.f, %.1f].", param_name, valid_type, min, max);
+
+        free(param_name);
+        free(valid_type);
 }
 
 enum PROGS check_cmd(char **cmd_str) {

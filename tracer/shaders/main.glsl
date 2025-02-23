@@ -9,6 +9,7 @@ uniform int obj_c;
 uniform camera cam;
 uniform int max_bounces;
 uniform int max_samples;
+uniform float ambient_coef;
 uniform bool do_light;
 
 #include "prototype"
@@ -50,16 +51,15 @@ void main() {
                         if (brk) {
                                 break;
                         } else if (b == max_bounces - 1 && max_bounces > 1) {
-                                current_sample = vec3(0.0, .0, 0.0);
+                                current_sample = vec3(0.0, 0.0, 0.0);
                         }
                 }
 
                 if (lit || !do_light) {
                         pixel += vec4(current_sample, 0.0);
+                } else {
+                        pixel += vec4(current_sample * ambient_coef, 0.0);
                 }
-                // else {
-                //         pixel += vec4(current_sample * 0.01, 0.0);
-                // }
         }
 
         imageStore(img_output, pixel_coords, pixel / float(max_samples));

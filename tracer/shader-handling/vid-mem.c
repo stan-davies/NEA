@@ -66,11 +66,12 @@ void set_camera(int program_id, struct camera cam) {
         glUniform3fv(glGetUniformLocation(program_id, "cam.plane_dy"), 1, cam.plane_dy);
 }
 
-void set_maxes(int program_id, int max_bounces, int max_samples) {
+void set_params(int program_id, int max_bounces, int max_samples, float ambient_coef) {
         glUseProgram(program_id);
 
         glUniform1i(glGetUniformLocation(program_id, "max_bounces"), max_bounces);
         glUniform1i(glGetUniformLocation(program_id, "max_samples"), max_samples);
+        glUniform1f(glGetUniformLocation(program_id, "ambient_coef"), ambient_coef);
 }
 
 void retrieve_texture(int img_width, int img_height, float **pixels) {

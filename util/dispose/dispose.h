@@ -1,6 +1,7 @@
 #ifndef DISPOSE_H
 #define DISPOSE_H
 
+#include "tracer/rend_const.h"
 #include "tracer/core.h"
 #include "cli/cli.h"
 

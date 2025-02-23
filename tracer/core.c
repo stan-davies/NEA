@@ -1,6 +1,6 @@
 #include "core.h"
 
-int render(float vfov, int img_width, int img_height, int max_samples, int max_bounces, char *output_file, char *scene_file) {
+int render(float vfov, int img_width, int img_height, int max_samples, int max_bounces, float ambient_coef, char *output_file, char *scene_file) {
         enum STAGE current = BEGIN;
 
         // to scene
@@ -51,7 +51,7 @@ int render(float vfov, int img_width, int img_height, int max_samples, int max_b
         log("\tSet world.");
 
         set_camera(program_id, cam);
-        set_maxes(program_id, max_bounces, max_samples);
+        set_params(program_id, max_bounces, max_samples, ambient_coef);
 
         if (!log_gl_errs()) {
                 log_err("OpenGL error detected.");

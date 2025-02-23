@@ -1,9 +1,8 @@
 #include "img-writer.h"
 
 void write_texture(char *output_path, int texture_width, int texture_height, float *pixels) {
-        FILE *out_f;
-
-        out_f = fopen(output_path, "w");
+        FILE *out_f = fopen(output_path, "w");
+        
         if (!out_f)  {
                 log_err("Could not open file '%s'.", output_path);
                 return;
@@ -22,6 +21,8 @@ void write_texture(char *output_path, int texture_width, int texture_height, flo
                         pixel_i += 4;
                 }
         }
+
+        fclose(out_f);
 }
 
 int channel_rep_convert(float n) {

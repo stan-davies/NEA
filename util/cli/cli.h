@@ -8,6 +8,7 @@
 #include "global.h"
 #include "file-handling/log-writer/log-writer.h"
 #include "file-handling/parse.h"
+#include "tracer/rend_const.h"
 
 /*
  *   INPUT  : `argc` and `argv` as given to `main` when program is run.
@@ -27,15 +28,17 @@ enum TYPES {
  *   INPUT  : `argc` and `argv` as given to `main` when program is run. Pointer
  *            to float for a given vertical fov. Pointer to an integer for a
  *            given image width. Pointer to an integer for a given image 
- *            height. Pointer to string for output file path. Pointer to string
- *            for scene file path.
+ *            height. Pointer to integer for maximum number of bounces per ray. 
+ *            Pointer to integer for maximum number of samples per ray. Pointer 
+ *            to float for ambient lighting coefficient. Pointer to string for 
+ *            output file path. Pointer to string for scene file path.
  *   OUTPUT : Whether or not *all* options were valid.
  * 
  *   DESC   : Goes through each option given in `argv` and gets any relevant
  *            data from it. These data will be placed into the function
  *            arguments.
  */
-int read_args_rend(int argc, char **argv, float *vfov, int *width, int *height, int *max_bounces, int *max_samples, char **output_f, char **scene_file);
+int read_args_rend(int argc, char **argv, float *vfov, int *width, int *height, int *max_bounces, int *max_samples, float *ambient_coef, char **output_f, char **scene_f);
 
 /*
  *   INPUT  : String containing argument to check. What data type the argument
@@ -45,7 +48,7 @@ int read_args_rend(int argc, char **argv, float *vfov, int *width, int *height, 
  *   DESC   : Ensures the given argument contains only digits, and potentially
  *            a single decimal separator if it is a floating point number.
  */
-int valid_arg(char *arg, enum TYPES type);
+int valid_arg(char *arg, enum TYPES type, float min, float max);
 
 /*
  *   INPUT  : String containing file path to check.
@@ -55,6 +58,16 @@ int valid_arg(char *arg, enum TYPES type);
  *            contain letters, '.', '-' and '_'.
  */
 int valid_fp(char *fp);
+
+/*
+ *   INPUT  : Parameter for which a bad value has been given.
+ *   OUTPUT : -
+ * 
+ *   DESC   : Outputs an error message describing the format in which a value
+ *            for the given parameter *should* be given - data type and valid
+ *            interval.
+ */
+void bad_value_err(char param);
 
 /*
  *   INPUT  : Choice of command as given in main args.
