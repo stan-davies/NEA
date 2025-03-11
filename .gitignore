@@ -5,6 +5,7 @@ spt.exe
 version.h
 worlds/
 successes/
+weird_artefacts/
 .log
 image.ppm
 glew32.lib
