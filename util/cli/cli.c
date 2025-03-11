@@ -203,7 +203,7 @@ void bad_value_err(char param) {
         case 'f':
                 min = MIN_VFOV;
                 max = MAX_VFOV;
-                strcpy(param_name, "focal length");
+                strcpy(param_name, "vertical field of view");
                 strcpy(valid_type, "FLOAT");
                 break;
         case 'w':

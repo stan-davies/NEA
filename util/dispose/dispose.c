@@ -17,7 +17,7 @@ int dispose_renderer(int argc, char **argv) {
 
         if (0.f == vfov) {
                 vfov = DEF_VFOV;
-                log("No vfov given, default value of %.2f will be used.", vfov);
+                log("No vertical field of view given, default value of %.2f will be used.", vfov);
         }
 
         if (0 == image_width) {
