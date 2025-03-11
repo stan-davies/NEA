@@ -19,14 +19,10 @@ void set_world(int program_id, struct scene_obj world[MAX_OBJ_COUNT], int obj_c)
         char *var = calloc(MAX_SHDR_VAR_LEN, sizeof(char));
         int index = 0;
 
-        int light_found = FALSE;
-
         glUseProgram(program_id);
         for (int i = 0; i < obj_c; ++i) {
                 if (CMRA == world[i].mat) {
                         continue;
-                } else if (LGHT == world[i].mat) {
-                        light_found = TRUE;
                 }
 
                 sprintf(var_prefix, "world[%d].", index);
@@ -51,7 +47,6 @@ void set_world(int program_id, struct scene_obj world[MAX_OBJ_COUNT], int obj_c)
 
         // 1 is subtracted to account for the removed camera
         glUniform1i(glGetUniformLocation(program_id, "obj_c"), obj_c - 1);
-        glUniform1i(glGetUniformLocation(program_id, "do_light"), light_found);
 }
 
 void set_camera(int program_id, struct camera cam) {

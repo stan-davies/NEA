@@ -10,7 +10,6 @@ uniform camera cam;
 uniform int max_bounces;
 uniform int max_samples;
 uniform float ambient_coef;
-uniform bool do_light;
 
 #include "prototype"
 #include "materials"
@@ -72,12 +71,7 @@ void bounce(inout ray r, inout vec3 attenuation, out bool brk, out bool lit) {
         if (!rec.collided) {
                 float a = 0.5 * (r.dir.y + 1.0);
                 attenuation *= ((1.0 - a) * vec3(1.0, 1.0, 1.0)) + (a * vec3(0.5, 0.7, 1.0));
-                // if (!do_light) {
-                //         float a = 0.5 * (r.dir.y + 1.0);
-                //         attenuation *= ((1.0 - a) * vec3(1.0, 1.0, 1.0)) + (a * vec3(0.5, 0.7, 1.0));
-                // } else {
-                //         attenuation = vec3(0.0, 0.0, 0.0);
-                // }
+
                 brk = true;
                 lit = false;
                 return;

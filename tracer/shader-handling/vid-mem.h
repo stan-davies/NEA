@@ -50,11 +50,11 @@ void set_camera(int program_id, struct camera cam);
 void set_params(int program_id, int max_bounces, int max_samples, float ambient_coef);
 
 /*
- *   INPUT  : Width of image. Height of image. Pointer to array of bytes for 
+ *   INPUT  : Width of image. Height of image. Pointer to array of floats for 
  *            pixel data.
  *   OUTPUT : -
  * 
- *   DESC   : Reads pixels from memory and puts them in `pixels` in RGBA8
+ *   DESC   : Reads pixels from memory and puts them in `pixels` in RGBA32F
  *            format.
  */
 void retrieve_texture(int img_width, int img_height, float **pixels);

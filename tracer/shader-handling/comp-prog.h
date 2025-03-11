@@ -17,7 +17,7 @@
 int create_comp_program(int *program_id);
 
 /*
- *   INPUT  : GL program ID to run. Width of wrok groups to dispatch. Height of
+ *   INPUT  : GL program ID to run. Width of work groups to dispatch. Height of
  *            work groups to dispatch.
  *   OUTPUT : -
  *

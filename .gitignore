@@ -3,7 +3,8 @@ include/
 lib/
 spt.exe
 version.h
-.world
+worlds/
+successes/
 .log
 image.ppm
 glew32.lib
