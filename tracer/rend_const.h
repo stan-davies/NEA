@@ -8,7 +8,7 @@
 #define DEF_MAX_BOUNCES 3
 #define DEF_MAX_SAMPLES 3
 #define DEF_AMB_COEF    0.f
-#define DEF_SF          ".world"
+#define DEF_SF          "worlds/.world"
 #define DEF_OF          "image.ppm"
 
 // minimmum and maximum values for input parameters

@@ -112,20 +112,22 @@ int read_args_rend(int argc, char **argv, float *vfov, int *width, int *height, 
                         log("Ambient lighting coefficient given as %.2f.", *ambient_coef);
                         break;
                 case 'o':
-                        if (!valid_fp(optarg) || strlen(optarg) >= MAX_FILENAME_LENGTH) {
-                                bad_value_err(opt);
+                        if (!valid_fp(optarg) || strlen(optarg) >= MAX_PATH_LENGTH) {
+                                log("Option for parameter 'output file' does not meet conditions.");
                                 return FALSE;
                         }
 
                         sprintf(*output_f, "%s", optarg);
+                        log("Output file given as '%s'.", *output_f);
                         break;
                 case 's':
-                        if (!valid_fp(optarg) || strlen(optarg) >= MAX_FILENAME_LENGTH) {
-                                bad_value_err(opt);
+                        if (!valid_fp(optarg) || strlen(optarg) >= MAX_PATH_LENGTH) {
+                                log("Option for parameter 'scene file' does not meet conditions.");
                                 return FALSE;
                         }
                         
                         sprintf(*scene_f, "%s", optarg);
+                        log("Scene file given as '%s'.", *scene_f);
                         break;
                 default:
                         log_err("Invalid option given at symbol '%s'.", opt);
@@ -179,8 +181,8 @@ int valid_fp(char *fp) {
         for (int i = 0; i < strlen(fp); ++i) {
                 c = fp[i];
 
-                // is uppercase, lowercase, '.', '_' or '-'
-                valid = (c >= CHR_A && c <= CHR_Z) || (c >= CHR_a && c <= CHR_z) || PT_C == c || UND_C == c || DSH_C == c;
+                // is uppercase, lowercase, '.', '_', '-' or '/'
+                valid = (c >= CHR_A && c <= CHR_Z) || (c >= CHR_a && c <= CHR_z) || PT_C == c || UND_C == c || DSH_C == c || SL_C == c;
 
                 if (!valid) {
                         log_err("Invalid path given, filename must not contain symbol '%c'", c);
@@ -235,11 +237,13 @@ void bad_value_err(char param) {
                 strcpy(valid_type, "FLOAT");
                 break;
         default:
+                goto end;
                 break;
         }
 
         log_err("Invalid value given for option %s. Expecting %s in interval [%1.f, %.1f].", param_name, valid_type, min, max);
 
+        end:
         free(param_name);
         free(valid_type);
 }

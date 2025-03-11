@@ -95,20 +95,21 @@ int cmd_to_str(enum PROGS cmd, char **str);
 ing paragraphs will allow you to familiarise yourself with the program.\n"
 #define PARAM_HELP "Paramters\n\nThe program allows several parameters, each \
 of which controls some aspect of the rendering. These are:\n - 'f' vertical \
-field of view of the camera (in degrees)\n - 'w' width of the output image (in \
-pixels)\n - 'h' height of the output image (in pixels)\n - 'm' max samples\n - \
-'b' max bounces\n - 'o' destination for the output image (as a path)\n - 's' \
-source of the scene file (as a path)\nTo \
+field of view of the camera (in degrees, [0.0, 180.0], default 20.0)\n - 'w' \
+width of the output image (in pixels, [0, 2000], default 100)\n - 'h' height of\
+ the output image (in pixels, [0, 2000], default 100)\n - 'm' maximum samples \
+per ray (in [1, 500], default 3)\n - 'b' maximum bounces per ray (in [1, 200] \
+default 3)\n - 'a' ambient lighting coefficient (in [0.0, 1.0], default 0.0) \n\
+ - 'o' destination for the output image (as a path, default \"image.ppm\")\n - \
+'s' source of the scene file (as a path, default \"worlds/.world\")\nTo \
 set one of the paramters, write its letter with a single hyphen beforehand. For\
- example:\n\n > spt render -f \"out.ppm\" -w 200.\n\nIf you choose not to set \
-any of the parameters, default values will be used. These are:\n - 'f' : 20.0\n\
- - 'w' and 'h' : 100\n - 'm' and 'b' 3\n - 'o' : \"image.ppm\"\n - 's' : \".wor\
-ld\"\n"
+ example:\n\n > spt render -f \"out.ppm\" -w 200.\n\n If you choose not to set \
+any of the parameters, the default values will be used.\n"
 #define SCENE_HELP "Scene Parameters:\n\nYou are able to create a custom scene \
-file which describes the scene that you want to rendered. This requires a \
+file which describes the scene that you want to render. This requires a \
 specific format in order to be understood by the program correctly. Every scene\
  file begins with a line that contains only a single number. This is the count \
-of all the objects in your scene. It may not exceed 8. After this, you will \
+of all the objects in your scene. It may not exceed 16. After this, you will \
 write each of your objects. These take the form of a type and then a list of \
 parameters. These parameters must be in order and are comma separated. They \
 will describe the position of the object, the colour of the object, the \
@@ -149,11 +150,7 @@ will be dark. The paths of each ray is governed by the objects with which it \
 collides, and more information on how this works can be found in the design \
 section.\n"
 
-// add the note to scene help about bounces and samples
-// add the note about not rendering too large due to memory
-// maybe add a warning about that in the log file
-// note about length renders will take
-// note about minimum bounces being 2
+// note about length renders will take -> output help
 // note about no light -> ambient illumination
 // say how planes work a bit more
 // ensuring scenes are phsycially possible -> specifically on planes of glass not making sense

@@ -7,8 +7,8 @@ int dispose_renderer(int argc, char **argv) {
         int max_samples = 0;
         int max_bounces = 0;
         float ambient_coef = -1.f;
-        char *output_file = calloc(MAX_FILENAME_LENGTH, sizeof(char));
-        char *scene_file = calloc(MAX_FILENAME_LENGTH, sizeof(char));
+        char *output_file = calloc(MAX_PATH_LENGTH, sizeof(char));
+        char *scene_file = calloc(MAX_PATH_LENGTH, sizeof(char));
 
         if (!read_args_rend(argc, argv, &vfov, &image_width, &image_height, &max_bounces, &max_samples, &ambient_coef, &output_file, &scene_file)) {
                 log_err("Unable to read arguments for rendering mode.");
