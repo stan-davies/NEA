@@ -119,16 +119,16 @@ int choose_type(int *type, char line0) {
         switch (line0) {
         case SL_C:
                 break;
-        case NL_C:
+        case LF_C:
                 break;
         case SPHERE:
                 *type = SPHERE;
                 break;
-        case CUBOID:
-                *type = CUBOID;
-                break;
         case PLANE:
                 *type = PLANE;
+                break;
+        case CAMERA:
+                *type = CAMERA;
                 break;
         default:
                 return FALSE;

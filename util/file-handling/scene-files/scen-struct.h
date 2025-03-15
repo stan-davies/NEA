@@ -13,8 +13,8 @@
 
 enum OBJS {
         SPHERE = 83, // 'S'
-        CUBOID = 67, // 'C'
         PLANE  = 80, // 'P'
+        CAMERA = 67, // 'C'
         NAO    = 0,  // Not An Object
 };
 
@@ -27,12 +27,11 @@ enum MATS {
         CMRA = 67, // 'C'
 };
 
-// COLOUR
 struct scene_obj {
         enum OBJS type;
         float coords[3];
         float albedo[3];
-        float dims[3]; // sphere uses only 0 (radius), plane uses 0 & 1 (width, height), cuboid uses all 3 (width, height depth)
+        float dims[3];
         enum MATS mat;
 };
 

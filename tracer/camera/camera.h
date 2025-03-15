@@ -18,7 +18,7 @@ extern float vup[3];
 
 struct camera {
         float pos[3];        // position of actual camera
-        float plane_00[3];   // centre of top left pixel in viewing plane
+        float plane_00[3];   // top left pixel in viewing plane
         float plane_dx[3];   // unit vector parallel to base of viewing plane
         float plane_dy[3];   // unit vector parallel to height of viewing plane
 };

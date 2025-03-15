@@ -9,13 +9,13 @@
 
 /*
  *   INPUT  : Path to directory containing glsl files. Pointer to a string to
- *            fill with glsl code from files.
+ *            fill with glsl code from files in directory.
  *   OUTPUT : Success in preprocessing.
  *
  *   DESC   : Deals with `#include` statements in a group of glsl files.
  */
 int preprocess(char *dir_path, char **shader_string);
-
+ 
 /*
  *   INPUT  : Path to directory containing glsl files. Name of file. Pointer
  *            to string for content of file. Pointer to int for length of file.

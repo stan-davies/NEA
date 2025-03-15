@@ -123,7 +123,7 @@ int direct(char *dir_path, char **content, int content_len) {
 }
 
 int create_shader(int *shader_id, char *dir_path, GLenum type) {
-        char *shd_str = (char *)malloc(MAX_FILE_LENGTH * sizeof(char));
+        char *shd_str = malloc(MAX_FILE_LENGTH * sizeof(char));
         if (!preprocess(dir_path, &shd_str)) {
                 free(shd_str);
                 log_err("Could not preprocess shaders at '%s'.", dir_path);

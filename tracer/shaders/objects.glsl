@@ -49,10 +49,6 @@ void hit(in object obj, in ray r, in float low, out hit_record rec) {
 void sphere_hit(in object obj, in ray r, in float low, out hit_record rec) {
         vec3 oc = obj.coords - r.origin;
 
-        /* 
-         * Theses are the letters from the quadratic equation (I can name
-         * variables sensibly I promise) where h = -2b.
-         */
         float a = dot(r.dir, r.dir);
         float h = dot(oc, (r.dir));
         float c = dot(oc, oc) - (obj.dims.x * obj.dims.x);

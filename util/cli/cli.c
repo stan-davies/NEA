@@ -263,7 +263,7 @@ enum PROGS check_cmd(char **cmd_str) {
 }
 
 int cmd_to_str(enum PROGS cmd, char **str) {
-        *str = (char *)malloc(MAX_CMD_STR_LEN * sizeof(char));
+        *str = malloc(MAX_CMD_STR_LEN * sizeof(char));
 
         switch (cmd) {
         case REND:

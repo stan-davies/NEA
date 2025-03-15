@@ -27,8 +27,8 @@ extern int weights[COMPLETE - 1];
  *   INPUT  : Current stage of rendering.
  *   OUTPUT : -
  * 
- *   DESC   : Outputs the current progress of the render. This is the
- *            combination of a loading bar and an informative messgae.
+ *   DESC   : Outputs the current progress of the render in the form of a 
+ *            loading bar.
  */
 void prog(enum STAGE current);
 
@@ -38,7 +38,7 @@ void prog(enum STAGE current);
  * 
  *   DESC   : Outputs the character `stat` `width` number of times. This will
  *            make up each chunk of the progress bar.
-*/
+ */
 void print_prog(enum STATUS stat, int width);
 
 /*

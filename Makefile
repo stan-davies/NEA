@@ -6,6 +6,7 @@ TRCR = tracer/camera/camera.c tracer/image-writer/img-writer.c tracer/prog-log/p
 
 CC = gcc
 
+# really util???
 INCLUDE_PATHS = -I include -I util -I .
 
 LIBRARY_PATHS = -L .

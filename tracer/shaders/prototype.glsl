@@ -15,6 +15,14 @@
  */
 void bounce(inout ray r, inout vec3 attenuation, out bool brk, out bool lit);
 
+/*
+ *   PARAMS  : Integers for random sampling. Scene camera. Coordinates of 
+ *             current pixel within renderframe. Ray to be made.
+ *
+ *   DESC    : Creates a ray extending from the camera through the given pixel.
+ */
+void make_ray(in ivec3 smp, in camera c, in ivec2 px, inout ray r);
+
 /******************************************************************************
  *
  *   prototypes for: `materials.glsl`

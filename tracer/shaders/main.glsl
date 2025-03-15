@@ -15,29 +15,18 @@ uniform float ambient_coef;
 #include "materials"
 #include "objects"
 
-// delegate some
 void main() {
         ivec2 pixel_coords = ivec2(gl_GlobalInvocationID.xy);
         ivec2 work_groups = ivec2(gl_NumWorkGroups.xy);
         vec4 pixel = vec4(0.0, 0.0, 0.0, 0.0);
-
         vec3 curr_px = cam.plane_00 + (pixel_coords.x * cam.plane_dx) + (pixel_coords.y * cam.plane_dy);
-
         ray r;
         vec3 current_sample;
-        float offs_x;
-        float offs_y;
         bool brk;
         bool lit;
 
         for (int s = 0; s < max_samples; ++s) {
-                random_float(vec2(s, work_groups.y), offs_x);
-                offs_x -= 0.5;
-                random_float(vec2(work_groups.x, s), offs_y);
-                offs_y -= 0.5;
-
-                r.origin = cam.pos;
-                r.dir = normalize(cam.plane_00 + ((pixel_coords.x + offs_x) * cam.plane_dx) + ((pixel_coords.y + offs_y) * cam.plane_dy) - cam.pos);
+                make_ray(ivec3(work_groups, s), cam, pixel_coords, r);
 
                 current_sample = vec3(1.0, 1.0, 1.0);
 
@@ -96,4 +85,17 @@ void bounce(inout ray r, inout vec3 attenuation, out bool brk, out bool lit) {
 
         brk = false;
         lit = false;
+}
+
+void make_ray(in ivec3 smp, in camera c, in ivec2 px, inout ray r) {
+        float offs_x;
+        float offs_y;
+
+        random_float(vec2(smp.z, smp.y), offs_x);
+        offs_x -= 0.5;
+        random_float(vec2(smp.x, smp.z), offs_y);
+        offs_y -= 0.5;
+
+        r.origin = c.pos;
+        r.dir = normalize(c.plane_00 + ((px.x + offs_x) * c.plane_dx) + ((px.y + offs_y) * c.plane_dy) - c.pos);
 }
