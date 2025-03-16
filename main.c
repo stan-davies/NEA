@@ -16,6 +16,8 @@ int main(int argc, char **argv) {
                 return 0;
         }
 
+        // if help then stop here
+
         log_vars(cmd);
 
         GLFWwindow *window;

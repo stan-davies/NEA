@@ -22,6 +22,7 @@
  */
 int parse(char *path, char **content, int *content_length);
 
+// Put this one somewhere else??
 /*
  *   INPUT  : Pointer to string to be split. Pointer to split element. Pointer
  *            to length of split element. Delimiter to split on (anything other

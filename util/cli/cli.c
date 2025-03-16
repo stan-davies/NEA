@@ -286,5 +286,5 @@ int cmd_to_str(enum PROGS cmd, char **str) {
 
 void help() {
         log("%s\n%s\n%s\n%s\n%s", WLCME_INFO, PARAM_HELP, SCENE_HELP, OUTPT_HELP, OPRTN_HELP);
-        printf("%s\n%s\n%s\n%s\n%s", WLCME_INFO, PARAM_HELP, SCENE_HELP, OUTPT_HELP, OPRTN_HELP);
+        printf("The help information can be viewed in the log file.\n");
 }
