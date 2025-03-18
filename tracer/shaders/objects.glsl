@@ -30,7 +30,7 @@ void collision(in ray r, in float low, out hit_record rec) {
 
         rec = nearest;
         // Used with glass to determine the current ratio of indices of refraction.
-        rec.interior = dot(r.dir, rec.normal) >= 0;
+        //rec.interior = dot(r.dir, rec.normal) >= 0;
 }
 
 void hit(in object obj, in ray r, in float low, out hit_record rec) {
@@ -76,8 +76,13 @@ void sphere_hit(in object obj, in ray r, in float low, out hit_record rec) {
 
         rec.point = r.origin + (t * r.dir);
         rec.normal = normalize((rec.point - obj.coords) / obj.dims.x);
-        if (dot(r.dir, rec.normal) >= 0) {
+        if (dot(r.dir, rec.normal) > 0) {
+                // ray is coming from inside sphere
+                rec.interior = true;
                 rec.normal *= -1;
+        } else {
+                // ray is coming from outside sphere
+                rec.interior = false;
         }
         rec.obj = obj;
 }

@@ -40,6 +40,7 @@ void main() {
                                 break;
                         } else if (b == max_bounces - 1 && max_bounces > 1) {
                                 current_sample = vec3(0.0, 0.0, 0.0);
+                                // *= amb
                         }
                 }
 

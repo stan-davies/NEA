@@ -8,6 +8,8 @@ void write_texture(char *output_path, int texture_width, int texture_height, flo
                 return;
         }
         fprintf(out_f, "P3\n%d %d\n255\n", texture_width, texture_height);
+
+        // printf("# version: v1.2...")
         
         int pixel_i = 0;
         for (int y = 0; y < texture_height; ++y) {
@@ -26,8 +28,8 @@ void write_texture(char *output_path, int texture_width, int texture_height, flo
 }
 
 int channel_rep_convert(float n) {
-        if (n > 0) {
-                n = sqrt(n);
+        if (n <= 0.f) {
+                return 0;
         }
-        return (int)(n * 255.f);
+        return (int)(sqrt(n) * 255.f);
 }

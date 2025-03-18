@@ -7,7 +7,7 @@
 // 2^18 = 262144
 #define MAX_FILE_LENGTH     262144
 // 2^5 = 32
-#define MAX_LINE_LENGTH     32
+#define MAX_LINE_LENGTH     64
 // 2^4 = 16 
 #define MAX_FILENAME_LENGTH 16
 // 2^7

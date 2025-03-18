@@ -111,6 +111,10 @@ void log_world(struct scene_obj *world, int obj_c) {
                         dims = 3; // 3D normal vector
                         strcpy(out_str, "PLANE");
                         break;
+                case CAMERA:
+                        dims = 3; // view direction
+                        strcpy(out_str, "CAMERA");
+                        break;
                 default:
                         dims = 0;
                         strcpy(out_str, "n/a");

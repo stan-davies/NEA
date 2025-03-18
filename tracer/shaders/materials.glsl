@@ -55,9 +55,11 @@ void transmit_shny(inout hit_record rec, inout ray r) {
         random_unit(mc_smp, rnd_unit);
 
         float fuzz_factor;
-        // normal vs coords... make fuzz manual
-        // random_float(rec.normal.xy, fuzz_factor);
-        fuzz_factor = 0.3;
+        // make it manual
+        // random_float(rec.obj.coords.xy, fuzz_factor);
+        // fuzz_factor *= 0.57;
+        // fuzz_factor = min(fuzz_factor, 0.8);
+        fuzz_factor = 1;
 
         r.dir = reflect(r.dir, rec.normal);
         r.dir = normalize(r.dir) + (fuzz_factor * rnd_unit);
@@ -68,7 +70,7 @@ void transmit_shny(inout hit_record rec, inout ray r) {
 }
 
 void transmit_glss(in hit_record rec, inout ray r) {
-        float ri = 3.0 / 2.0;
+        float ri = 2.0 / 3.0;
         if (rec.interior) {
                 ri = 1.0 / ri;
         }
@@ -76,18 +78,15 @@ void transmit_glss(in hit_record rec, inout ray r) {
         float cos_theta = min(dot(-r.dir, rec.normal), 1.0);
         float sin_theta = sqrt(1.0 - (cos_theta * cos_theta));
 
-        bool no_refr = ri * sin_theta > 1.0;
-
         float rnd;
-        random_float(rec.point.xy, rnd);
+        random_float(rec.point.yz, rnd);
 
         float R;
         reflectance(cos_theta, ri, R);
 
-        if (no_refr || R > rnd) {
+        if (ri * sin_theta > 1.0 || R > rnd) {
                 transmit_refl(rec, r);
         } else {
-                // r.dir = refract(r.dir, rec.normal, ri);
                 vec3 r_out_perp = ri * (r.dir + cos_theta * rec.normal);
                 float perp_len = dot(r_out_perp, r_out_perp);
                 vec3 r_out_para = -sqrt(abs(1.0 - perp_len * perp_len)) * rec.normal;
@@ -122,5 +121,5 @@ void random_unit(in vec3 s, out vec3 v) {
 void reflectance(in float cosine, in float ri, out float R) {
         float r0 = (1 - ri) / (1 + ri);
         r0 *= r0;
-        R = r0 + (1 - r0) * pow(1 - cosine, 5);
+        R = r0 + (1.0 - r0) * pow(1 - cosine, 5.0);
 }

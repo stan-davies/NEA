@@ -19,7 +19,8 @@ int read_args_rend(int argc, char **argv, float *vfov, int *width, int *height, 
         int tmp_i;
 
         int opt;
-        while (-1 != (opt = getopt(argc, argv, "f:w:h:m:b:a:o:s:"))) {
+        opterr = 0;
+        while (-1 != (opt = getopt(argc, argv, ":f:w:h:m:b:a:o:s:"))) {
                 switch (opt) {
                 case 'f':
                         if (!valid_arg(optarg, FLT, MIN_VFOV, MAX_VFOV)) {
@@ -112,8 +113,8 @@ int read_args_rend(int argc, char **argv, float *vfov, int *width, int *height, 
                         log("Ambient lighting coefficient given as %.2f.", *ambient_coef);
                         break;
                 case 'o':
-                        if (!valid_fp(optarg) || strlen(optarg) >= MAX_PATH_LENGTH) {
-                                log("Option for parameter 'output file' does not meet conditions.");
+                        if (!valid_fp(optarg)) {
+                                log_err("Option for parameter output file does not meet conditions.");
                                 return FALSE;
                         }
 
@@ -121,17 +122,21 @@ int read_args_rend(int argc, char **argv, float *vfov, int *width, int *height, 
                         log("Output file given as '%s'.", *output_f);
                         break;
                 case 's':
-                        if (!valid_fp(optarg) || strlen(optarg) >= MAX_PATH_LENGTH) {
-                                log("Option for parameter 'scene file' does not meet conditions.");
+                        if (!valid_fp(optarg)) {
+                                log_err("Option for parameter scene file does not meet conditions.");
                                 return FALSE;
                         }
                         
                         sprintf(*scene_f, "%s", optarg);
                         log("Scene file given as '%s'.", *scene_f);
                         break;
+                case ':':
+                        log_err("No value given for option '%c'.", optopt);
+                        return FALSE;
+                case '?':
                 default:
-                        log_err("Invalid option given at symbol '%s'.", opt);
-                        break;
+                        log_err("Invalid option given at symbol '%c'.", optopt);
+                        return FALSE;
                 }
         }
 
@@ -176,6 +181,11 @@ int valid_arg(char *arg, enum TYPES type, float min, float max) {
 }
 
 int valid_fp(char *fp) {
+        if (strlen(fp) >= MAX_PATH_LENGTH) {
+                log_err("Invalid path given, too many characters. Maximum is %d.", MAX_PATH_LENGTH);
+                return FALSE;
+        }
+
         char c = NL_C;
         int valid;
         for (int i = 0; i < strlen(fp); ++i) {
@@ -228,7 +238,7 @@ void bad_value_err(char param) {
                 min = MIN_BOUNCES;
                 max = MAX_BOUNCES;
                 strcpy(param_name, "max bounces");
-                strcpy(valid_type, "FLOAT");
+                strcpy(valid_type, "INTEGER");
                 break;
         case 'a':
                 min = MIN_AMB_COEF;
@@ -241,7 +251,7 @@ void bad_value_err(char param) {
                 break;
         }
 
-        log_err("Invalid value given for option %s. Expecting %s in interval [%1.f, %.1f].", param_name, valid_type, min, max);
+        log_err("Invalid value given for option %s. Expecting %s in interval [%.1f, %.1f].", param_name, valid_type, min, max);
 
         end:
         free(param_name);

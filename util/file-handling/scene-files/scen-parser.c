@@ -1,5 +1,9 @@
 #include "scen-parser.h"
 
+
+// make sure ranges are valid and stuff
+// block multiple cameras
+
 int create_world(char *path, struct scene_obj **world, int *object_count) {
         char *cnt;
         int cntc;
@@ -58,6 +62,8 @@ int create_world(char *path, struct scene_obj **world, int *object_count) {
                         if (!yield_split(&line_ptr, &chunk, &chunk_len, CM_C, MAX_PARAM_LEN)) {
                                 break;
                         }
+
+                        // log("just now got %d\n", chunk_len);
 
                         enum ARG_TYPE arg = get_arg_type(chunk, chunk_len);
 

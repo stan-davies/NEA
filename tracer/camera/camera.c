@@ -48,7 +48,7 @@ int create_camera(struct scene_obj *world, int obj_c, struct camera *cam, float 
         float *plane_i = malloc(3 * sizeof(float));
         vecset(&plane_i, cross(view_dir, vup));
         if (!normalise(&plane_i)) {
-                log_err("Invalid vector given.");
+                log_err("Could not normalise viewing plane i.");
                 return FALSE;
         }
         float *camdx_ptr = &cam->plane_dx[0];
@@ -57,7 +57,7 @@ int create_camera(struct scene_obj *world, int obj_c, struct camera *cam, float 
         float *plane_j = malloc(3 * sizeof(float));
         vecset(&plane_j, cross(view_dir, plane_i));
         if (!normalise(&plane_j)) {
-                log_err("Invalid vector given.");
+                log_err("Could not normalise viewing plane j.");
                 return FALSE;
         }
         float *camdy_ptr = &cam->plane_dy[0];
